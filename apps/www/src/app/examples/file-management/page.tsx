@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -178,7 +178,6 @@ export default function FileManagementDashboard() {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
-  const [sortBy, setSortBy] = useState("name")
 
   const handleFileSelect = () => {
     setIsUploading(true)
@@ -196,7 +195,6 @@ export default function FileManagementDashboard() {
   }
 
   return (
-    // <div className="bg-background mx-auto w-full max-w-[1800px] p-8 px-5 lg:px-10 xl:px-20">
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <Breadcrumb>
@@ -255,9 +253,12 @@ export default function FileManagementDashboard() {
       </div>
 
       {isUploading && (
-        <Alert className="mb-8" icon={<Cloud className="h-4 w-4" />}>
+        <Alert
+          className="mb-8 [&>div]:nth-2:w-full"
+          icon={<Cloud className="h-4 w-4 nth-2:w-full" />}
+        >
           <AlertTitle>Uploading Files</AlertTitle>
-          <AlertDescription>
+          <AlertDescription className="w-full">
             <Progress value={uploadProgress} className="mt-2" />
           </AlertDescription>
         </Alert>
@@ -324,27 +325,6 @@ export default function FileManagementDashboard() {
             className="pl-8"
           />
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outlined" size="sm">
-              Sort by
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setSortBy("name")}>
-              Name
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setSortBy("date")}>
-              Date
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setSortBy("size")}>
-              Size
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setSortBy("type")}>
-              Type
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
       <Tabs defaultValue="all">

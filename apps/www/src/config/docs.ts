@@ -57,6 +57,7 @@ export const sideBarNavs: SideBarNavItem[] = [
       { title: "Spinner", url: "/docs/components/spinner", items: [] },
       { title: "Switch", url: "/docs/components/switch", items: [] },
       { title: "Tabs", url: "/docs/components/tabs", items: [] },
+      { title: "Timeline", url: "/docs/components/timeline", items: [] },
       { title: "Toast", url: "/docs/components/toast", items: [] },
       {
         title: "Toggle Group",
