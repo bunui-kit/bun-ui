@@ -1,0 +1,61 @@
+---
+title: Timeline
+description: A component for displaying a series of events in chronological order.
+links:
+  source: components/timeline
+  docs: /docs/components/timeline
+---
+
+<ComponentPreview name="timeline-basic" />
+
+## Usage
+
+Import the Timeline components from `@bun-ui/react` and use them in your project:
+
+```jsx
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineIndicator,
+  TimelineConnector,
+  TimelineContent,
+  TimelineTitle,
+  TimelineDescription,
+} from "@bun-ui/react"
+```
+
+```jsx
+<Timeline>
+  <TimelineItem>
+    <TimelineSeparator>
+      <TimelineIndicator />
+      <TimelineConnector />
+    </TimelineSeparator>
+    <TimelineContent>
+      <TimelineTitle>Event Title</TimelineTitle>
+      <TimelineDescription>Event Description</TimelineDescription>
+    </TimelineContent>
+  </TimelineItem>
+</Timeline>
+```
+
+## Examples
+
+### Project Timeline
+
+A timeline showing project milestones and progress.
+
+<ComponentPreview name="timeline-project" />
+
+### Custom Indicators
+
+Customize the timeline indicators with different styles and colors.
+
+<ComponentPreview name="timeline-customization" />
+
+### Custom Content
+
+This is an example of how to use timeline with other components
+
+<ComponentPreview name="timeline-custom-content" />
