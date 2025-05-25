@@ -35,7 +35,6 @@ const HomePage = () => {
   return (
     <>
       <main className="min-h-screen">
-        {/* Hero Section */}
         <div className="from-primary/5 to-background relative overflow-hidden bg-gradient-to-b">
           <div className="container mx-auto px-4 py-24 sm:px-6 lg:px-8">
             <div className="text-center">
@@ -56,7 +55,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Features Section */}
         <section className="py-24">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -94,7 +92,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Component Preview Section */}
         <section className="bg-muted/50 py-24">
           <div className="container mx-auto px-4">
             <div className="text-center">
@@ -183,7 +180,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Call to Action */}
         <section className="py-24">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">

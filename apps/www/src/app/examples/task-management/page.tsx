@@ -8,6 +8,7 @@ import {
   Badge,
   BadgeProps,
   Button,
+  Calendar,
   Card,
   CardContent,
   CardHeader,
@@ -17,6 +18,9 @@ import {
   DialogTitle,
   Input,
   Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Progress,
   Select,
   SelectItem,
@@ -27,8 +31,10 @@ import {
   TextArea,
   Tooltip,
 } from "@bun-ui/react"
+import { format } from "date-fns"
 import {
-  Calendar,
+  CalendarDaysIcon,
+  CalendarIcon,
   CheckCircle,
   Clock,
   MoreHorizontal,
@@ -154,10 +160,19 @@ const teamMembers = [
 
 export default function TaskManagement() {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date>()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedPriority, setSelectedPriority] = useState("all")
   const [selectedStatus, setSelectedStatus] = useState("all")
   const [selectedAssignee, setSelectedAssignee] = useState("all")
+  const [dateInputValue, setDateInputValue] = useState("")
+  const [calendarOpen, setCalendarOpen] = useState(false)
+
+  const handleDateChange = (date?: Date) => {
+    setSelectedDate(date)
+    setDateInputValue(format(date || "", "MM/dd/yyyy"))
+    setCalendarOpen(false)
+  }
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
@@ -287,7 +302,7 @@ export default function TaskManagement() {
           </Select>
         </div>
         <div className="flex items-center gap-2">
-          <Calendar className="text-muted-foreground h-4 w-4" />
+          <CalendarIcon className="text-muted-foreground h-4 w-4" />
           <span className="text-muted-foreground text-sm">
             Last updated: {new Date().toLocaleDateString()}
           </span>
@@ -329,7 +344,7 @@ export default function TaskManagement() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Calendar className="text-muted-foreground h-4 w-4" />
+                            <CalendarIcon className="text-muted-foreground h-4 w-4" />
                             <span className="text-sm">
                               Due {new Date(task.dueDate).toLocaleDateString()}
                             </span>
@@ -426,7 +441,7 @@ export default function TaskManagement() {
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <Calendar className="text-muted-foreground h-4 w-4" />
+                                  <CalendarIcon className="text-muted-foreground h-4 w-4" />
                                   <span className="text-sm">
                                     {new Date(
                                       task.dueDate
@@ -530,8 +545,34 @@ export default function TaskManagement() {
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="due-date">Due Date</Label>
-              <Input id="due-date" type="date" />
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <div className="relative">
+                    <Input
+                      placeholder="Select a date"
+                      value={dateInputValue}
+                      className="w-full pr-8"
+                      readOnly
+                      label="Due Date"
+                    />
+                    <Button
+                      className="absolute top-7 right-1 h-7 w-7"
+                      variant="text"
+                      aria-label="Select Due date"
+                      size="icon"
+                    >
+                      <CalendarDaysIcon className="text-muted-foreground h-4 w-4" />
+                    </Button>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Calendar
+                    mode="single"
+                    onSelect={handleDateChange}
+                    selected={selectedDate}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <div className="flex justify-end gap-2">
