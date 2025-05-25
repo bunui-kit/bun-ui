@@ -75,6 +75,14 @@ import {
   Tabs,
   TabTrigger,
   TextArea,
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDescription,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
   ToggleGroup,
   ToggleGroupItem,
   Tooltip,
@@ -530,6 +538,49 @@ export default function ComponentsPage() {
             </FileUploadDropZone>
             <FileUploadList />
           </FileUpload>
+        </ComponentCard>
+        <ComponentCard title="Timeline">
+          <Timeline>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineIndicator />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineTitle>Project Kickoff</TimelineTitle>
+                <TimelineDescription>January 15, 2024</TimelineDescription>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineIndicator />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineTitle>Design Phase</TimelineTitle>
+                <TimelineDescription>February 1, 2024</TimelineDescription>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineIndicator />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineTitle>Development Started</TimelineTitle>
+                <TimelineDescription>March 1, 2024</TimelineDescription>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineIndicator />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineTitle>Launch</TimelineTitle>
+                <TimelineDescription>April 15, 2024</TimelineDescription>
+              </TimelineContent>
+            </TimelineItem>
+          </Timeline>
         </ComponentCard>
       </div>
     </div>
