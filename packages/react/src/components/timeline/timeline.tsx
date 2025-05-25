@@ -68,15 +68,15 @@ const TimelineContent = React.forwardRef<
 ))
 
 const TimelineTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <p className={cx("text-sm", className)} ref={ref} {...props} />
+  <p className={cx("text-sm font-medium", className)} ref={ref} {...props} />
 ))
 
 const TimelineDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <p
     className={cx("text-muted-foreground text-xs", className)}
