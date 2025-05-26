@@ -29,6 +29,13 @@ import {
   Tabs,
   TabTrigger,
   TextArea,
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
   Tooltip,
 } from "@bun-ui/react"
 import { format } from "date-fns"
@@ -37,6 +44,9 @@ import {
   CalendarIcon,
   CheckCircle,
   Clock,
+  Code2,
+  GitBranch,
+  MessageSquare,
   MoreHorizontal,
   Plus,
   Search,
@@ -156,6 +166,69 @@ const teamMembers = [
   { id: "robert", name: "Robert Johnson", role: "Technical Writer" },
   { id: "sarah", name: "Sarah Wilson", role: "QA Engineer" },
   { id: "michael", name: "Michael Brown", role: "Database Engineer" },
+]
+
+const taskActivities = [
+  {
+    id: 1,
+    type: "comment",
+    user: {
+      name: "John Doe",
+      avatar: "/avatar.png",
+      role: "Senior Designer",
+    },
+    timestamp: "2 hours ago",
+    content: "Added some initial design mockups for the landing page",
+    task: "Design new landing page",
+  },
+  {
+    id: 2,
+    type: "status",
+    user: {
+      name: "Alice Smith",
+      avatar: "/avatar2.png",
+      role: "Backend Developer",
+    },
+    timestamp: "1 hour ago",
+    content: "Started implementing authentication system",
+    task: "Implement authentication",
+  },
+  {
+    id: 3,
+    type: "complete",
+    user: {
+      name: "Robert Johnson",
+      avatar: "/avatar3.png",
+      role: "Technical Writer",
+    },
+    timestamp: "45 minutes ago",
+    content: "Completed API documentation with examples",
+    task: "Write API documentation",
+  },
+  {
+    id: 4,
+    type: "progress",
+    user: {
+      name: "Sarah Wilson",
+      avatar: "/avatar4.png",
+      role: "QA Engineer",
+    },
+    timestamp: "30 minutes ago",
+    content: "Updated test coverage to 85%",
+    task: "Mobile app testing",
+  },
+  {
+    id: 5,
+    type: "assign",
+    user: {
+      name: "Michael Brown",
+      avatar: "/avatar.png",
+      role: "Database Engineer",
+    },
+    timestamp: "15 minutes ago",
+    content: "Assigned database optimization task",
+    task: "Database optimization",
+  },
 ]
 
 export default function TaskManagement() {
@@ -314,6 +387,7 @@ export default function TaskManagement() {
           <TabTrigger value="list">List View</TabTrigger>
           <TabTrigger value="board">Board View</TabTrigger>
           <TabTrigger value="calendar">Calendar</TabTrigger>
+          <TabTrigger value="activity">Activity</TabTrigger>
         </TabList>
         <TabContent value="list">
           <div className="mt-8 space-y-4">
@@ -493,6 +567,64 @@ export default function TaskManagement() {
               </p>
             </CardContent>
           </Card>
+        </TabContent>
+        <TabContent value="activity">
+          <div className="mt-8">
+            <Timeline>
+              {taskActivities.map((activity) => (
+                <TimelineItem key={activity.id} className="before:flex-0">
+                  <TimelineSeparator>
+                    <TimelineIndicator>
+                      {activity.type === "comment" && (
+                        <MessageSquare className="h-4 w-4" />
+                      )}
+                      {activity.type === "status" && (
+                        <GitBranch className="h-4 w-4" />
+                      )}
+                      {activity.type === "complete" && (
+                        <CheckCircle className="h-4 w-4" />
+                      )}
+                      {activity.type === "progress" && (
+                        <Code2 className="h-4 w-4" />
+                      )}
+                      {activity.type === "assign" && (
+                        <User className="h-4 w-4" />
+                      )}
+                    </TimelineIndicator>
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent className="bg-card rounded-lg border p-4">
+                    <TimelineTitle className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={activity.user.avatar} />
+                        <AvatarFallback>
+                          {activity.user.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm">{activity.user.name}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {activity.timestamp}
+                        </p>
+                      </div>
+                    </TimelineTitle>
+                    <p className="mt-3 text-sm">{activity.content}</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <Badge variant="outlined" className="text-xs">
+                        {activity.task}
+                      </Badge>
+                      <Badge variant="outlined" className="text-xs">
+                        {activity.user.role}
+                      </Badge>
+                    </div>
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+            </Timeline>
+          </div>
         </TabContent>
       </Tabs>
 
