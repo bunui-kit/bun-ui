@@ -10,4 +10,4 @@ export const TimelineContext = createContext<TimelineContextValue>({
   alignment: "center",
 })
 
-export const useTimelineContext = () => useContext(TimelineContext) 
+export const useTimelineContext = () => useContext(TimelineContext)
