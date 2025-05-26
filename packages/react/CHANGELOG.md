@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.41
+
+### Patch Changes
+
+- f3f0146: - add `position` prop to Timeline
+
 ## 0.2.40
 
 ### Patch Changes
