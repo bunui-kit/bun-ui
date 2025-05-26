@@ -33,6 +33,15 @@ async function buildMain() {
     resolve(__dirname, "../dist/index.d.mts"),
     transformedContent
   )
+
+  console.log("Building theme.css...")
+  const cssContent = fs.readFileSync(
+    resolve(__dirname, "../src/styles/theme.css"),
+    "utf8"
+  )
+
+  // Write theme.css
+  fs.writeFileSync(resolve(__dirname, "../dist/theme.css"), cssContent)
 }
 
 async function buildComponent(component: string) {
