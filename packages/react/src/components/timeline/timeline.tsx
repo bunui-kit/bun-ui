@@ -1,31 +1,53 @@
+"use client"
+
 import React from "react"
 
 import { cx } from "../../lib"
+import { TimelineContext, useTimelineContext } from "./timeline-context"
 
-const Timeline = React.forwardRef<
-  HTMLUListElement,
-  React.HTMLAttributes<HTMLUListElement>
->(({ className, ...props }, ref) => (
-  <ul className={cx("p-2", className)} ref={ref} {...props} />
-))
+interface TimelineProps extends React.HTMLAttributes<HTMLUListElement> {
+  /**
+   * The position where the TimelineContent should appear relative to the time axis.
+   * @default "right"
+   */
+  position?: "left" | "right" | "alternate"
+}
+
+const Timeline = React.forwardRef<HTMLUListElement, TimelineProps>(
+  ({ className, position = "right", ...props }, ref) => (
+    <TimelineContext.Provider value={{ position }}>
+      <ul className={cx("grow p-2", className)} ref={ref} {...props} />
+    </TimelineContext.Provider>
+  )
+)
 
 const TimelineItem = React.forwardRef<
   HTMLLIElement,
   React.HTMLAttributes<HTMLLIElement>
->(({ className, ...props }, ref) => (
-  <li
-    className={cx("flex min-h-[50px] gap-x-2", className)}
-    ref={ref}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  const { position } = useTimelineContext()
+
+  return (
+    <li
+      className={cx(
+        "flex min-h-[50px] gap-x-2",
+        "before:flex-1 before:content-['']",
+        position === "left" && "flex-row-reverse",
+        position === "alternate" && "odd:flex-row-reverse",
+        className
+      )}
+      ref={ref}
+      {...props}
+    />
+  )
+})
 
 const TimelineSeparator = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div
-    className={cx("flex flex-col items-center", className)}
+    className={cx("flex shrink grow-0 flex-col items-center", className)}
     ref={ref}
     {...props}
   />
