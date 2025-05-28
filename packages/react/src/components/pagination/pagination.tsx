@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useMemo } from "react"
-import { useControlled } from "@bun-ui/react"
 import { cva } from "class-variance-authority"
 
+import { useControlled } from "../../hooks/use-controlled"
 import { cx, range } from "../../lib"
 import { Button, type ButtonProps } from "../button"
 import {
