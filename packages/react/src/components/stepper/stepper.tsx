@@ -1,9 +1,10 @@
 "use client"
 
-import React from "react"
+import * as React from "react"
 
 import { cx } from "../../lib"
 import { CheckIcon } from "../icons"
+import type { StepperClasses } from "./stepper-classes"
 import {
   StepContext,
   StepperContext,
@@ -17,6 +18,8 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
    * A separator element placed between each step.
    */
   connector?: React.ReactNode
+
+  classes?: StepperClasses
 }
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   (
@@ -25,13 +28,18 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
       activeStep = 0,
       children,
       connector = <StepConnector />,
+      classes,
       ...props
     },
     ref
   ) => {
     return (
       <div
-        className={cx("flex items-center gap-2", className)}
+        className={cx(
+          "flex w-full items-center gap-2",
+          classes?.root,
+          className
+        )}
         ref={ref}
         {...props}
       >
@@ -91,7 +99,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
           className={cx("flex items-center", className)}
           {...props}
         >
-          <span>{children}</span>
+          {children}
         </div>
       </StepContext.Provider>
     )
