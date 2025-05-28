@@ -51,7 +51,6 @@
   },
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i ./src/styles/global.css -o ./dist/index.css",
-    "build:components": "tsx scripts/build.ts",
     "build": "tsx ../../scripts/main.ts --dts && pnpm build:css",
     "dev": "tsup --watch",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
