@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import NextLink from "next/link"
 import {
   Accordion,
@@ -69,6 +70,9 @@ import {
   Skeleton,
   Slider,
   Spinner,
+  Step,
+  StepLabel,
+  Stepper,
   Switch,
   TabContent,
   TabList,
@@ -105,6 +109,7 @@ import { ComponentCard } from "@/components/component-card"
 
 export default function ComponentsPage() {
   const { createToast } = useToast()
+  const [activeStep, setActiveStep] = useState(0)
 
   return (
     <div className="mx-auto max-w-7xl space-y-14 px-4 py-12">
@@ -549,7 +554,7 @@ export default function ComponentsPage() {
             <FileUploadList />
           </FileUpload>
         </ComponentCard>
-        <ComponentCard title="Timeline" className="col-span-2">
+        <ComponentCard title="Timeline" className="col-span-3">
           <Timeline>
             <TimelineItem className="before:flex-0">
               <TimelineSeparator>
@@ -697,6 +702,36 @@ export default function ComponentsPage() {
               </TimelineContent>
             </TimelineItem>
           </Timeline>
+        </ComponentCard>
+        <ComponentCard title="Stepper">
+          <Stepper activeStep={activeStep} className="w-full">
+            <Step>
+              <StepLabel>Step 1</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>Step 2</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>Step 3</StepLabel>
+            </Step>
+          </Stepper>
+          <div className="mt-5 flex">
+            <Button
+              size="sm"
+              className="mr-5"
+              onClick={() => {
+                setActiveStep((prev) => Math.max(prev - 1, 0))
+              }}
+            >
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => setActiveStep((prev) => Math.min(prev + 1, 3))}
+            >
+              Next
+            </Button>
+          </div>
         </ComponentCard>
       </div>
     </div>

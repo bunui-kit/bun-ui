@@ -12,6 +12,7 @@ export const ButtonColors = () => {
       </Button>
       <Button color="neutral">Neutral</Button>
       <Button color="accent">Accent</Button>
+      <Button color="success">Success</Button>
     </div>
   )
 }
