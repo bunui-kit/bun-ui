@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.42
+
+### Patch Changes
+
+- 56516b7: - update build, support cjs
+
 ## 0.2.41
 
 ### Patch Changes
