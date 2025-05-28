@@ -1,8 +1,19 @@
+# Build outputs
+**/dist/**
+**/dist
 dist
+dist/**/*
+
+# Dependencies
 node_modules
+
+# Next.js
 .next
+
+# Build
 build
+
+# Documentation
 **/.velite/**
 README.md
-tsup.config.ts
 **/docs/**/*.mdx
