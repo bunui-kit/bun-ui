@@ -19,6 +19,7 @@ const buttonVariants = cva(
         destructive: "",
         accent: "",
         neutral: "",
+        success: "",
       },
       size: {
         sm: "px-3 py-1",
@@ -65,6 +66,12 @@ const buttonVariants = cva(
           "border-foreground/80 hover:not-disabled:border-foreground hover:not-disabled:text-foreground text-foreground/80",
       },
       {
+        variant: "contained",
+        color: "success",
+        className:
+          "bg-success text-success-foreground hover:not-disabled:bg-success/90",
+      },
+      {
         variant: "outlined",
         color: "primary",
         className:
@@ -87,6 +94,12 @@ const buttonVariants = cva(
         color: "accent",
         className:
           "border-accent/80 hover:not-disabled:border-accent hover:not-disabled:text-accent text-accent/80",
+      },
+      {
+        variant: "outlined",
+        color: "success",
+        className:
+          "border-success/80 hover:not-disabled:border-success hover:not-disabled:text-success text-success/80",
       },
       {
         variant: "text",
@@ -112,6 +125,11 @@ const buttonVariants = cva(
         variant: "text",
         color: "accent",
         className: "text-accent hover:not-disabled:bg-accent/10",
+      },
+      {
+        variant: "text",
+        color: "success",
+        className: "text-success-foreground hover:not-disabled:bg-success/10",
       },
     ],
     defaultVariants: {
