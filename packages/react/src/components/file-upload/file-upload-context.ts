@@ -1,4 +1,5 @@
-// file-upload-context.ts
+"use client"
+
 import { createContext, useContext } from "react"
 
 interface FileUploadContextValue {

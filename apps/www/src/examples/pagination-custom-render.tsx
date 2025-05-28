@@ -13,7 +13,7 @@ export const PaginationCustomRender = () => {
         if (item.type === "page") {
           const { type, page, ...props } = item
           return (
-            <div
+            <button
               {...props}
               className={clsx(
                 "flex h-8 w-8 items-center justify-center rounded-full text-sm transition-colors",
@@ -24,7 +24,7 @@ export const PaginationCustomRender = () => {
               )}
             >
               {page}
-            </div>
+            </button>
           )
         }
 
@@ -37,7 +37,7 @@ export const PaginationCustomRender = () => {
         ) {
           const { type, ...props } = item
           return (
-            <div
+            <button
               {...props}
               className={clsx(
                 "flex h-8 w-8 items-center justify-center rounded-full text-sm transition-colors",
@@ -49,7 +49,7 @@ export const PaginationCustomRender = () => {
               {type === "next" && "→"}
               {type === "first" && "⟪"}
               {type === "last" && "⟫"}
-            </div>
+            </button>
           )
         }
 

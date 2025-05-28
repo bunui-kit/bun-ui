@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/docs/components",
-        destination: "/docs/components/button",
+        destination: "/docs/components/accordion",
         permanent: true,
       },
     ]
