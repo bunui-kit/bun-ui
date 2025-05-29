@@ -4,7 +4,12 @@ import * as React from "react"
 
 import { cx } from "../../lib"
 import { CheckIcon } from "../icons"
-import type { StepperClasses } from "./stepper-classes"
+import type {
+  StepClasses,
+  StepConnectorClasses,
+  StepLabelClasses,
+  StepperClasses,
+} from "./stepper-classes"
 import {
   StepContext,
   StepperContext,
@@ -18,9 +23,12 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
    * A separator element placed between each step.
    */
   connector?: React.ReactNode
-
+  /**
+   * Override or extend the styles applied to the component.
+   */
   classes?: StepperClasses
 }
+
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   (
     {
@@ -35,12 +43,12 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   ) => {
     return (
       <div
+        ref={ref}
         className={cx(
           "flex w-full items-center gap-2",
           classes?.root,
           className
         )}
-        ref={ref}
         {...props}
       >
         {React.Children.map(children, (child, index) => (
@@ -69,6 +77,10 @@ interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
    * Mark the step as completed.
    */
   completed?: boolean
+  /**
+   * Override or extend the styles applied to the component.
+   */
+  classes?: StepClasses
 }
 
 const Step = React.forwardRef<HTMLDivElement, StepProps>(
@@ -76,6 +88,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
     {
       className,
       children,
+      classes,
       index = 0,
       active: activeProp,
       completed: completedProp,
@@ -96,7 +109,7 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
         {index > 0 && connector}
         <div
           ref={ref}
-          className={cx("flex items-center", className)}
+          className={cx("flex items-center", classes?.root, className)}
           {...props}
         >
           {children}
@@ -106,40 +119,69 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
   }
 )
 
-const StepLabel = React.forwardRef<
-  HTMLSpanElement,
-  React.HTMLAttributes<HTMLSpanElement>
->(({ className, children, ...props }, ref) => {
-  const { active, completed, index } = useStepContext()
-  return (
-    <span ref={ref} className={cx("flex items-center", className)} {...props}>
-      <span
-        className={cx(
-          "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full p-1 text-xs",
-          "bg-muted text-muted-foreground",
-          (completed || active) && "bg-primary text-primary-foreground"
-        )}
-      >
-        {completed ? <CheckIcon className="h-4 w-4" /> : index + 1}
-      </span>
-      <span className={cx("ml-2 text-sm font-medium", className)}>
-        {children}
-      </span>
-    </span>
-  )
-})
+interface StepLabelProps extends React.HTMLAttributes<HTMLSpanElement> {
+  /**
+   * Override or extend the styles applied to the component.
+   */
+  classes?: StepLabelClasses
+}
 
-const StepConnector = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cx("border-border flex-1 border-t border-solid", className)}
-      {...props}
-    />
-  )
-})
+const StepLabel = React.forwardRef<HTMLSpanElement, StepLabelProps>(
+  ({ className, children, classes, ...props }, ref) => {
+    const { active, completed, index } = useStepContext()
+    return (
+      <span
+        ref={ref}
+        className={cx("flex items-center", classes?.root, className)}
+        {...props}
+      >
+        <span
+          className={cx(
+            "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full p-1 text-xs",
+            "bg-muted text-muted-foreground",
+            (completed || active) && "bg-primary text-primary-foreground",
+            classes?.iconContainer
+          )}
+        >
+          {completed ? <CheckIcon className="h-4 w-4" /> : index + 1}
+        </span>
+        <p
+          className={cx(
+            "ml-2 text-sm font-medium",
+            classes?.label,
+            active && classes?.active,
+            completed && classes?.completed
+          )}
+        >
+          {children}
+        </p>
+      </span>
+    )
+  }
+)
+
+interface StepperConnectorProps extends React.HTMLAttributes<HTMLDivElement> {
+  classes?: StepConnectorClasses
+}
+
+const StepConnector = React.forwardRef<HTMLDivElement, StepperConnectorProps>(
+  ({ className, classes, ...props }, ref) => {
+    const { active, completed } = useStepContext()
+
+    return (
+      <div
+        ref={ref}
+        className={cx(
+          "border-border flex-1 border-t border-solid",
+          classes?.root,
+          active && classes?.active,
+          completed && classes?.completed,
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
 
 export { Stepper, Step, StepLabel, StepConnector }
