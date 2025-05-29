@@ -1,7 +1,7 @@
 import { resolve } from "path/posix"
 
-import { buildProject } from "./build.js"
 import { buildCSS } from "./build-css.js"
+import { buildProject } from "./build.js"
 
 async function main() {
   const cwd = process.cwd()

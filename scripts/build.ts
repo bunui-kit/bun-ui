@@ -16,7 +16,7 @@ interface BuildOptions {
 }
 
 export async function buildProject(options: BuildOptions) {
-  const { dir, name, watch, clean, dts, aliases = [] } = options
+  const { dir, watch, clean, dts, aliases = [] } = options
   console.log(`[@bun-ui/react] Building...`)
 
   if (clean) {
