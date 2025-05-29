@@ -13,4 +13,5 @@ export async function buildCSS(dir: string) {
     console.error(`[@bun-ui/react] Failed to copy theme.css:`, error)
     throw error
   }
-} 
+}
+

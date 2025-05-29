@@ -17,12 +17,22 @@ import {
   useStepperContext,
 } from "./stepper-context"
 
+/**
+ * Props for the Stepper component.
+ */
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * The index of the active step.
+   * @default 0
+   */
   activeStep?: number
+
   /**
    * A separator element placed between each step.
+   * @default <StepConnector />
    */
   connector?: React.ReactNode
+
   /**
    * Override or extend the styles applied to the component.
    */
@@ -63,20 +73,29 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   }
 )
 
+/**
+ * Props for the Step component.
+ */
 interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Set the step as active.
+   * If not provided, the step will be active when its index matches the Stepper's activeStep.
    */
   active?: boolean
+
   /**
-   * The position of the step, it is defaulted to the
-   * index of the step in the Stepper.
+   * The position of the step.
+   * It is defaulted to the index of the step in the Stepper.
+   * @default 0
    */
   index?: number
+
   /**
    * Mark the step as completed.
+   * If not provided, the step will be completed when its index is less than the Stepper's activeStep.
    */
   completed?: boolean
+
   /**
    * Override or extend the styles applied to the component.
    */
@@ -119,6 +138,9 @@ const Step = React.forwardRef<HTMLDivElement, StepProps>(
   }
 )
 
+/**
+ * Props for the StepLabel component.
+ */
 interface StepLabelProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * Override or extend the styles applied to the component.
@@ -160,14 +182,19 @@ const StepLabel = React.forwardRef<HTMLSpanElement, StepLabelProps>(
   }
 )
 
-interface StepperConnectorProps extends React.HTMLAttributes<HTMLDivElement> {
+/**
+ * Props for the StepConnector component.
+ */
+interface StepConnectorProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Override or extend the styles applied to the component.
+   */
   classes?: StepConnectorClasses
 }
 
-const StepConnector = React.forwardRef<HTMLDivElement, StepperConnectorProps>(
+const StepConnector = React.forwardRef<HTMLDivElement, StepConnectorProps>(
   ({ className, classes, ...props }, ref) => {
     const { active, completed } = useStepContext()
-
     return (
       <div
         ref={ref}
