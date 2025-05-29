@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.43
+
+### Patch Changes
+
+- 24fd85e: add Stepper component
+
 ## 0.2.42
 
 ### Patch Changes
