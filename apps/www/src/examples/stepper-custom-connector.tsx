@@ -9,8 +9,16 @@ export const StepperCustomConnector = () => {
     <div className="w-full">
       <Stepper
         activeStep={activeStep}
+        className="gap-8"
         connector={
-          <StepConnector className="h-0.5 border-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+          <StepConnector
+            classes={{
+              root: "h-0.5 border-0 bg-gray-200",
+              active: "bg-gradient-to-r from-rose-500 to-orange-400",
+              completed:
+                "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500",
+            }}
+          />
         }
       >
         <Step>

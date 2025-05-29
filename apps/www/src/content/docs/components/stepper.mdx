@@ -32,14 +32,21 @@ import { Stepper, Step, StepLabel } from "@bun-ui/react"
 
 ## Examples
 
+### Basic Stepper
+
+A simple stepper with default styling. Use the `activeStep` prop to control the current step.
+
+<ComponentPreview name="stepper-basic" />
+
 ### Custom Connector
 
-You can customize the connector between steps using the `connector` prop.
+Customize the connector between steps using the `connector` prop.
+This example shows how to create a gradient connector that changes color based on the step state.
 
 <ComponentPreview name="stepper-custom-connector" />
 
 ### Custom Styling
 
-The Stepper components can be customized using `classes` prop.
+Customize the appearance of each step using the `classes` prop in each subcomponent.
 
 <ComponentPreview name="stepper-custom-styling" />
