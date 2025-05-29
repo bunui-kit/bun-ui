@@ -14,6 +14,9 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -28,22 +31,24 @@
 }
 
 :root {
-  --background: oklch(0.98 0.02 250); /* very light blue */
-  --foreground: oklch(0.22 0.02 250); /* dark blue text */
-  --card: oklch(1 0 0); /* white */
+  --background: oklch(0.98 0.02 250);
+  --foreground: oklch(0.22 0.02 250);
+  --card: oklch(1 0 0);
   --card-foreground: oklch(0.22 0.02 250);
   --popover: oklch(0.97 0.02 250);
   --popover-foreground: oklch(0.22 0.02 250);
-  --primary: oklch(0.56 0.18 278); /* vibrant purple */
+  --primary: oklch(0.56 0.18 278);
   --primary-foreground: oklch(0.98 0.02 250);
-  --secondary: oklch(0.82 0.12 210); /* soft blue */
+  --secondary: oklch(0.82 0.12 210);
   --secondary-foreground: oklch(0.22 0.02 250);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.78 0.14 180); /* teal accent */
+  --accent: oklch(0.78 0.14 180);
   --accent-foreground: oklch(0.22 0.02 250);
-  --destructive: oklch(0.55 0.25 27); /* reddish */
+  --destructive: oklch(0.55 0.25 27);
   --destructive-foreground: oklch(0.98 0.02 250);
+  --success: oklch(0.55 0.12 145);
+  --success-foreground: oklch(0.98 0.02 250);
   --border: oklch(0.9 0.01 250);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.7 0.05 250);
@@ -75,6 +80,8 @@
   --accent-foreground: oklch(0.98 0.02 250);
   --destructive: oklch(0.7 0.18 27);
   --destructive-foreground: oklch(0.98 0.02 250);
+  --success: oklch(0.45 0.12 145);
+  --success-foreground: oklch(0.98 0.02 250);
   --border: oklch(0.41 0 0 / 60%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.7 0.05 250);

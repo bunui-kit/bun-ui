@@ -1,0 +1,52 @@
+---
+title: Stepper
+description: A component that displays progress through a sequence of logical and numbered steps.
+links:
+  source: components/stepper
+  docs: /docs/components/stepper
+---
+
+<ComponentPreview name="stepper-basic" />
+
+## Usage
+
+Import the `Stepper` component and its subcomponents from `@bun-ui/react`:
+
+```jsx
+import { Stepper, Step, StepLabel } from "@bun-ui/react"
+```
+
+```jsx
+<Stepper activeStep={1}>
+  <Step>
+    <StepLabel>Step 1</StepLabel>
+  </Step>
+  <Step>
+    <StepLabel>Step 2</StepLabel>
+  </Step>
+  <Step>
+    <StepLabel>Step 3</StepLabel>
+  </Step>
+</Stepper>
+```
+
+## Examples
+
+### Basic Stepper
+
+A simple stepper with default styling. Use the `activeStep` prop to control the current step.
+
+<ComponentPreview name="stepper-basic" />
+
+### Custom Connector
+
+Customize the connector between steps using the `connector` prop.
+This example shows how to create a gradient connector that changes color based on the step state.
+
+<ComponentPreview name="stepper-custom-connector" />
+
+### Custom Styling
+
+Customize the appearance of each step using the `classes` prop in each subcomponent.
+
+<ComponentPreview name="stepper-custom-styling" />
