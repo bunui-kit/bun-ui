@@ -32,44 +32,14 @@ import { Stepper, Step, StepLabel } from "@bun-ui/react"
 
 ## Examples
 
-### Basic Usage
-
-A simple stepper with three steps, showing the second step as active.
-
-<ComponentPreview name="stepper-basic" />
-
 ### Custom Connector
 
 You can customize the connector between steps using the `connector` prop.
 
 <ComponentPreview name="stepper-custom-connector" />
 
-### Completed Steps
-
-Steps can be marked as completed, showing a checkmark icon.
-
-<ComponentPreview name="stepper-completed" />
-
 ### Custom Styling
 
-The Stepper components can be customized using the `className` prop.
+The Stepper components can be customized using `classes` prop.
 
 <ComponentPreview name="stepper-custom-styling" />
-
-### Accessibility
-
-The Stepper component is built with accessibility in mind. Each step should have a clear label and the active step should be visually distinct. The component uses appropriate ARIA attributes to indicate the current step and progress.
-
-```jsx
-<Stepper activeStep={1} aria-label="Registration steps">
-  <Step>
-    <StepLabel>Account Details</StepLabel>
-  </Step>
-  <Step>
-    <StepLabel>Personal Information</StepLabel>
-  </Step>
-  <Step>
-    <StepLabel>Confirmation</StepLabel>
-  </Step>
-</Stepper>
-```
