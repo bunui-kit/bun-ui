@@ -19,7 +19,7 @@
   },
   "exports": {
     ".": {
-      "source": "./src/index.ts",
+      "style": "./dist/index.css",
       "import": {
         "types": "./dist/types/index.d.ts",
         "default": "./dist/esm/index.js"
@@ -29,10 +29,10 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
-    "./index.css": {
-      "import": "./dist/index.css",
-      "require": "./dist/index.css"
-    },
+    "./index.css": "./dist/index.css",
+    "./index": "./dist/index.css",
+    "./themes/default.css": "./dist/themes/default.css",
+    "./themes/default": "./dist/themes/default.css",
     "./*": {
       "source": "./src/components/*/index.ts",
       "import": {
@@ -50,9 +50,7 @@
     "react-dom": ">=18"
   },
   "scripts": {
-    "build:css": "npx @tailwindcss/cli -i ./src/styles/global.css -o ./dist/index.css",
-    "build": "tsx ../../scripts/main.ts --dts && pnpm build:css",
-    "dev": "tsup --watch",
+    "build": "tsx ../../scripts/main.ts --dts",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "pub:release": "pnpm build && pnpm publish --access public",
