@@ -13,6 +13,7 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
+  DateRange,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -38,8 +39,11 @@ import {
   TimelineTitle,
   Tooltip,
 } from "@bun-ui/react"
-import { format } from "date-fns"
+import { endOfDay, format, isWithinInterval, startOfDay } from "date-fns"
 import {
+  AlertCircle,
+  ArrowDown,
+  ArrowUp,
   CalendarDaysIcon,
   CalendarIcon,
   CheckCircle,
@@ -240,6 +244,10 @@ export default function TaskManagement() {
   const [selectedAssignee, setSelectedAssignee] = useState("all")
   const [dateInputValue, setDateInputValue] = useState("")
   const [calendarOpen, setCalendarOpen] = useState(false)
+  const [sortBy, setSortBy] = useState("dueDate")
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
+  const [dateRange, setDateRange] = useState<DateRange>()
+  const [boardTasks, setBoardTasks] = useState(tasks)
 
   const handleDateChange = (date?: Date) => {
     setSelectedDate(date)
@@ -257,7 +265,57 @@ export default function TaskManagement() {
       selectedStatus === "all" || task.status === selectedStatus
     const matchesAssignee =
       selectedAssignee === "all" || task.assignee.name === selectedAssignee
-    return matchesSearch && matchesPriority && matchesStatus && matchesAssignee
+    const matchesDateRange =
+      !dateRange?.from ||
+      !dateRange?.to ||
+      isWithinInterval(new Date(task.dueDate), {
+        start: startOfDay(dateRange.from),
+        end: endOfDay(dateRange.to),
+      })
+    return (
+      matchesSearch &&
+      matchesPriority &&
+      matchesStatus &&
+      matchesAssignee &&
+      matchesDateRange
+    )
+  })
+
+  const sortOptions = [
+    { value: "dueDate", label: "Due Date" },
+    { value: "priority", label: "Priority" },
+    { value: "status", label: "Status" },
+    { value: "assignee", label: "Assignee" },
+  ]
+
+  const sortedAndFilteredTasks = [...filteredTasks].sort((a, b) => {
+    if (sortBy === "dueDate") {
+      return sortOrder === "asc"
+        ? new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+        : new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
+    }
+    if (sortBy === "priority") {
+      const priorityOrder = { high: 3, medium: 2, low: 1 }
+      return sortOrder === "asc"
+        ? priorityOrder[a.priority as keyof typeof priorityOrder] -
+            priorityOrder[b.priority as keyof typeof priorityOrder]
+        : priorityOrder[b.priority as keyof typeof priorityOrder] -
+            priorityOrder[a.priority as keyof typeof priorityOrder]
+    }
+    if (sortBy === "status") {
+      const statusOrder = { todo: 1, "in-progress": 2, completed: 3 }
+      return sortOrder === "asc"
+        ? statusOrder[a.status as keyof typeof statusOrder] -
+            statusOrder[b.status as keyof typeof statusOrder]
+        : statusOrder[b.status as keyof typeof statusOrder] -
+            statusOrder[a.status as keyof typeof statusOrder]
+    }
+    if (sortBy === "assignee") {
+      return sortOrder === "asc"
+        ? a.assignee.name.localeCompare(b.assignee.name)
+        : b.assignee.name.localeCompare(a.assignee.name)
+    }
+    return 0
   })
 
   return (
@@ -283,7 +341,7 @@ export default function TaskManagement() {
         </div>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <span className="text-sm font-medium">Total Tasks</span>
@@ -321,6 +379,25 @@ export default function TaskManagement() {
             </div>
             <div className="text-muted-foreground mt-1 text-xs">
               Finished tasks
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <span className="text-sm font-medium">Overdue</span>
+            <AlertCircle className="text-destructive h-5 w-5" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {
+                tasks.filter(
+                  (t) =>
+                    new Date(t.dueDate) < new Date() && t.status !== "completed"
+                ).length
+              }
+            </div>
+            <div className="text-muted-foreground mt-1 text-xs">
+              Past due date
             </div>
           </CardContent>
         </Card>
@@ -373,12 +450,67 @@ export default function TaskManagement() {
               </SelectItem>
             ))}
           </Select>
+          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outlined" className="w-[200px]">
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dateRange?.from && dateRange?.to ? (
+                  <>
+                    {format(dateRange.from, "LLL dd")} -{" "}
+                    {format(dateRange.to, "LLL dd")}
+                  </>
+                ) : (
+                  "Select date range"
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="range"
+                defaultMonth={dateRange?.from}
+                selected={dateRange}
+                onSelect={setDateRange}
+              />
+              <div className="mt-2 px-5 pb-2">
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => setDateRange(undefined)}
+                >
+                  Clear
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
-        <div className="flex items-center gap-2">
-          <CalendarIcon className="text-muted-foreground h-4 w-4" />
-          <span className="text-muted-foreground text-sm">
-            Last updated: {new Date().toLocaleDateString()}
-          </span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Select
+              value={sortBy}
+              onValueChange={setSortBy}
+              className="w-[150px]"
+            >
+              {sortOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </Select>
+            <Button
+              variant="outlined"
+              size="icon"
+              className="shrink-0"
+              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+            >
+              {sortOrder === "asc" ? <ArrowUp /> : <ArrowDown />}
+            </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarIcon className="text-muted-foreground h-4 w-4" />
+            <span className="text-muted-foreground text-sm">
+              Last updated: {new Date().toLocaleDateString()}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -391,23 +523,56 @@ export default function TaskManagement() {
         </TabList>
         <TabContent value="list">
           <div className="mt-8 space-y-4">
-            {filteredTasks.map((task) => (
-              <Card key={task.id}>
+            {sortedAndFilteredTasks.map((task) => (
+              <Card key={task.id} className="transition-all hover:shadow-md">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
+                    <div className="flex w-full items-start gap-4">
                       <Checkbox
                         checked={task.status === "completed"}
                         className="mt-1"
                       />
-                      <div>
-                        <h3 className="text-lg font-semibold">{task.title}</h3>
-                        <p className="text-muted-foreground mt-1 text-sm">
-                          {task.description}
-                        </p>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="text-lg font-semibold">
+                              {task.title}
+                            </h3>
+                            <p className="text-muted-foreground mt-1 text-sm">
+                              {task.description}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <Badge
+                              variant="outlined"
+                              color={
+                                priorities.find(
+                                  (p) => p.value === task.priority
+                                )?.color as BadgeProps["color"]
+                              }
+                            >
+                              {task.priority}
+                            </Badge>
+                            <Button
+                              variant="text"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
                         <div className="mt-4 flex flex-wrap items-center gap-4">
                           <div className="flex items-center gap-2">
-                            <User className="text-muted-foreground h-4 w-4" />
+                            <Avatar className="h-6 w-6">
+                              <AvatarImage src={task.assignee.avatar} />
+                              <AvatarFallback>
+                                {task.assignee.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
                             <div>
                               <span className="text-sm">
                                 {task.assignee.name}
@@ -438,29 +603,31 @@ export default function TaskManagement() {
                             </div>
                           </div>
                           <div className="flex items-center gap-4">
-                            <span className="text-muted-foreground text-sm">
-                              {task.comments} comments
-                            </span>
-                            <span className="text-muted-foreground text-sm">
-                              {task.attachments} attachments
-                            </span>
+                            <Tooltip content="View comments">
+                              <Button
+                                variant="text"
+                                size="sm"
+                                className="gap-1"
+                              >
+                                <MessageSquare className="h-4 w-4" />
+                                <span className="text-sm">{task.comments}</span>
+                              </Button>
+                            </Tooltip>
+                            <Tooltip content="View attachments">
+                              <Button
+                                variant="text"
+                                size="sm"
+                                className="gap-1"
+                              >
+                                <Code2 className="h-4 w-4" />
+                                <span className="text-sm">
+                                  {task.attachments}
+                                </span>
+                              </Button>
+                            </Tooltip>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <Badge
-                        variant="outlined"
-                        color={
-                          priorities.find((p) => p.value === task.priority)
-                            ?.color as BadgeProps["color"]
-                        }
-                      >
-                        {task.priority}
-                      </Badge>
-                      <Button variant="text" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
                     </div>
                   </div>
                   {task.status === "in-progress" && (
@@ -478,85 +645,93 @@ export default function TaskManagement() {
           </div>
         </TabContent>
         <TabContent value="board">
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {statuses.map((status) => (
-              <div key={status.value} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold">{status.label}</h3>
-                  <Badge variant="outlined">
-                    {tasks.filter((t) => t.status === status.value).length}
-                  </Badge>
-                </div>
-                <div className="space-y-4">
-                  {tasks
-                    .filter((task) => task.status === status.value)
-                    .map((task) => (
-                      <Card key={task.id}>
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h4 className="font-medium">{task.title}</h4>
-                              <p className="text-muted-foreground mt-1 text-sm">
-                                {task.description}
-                              </p>
-                              <div className="mt-4 flex items-center gap-4">
-                                <div className="flex items-center gap-2">
-                                  <Avatar className="h-6 w-6">
-                                    <AvatarImage src={task.assignee.avatar} />
-                                    <AvatarFallback>
-                                      {task.assignee.name
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <span className="text-sm">
-                                    {task.assignee.name}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <CalendarIcon className="text-muted-foreground h-4 w-4" />
-                                  <span className="text-sm">
-                                    {new Date(
-                                      task.dueDate
-                                    ).toLocaleDateString()}
-                                  </span>
+          <div className="mt-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {statuses.map((status) => (
+                <div key={status.value} className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">{status.label}</h3>
+                    <Badge variant="outlined">
+                      {
+                        boardTasks.filter((t) => t.status === status.value)
+                          .length
+                      }
+                    </Badge>
+                  </div>
+                  <div className="min-h-[200px] space-y-4 rounded-lg border border-dashed p-4">
+                    {boardTasks
+                      .filter((task) => task.status === status.value)
+                      .map((task) => (
+                        <Card
+                          key={task.id}
+                          className="transition-all hover:shadow-md"
+                        >
+                          <CardContent className="p-4">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-medium">{task.title}</h4>
+                                <p className="text-muted-foreground mt-1 line-clamp-2 text-sm">
+                                  {task.description}
+                                </p>
+                                <div className="mt-4 flex items-center gap-4">
+                                  <div className="flex items-center gap-2">
+                                    <Avatar className="h-6 w-6">
+                                      <AvatarImage src={task.assignee.avatar} />
+                                      <AvatarFallback>
+                                        {task.assignee.name
+                                          .split(" ")
+                                          .map((n) => n[0])
+                                          .join("")}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                    <span className="text-sm">
+                                      {task.assignee.name}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <CalendarIcon className="text-muted-foreground h-4 w-4" />
+                                    <span className="text-sm">
+                                      {new Date(
+                                        task.dueDate
+                                      ).toLocaleDateString()}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
+                              <Button variant="text" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
                             </div>
-                            <Button variant="text" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <div className="mt-4 flex items-center justify-between">
-                            <Badge
-                              variant="outlined"
-                              color={
-                                priorities.find(
-                                  (p) => p.value === task.priority
-                                )?.color as BadgeProps["color"]
-                              }
-                            >
-                              {task.priority}
-                            </Badge>
-                            {task.status === "in-progress" && (
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm">
-                                  {task.progress}%
-                                </span>
-                                <Progress
-                                  value={task.progress}
-                                  className="w-[100px]"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                            <div className="mt-4 flex items-center justify-between">
+                              <Badge
+                                variant="outlined"
+                                color={
+                                  priorities.find(
+                                    (p) => p.value === task.priority
+                                  )?.color as BadgeProps["color"]
+                                }
+                              >
+                                {task.priority}
+                              </Badge>
+                              {task.status === "in-progress" && (
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm">
+                                    {task.progress}%
+                                  </span>
+                                  <Progress
+                                    value={task.progress}
+                                    className="w-[100px]"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </TabContent>
         <TabContent value="calendar">

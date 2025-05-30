@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Alert,
   AlertDescription,
@@ -32,15 +32,15 @@ import {
   Activity,
   ArrowDown,
   ArrowUp,
+  BarChart,
   Bell,
-  Calendar,
   CheckCircle,
   Clock,
   Download,
-  Filter,
   MoreHorizontal,
   Plus,
   Settings,
+  TrendingUp,
   Users,
 } from "lucide-react"
 
@@ -69,8 +69,8 @@ const metrics = [
   {
     title: "Avg. Session",
     value: "4m 32s",
-    change: "+45s",
-    trend: "up",
+    change: "-45s",
+    trend: "down",
     icon: Clock,
   },
 ]
@@ -126,6 +126,34 @@ const recentEvents = [
 export default function AnalyticsDashboard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [dateRange, setDateRange] = useState("7d")
+  const [isLoading, setIsLoading] = useState(true)
+  const [realTimeData, setRealTimeData] = useState({
+    activeUsers: 0,
+    pageViews: 0,
+    bounceRate: 0,
+  })
+
+  // Simulate real-time data updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRealTimeData({
+        activeUsers: Math.floor(Math.random() * 100) + 50,
+        pageViews: Math.floor(Math.random() * 1000) + 500,
+        bounceRate: Math.random() * 20 + 30,
+      })
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Simulate initial loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="container mx-auto py-8">
@@ -137,6 +165,12 @@ export default function AnalyticsDashboard() {
           </p>
         </div>
         <div className="flex items-center gap-4">
+          <Select value={dateRange} onValueChange={setDateRange}>
+            <SelectItem value="24h">Last 24 Hours</SelectItem>
+            <SelectItem value="7d">Last 7 Days</SelectItem>
+            <SelectItem value="30d">Last 30 Days</SelectItem>
+            <SelectItem value="90d">Last 90 Days</SelectItem>
+          </Select>
           <Button variant="outlined" size="sm">
             <Download className="mr-2 h-4 w-4" />
             Export
@@ -168,49 +202,128 @@ export default function AnalyticsDashboard() {
 
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric) => (
-          <Card key={metric.title}>
+          <Card key={metric.title} className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <span className="text-sm font-medium">{metric.title}</span>
               <metric.icon className="text-primary h-5 w-5" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metric.value}</div>
-              <div className="text-muted-foreground mt-1 flex items-center text-xs">
-                {metric.trend === "up" ? (
-                  <ArrowUp className="text-success mr-1 h-3 w-3" />
-                ) : (
-                  <ArrowDown className="text-destructive mr-1 h-3 w-3" />
-                )}
-                {metric.change} from last month
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant="filled"
+                  className={`flex items-center gap-1 ${
+                    metric.trend === "up"
+                      ? "bg-success text-success-foreground border-success"
+                      : "text-destructive-foreground bg-destructive border-destructive"
+                  }`}
+                >
+                  {metric.trend === "up" ? (
+                    <ArrowUp className="h-3 w-3" />
+                  ) : (
+                    <ArrowDown className="h-3 w-3" />
+                  )}
+                  {metric.change}
+                </Badge>
+                <span className="text-muted-foreground text-xs">
+                  vs last period
+                </span>
               </div>
             </CardContent>
+            <div className="from-primary/20 to-primary/5 absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r" />
           </Card>
         ))}
       </div>
 
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Select
-            value={dateRange}
-            onValueChange={setDateRange}
-            className="w-[200px]"
-          >
-            <SelectItem value="24h">Last 24 Hours</SelectItem>
-            <SelectItem value="7d">Last 7 Days</SelectItem>
-            <SelectItem value="30d">Last 30 Days</SelectItem>
-            <SelectItem value="90d">Last 90 Days</SelectItem>
-          </Select>
-          <Button variant="outlined" size="sm">
-            <Filter className="mr-2 h-4 w-4" />
-            More Filters
-          </Button>
-        </div>
-        <div className="flex items-center gap-2">
-          <Calendar className="text-muted-foreground h-4 w-4" />
-          <span className="text-muted-foreground text-sm">
-            Last updated: {new Date().toLocaleDateString()}
-          </span>
-        </div>
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <h3 className="text-lg font-semibold">Real-time Activity</h3>
+            <Button variant="text" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                    <Users className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Active Users</p>
+                    <p className="text-muted-foreground text-xs">Right now</p>
+                  </div>
+                </div>
+                <div className="text-lg font-semibold">
+                  {realTimeData.activeUsers}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                    <Activity className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Page Views</p>
+                    <p className="text-muted-foreground text-xs">
+                      Last 5 minutes
+                    </p>
+                  </div>
+                </div>
+                <div className="text-lg font-semibold">
+                  {realTimeData.pageViews}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                    <TrendingUp className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Bounce Rate</p>
+                    <p className="text-muted-foreground text-xs">Current</p>
+                  </div>
+                </div>
+                <div className="text-lg font-semibold">
+                  {realTimeData.bounceRate.toFixed(1)}%
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <h3 className="text-lg font-semibold">Top Performing Pages</h3>
+            <Button variant="text" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {topPages.map((page) => (
+                <div
+                  key={page.name}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+                      <BarChart className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">{page.name}</p>
+                      <p className="text-muted-foreground text-xs">
+                        {page.views.toLocaleString()} views
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium">{page.percentage}%</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Tabs defaultValue="overview">
@@ -242,9 +355,10 @@ export default function AnalyticsDashboard() {
                 ))}
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <h3 className="text-lg font-semibold">Top Users</h3>
+                <h3 className="text-lg font-semibold">User Distribution</h3>
                 <Button variant="text" size="icon" className="h-8 w-8">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
@@ -252,27 +366,29 @@ export default function AnalyticsDashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {topUsers.map((user) => (
-                    <div key={user.name} className="flex items-start gap-4">
-                      <Avatar>
-                        <AvatarImage src={user.avatar} />
-                        <AvatarFallback>
-                          {user.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">{user.name}</p>
-                        <p className="text-muted-foreground text-xs">
-                          {user.role}
-                        </p>
+                    <div
+                      key={user.name}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback>
+                            {user.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">{user.name}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {user.role}
+                          </p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium">
-                          {user.views.toLocaleString()}
-                        </p>
-                        <p className="text-muted-foreground text-xs">views</p>
+                      <div className="text-sm font-medium">
+                        {user.views.toLocaleString()} views
                       </div>
                     </div>
                   ))}
@@ -281,6 +397,7 @@ export default function AnalyticsDashboard() {
             </Card>
           </div>
         </TabContent>
+
         <TabContent value="users">
           <Card className="mt-8">
             <CardHeader>User Activity</CardHeader>
@@ -307,9 +424,10 @@ export default function AnalyticsDashboard() {
             </CardContent>
           </Card>
         </TabContent>
+
         <TabContent value="events">
           <Card className="mt-8">
-            <CardHeader>Event Tracking</CardHeader>
+            <CardHeader>Event Analytics</CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentEvents.map((event) => (
@@ -322,16 +440,11 @@ export default function AnalyticsDashboard() {
                       <div>
                         <p className="text-sm font-medium">{event.type}</p>
                         <p className="text-muted-foreground text-xs">
-                          Most tracked event
+                          {event.count.toLocaleString()} events
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Label htmlFor={`tracking-${event.type}`}>
-                        Enable Tracking
-                      </Label>
-                      <Switch id={`tracking-${event.type}`} defaultChecked />
-                    </div>
+                    <Badge variant="outlined">{event.change}</Badge>
                   </div>
                 ))}
               </div>

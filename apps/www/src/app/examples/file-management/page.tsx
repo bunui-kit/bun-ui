@@ -1,14 +1,11 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
   Alert,
   AlertDescription,
   AlertTitle,
+  Badge,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -17,11 +14,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -30,158 +22,247 @@ import {
   FileUploadTrigger,
   Input,
   Progress,
+  Select,
+  SelectItem,
   TabContent,
   TabList,
   Tabs,
   TabTrigger,
-  Toggle,
-  Tooltip,
 } from "@bun-ui/react"
+import { format, formatDistanceToNow } from "date-fns"
 import {
+  ArrowDown,
+  ArrowUp,
   Clock,
   Cloud,
   Download,
   File,
+  FileArchive,
+  FileAudio,
+  FileCode,
+  FileIcon,
+  FileImage,
+  FileSpreadsheet,
   FileText,
-  ImageIcon,
+  FileVideo,
+  Folder,
+  Grid,
+  List,
   MoreVertical,
-  Music,
-  Plus,
-  Search,
+  Presentation,
   Share2,
   Star,
   Trash2,
   Upload,
-  Video,
 } from "lucide-react"
+
+interface BaseFile {
+  id: number
+  name: string
+  updatedAt: string
+  shared: boolean
+  starred: boolean
+}
+
+interface DocumentFile extends BaseFile {
+  type: string
+  size: number // bytes
+  displaySize: string // human readable
+}
+
+interface FolderFile extends BaseFile {
+  type: "folder"
+  count: number
+  size: number // bytes
+  displaySize: string // human readable
+}
+
+interface MediaFile extends BaseFile {
+  type: string
+  size: number // bytes
+  displaySize: string // human readable
+  duration?: string
+}
+
+type FileItem = DocumentFile | FolderFile | MediaFile
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return "0 B"
+  const k = 1024
+  const sizes = ["B", "KB", "MB", "GB", "TB"]
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`
+}
 
 const files = {
   documents: [
     {
       id: 1,
       name: "Project Proposal.pdf",
-      size: "2.4 MB",
+      size: 2.4 * 1024 * 1024, // 2.4 MB in bytes
+      displaySize: "2.4 MB",
       type: "pdf",
-      updatedAt: "2 hours ago",
+      updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
       shared: true,
       starred: true,
     },
     {
       id: 2,
       name: "User Research Report.docx",
-      size: "1.8 MB",
+      size: 1.8 * 1024 * 1024, // 1.8 MB in bytes
+      displaySize: "1.8 MB",
       type: "docx",
-      updatedAt: "1 day ago",
+      updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
       shared: false,
       starred: false,
     },
     {
       id: 3,
       name: "Product Roadmap.xlsx",
-      size: "3.2 MB",
+      size: 3.2 * 1024 * 1024, // 3.2 MB in bytes
+      displaySize: "3.2 MB",
       type: "xlsx",
-      updatedAt: "3 days ago",
+      updatedAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
       shared: true,
       starred: true,
     },
-  ],
+  ] as FileItem[],
   images: [
     {
-      id: 1,
+      id: 4,
       name: "Product Screenshots",
       count: 12,
-      size: "45 MB",
-      updatedAt: "5 hours ago",
+      size: 45 * 1024 * 1024, // 45 MB in bytes
+      displaySize: "45 MB",
+      type: "folder",
+      updatedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
       shared: true,
       starred: false,
     },
     {
-      id: 2,
+      id: 5,
       name: "Team Photos",
       count: 8,
-      size: "32 MB",
-      updatedAt: "2 days ago",
+      size: 32 * 1024 * 1024, // 32 MB in bytes
+      displaySize: "32 MB",
+      type: "folder",
+      updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
       shared: false,
       starred: true,
     },
-  ],
+  ] as FileItem[],
   videos: [
     {
-      id: 1,
+      id: 6,
       name: "Product Demo.mp4",
-      size: "128 MB",
+      size: 128 * 1024 * 1024, // 128 MB in bytes
+      displaySize: "128 MB",
+      type: "mp4",
       duration: "5:30",
-      updatedAt: "1 day ago",
+      updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
       shared: true,
       starred: false,
     },
     {
-      id: 2,
+      id: 7,
       name: "Tutorial Series",
       count: 5,
-      size: "450 MB",
-      updatedAt: "1 week ago",
+      size: 450 * 1024 * 1024, // 450 MB in bytes
+      displaySize: "450 MB",
+      type: "folder",
+      updatedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
       shared: false,
       starred: true,
     },
-  ],
+  ] as FileItem[],
   audio: [
     {
-      id: 1,
+      id: 8,
       name: "Interview Recording.mp3",
-      size: "45 MB",
+      size: 45 * 1024 * 1024, // 45 MB in bytes
+      displaySize: "45 MB",
+      type: "mp3",
       duration: "32:15",
-      updatedAt: "3 days ago",
+      updatedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
       shared: false,
       starred: false,
     },
     {
-      id: 2,
+      id: 9,
       name: "Team Meeting Notes",
       count: 3,
-      size: "28 MB",
-      updatedAt: "1 week ago",
+      size: 28 * 1024 * 1024, // 28 MB in bytes
+      displaySize: "28 MB",
+      type: "folder",
+      updatedAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
       shared: true,
       starred: true,
     },
-  ],
+  ] as FileItem[],
 }
 
 const recentFiles = [
   {
-    id: 1,
+    id: 10,
     name: "Project Proposal.pdf",
     type: "pdf",
-    size: "2.4 MB",
-    updatedAt: "2 hours ago",
+    size: 2.4 * 1024 * 1024, // 2.4 MB in bytes
+    displaySize: "2.4 MB",
+    updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     shared: true,
+    starred: true,
   },
   {
-    id: 2,
+    id: 11,
     name: "Product Screenshots",
     type: "folder",
     count: 12,
-    updatedAt: "5 hours ago",
+    size: 45 * 1024 * 1024, // 45 MB in bytes
+    displaySize: "45 MB",
+    updatedAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
     shared: true,
+    starred: false,
   },
   {
-    id: 3,
+    id: 12,
     name: "User Research Report.docx",
     type: "docx",
-    size: "1.8 MB",
-    updatedAt: "1 day ago",
+    size: 1.8 * 1024 * 1024, // 1.8 MB in bytes
+    displaySize: "1.8 MB",
+    updatedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     shared: false,
+    starred: false,
   },
-]
+] as FileItem[]
+
+type SortBy = "name" | "date" | "size"
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffInDays = Math.floor(
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+  )
+
+  if (diffInDays > 7) {
+    return format(date, "MM/dd/yyyy")
+  }
+  return formatDistanceToNow(date, { addSuffix: true })
+}
 
 export default function FileManagementDashboard() {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [searchQuery, setSearchQuery] = useState("")
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [sortBy, setSortBy] = useState<SortBy>("name")
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
 
-  const handleFileSelect = () => {
+  const handleFileUpload = useCallback(() => {
     setIsUploading(true)
     setUploadProgress(0)
+
+    // Simulate file upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 100) {
@@ -192,7 +273,83 @@ export default function FileManagementDashboard() {
         return prev + 10
       })
     }, 500)
+  }, [])
+
+  const isFolder = (file: FileItem): file is FolderFile => {
+    return file.type === "folder"
   }
+
+  const getFileIcon = (file: FileItem) => {
+    if (isFolder(file)) return <Folder className="h-5 w-5" />
+    switch (file.type) {
+      case "pdf":
+        return <FileText className="h-5 w-5" />
+      case "docx":
+        return <FileText className="h-5 w-5" />
+      case "xlsx":
+        return <FileSpreadsheet className="h-5 w-5" />
+      case "pptx":
+        return <Presentation className="h-5 w-5" />
+      case "jpg":
+      case "png":
+      case "gif":
+        return <FileImage className="h-5 w-5" />
+      case "mp4":
+      case "mov":
+        return <FileVideo className="h-5 w-5" />
+      case "mp3":
+      case "wav":
+        return <FileAudio className="h-5 w-5" />
+      case "zip":
+      case "rar":
+        return <FileArchive className="h-5 w-5" />
+      case "js":
+      case "ts":
+      case "html":
+      case "css":
+        return <FileCode className="h-5 w-5" />
+      default:
+        return <FileIcon className="h-5 w-5" />
+    }
+  }
+
+  const getFileSize = (file: FileItem) => {
+    if (file.type === "folder") {
+      const folderFile = file as FolderFile
+      return `${folderFile.count} items`
+    }
+    return file.displaySize
+  }
+
+  const filteredFiles = useMemo(() => {
+    let result = [
+      ...files.documents,
+      ...files.images,
+      ...files.videos,
+      ...files.audio,
+    ] as FileItem[]
+    if (searchQuery) {
+      result = result.filter((file) =>
+        file.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
+    return result.sort((a, b) => {
+      if (sortBy === "name") {
+        return sortOrder === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      }
+      if (sortBy === "date") {
+        return sortOrder === "asc"
+          ? new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          : new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+      }
+      if (sortBy === "size") {
+        return sortOrder === "asc" ? a.size - b.size : b.size - a.size
+      }
+      return 0
+    })
+  }, [searchQuery, sortBy, sortOrder])
 
   return (
     <div className="container mx-auto py-8">
@@ -216,34 +373,17 @@ export default function FileManagementDashboard() {
         <div>
           <h1 className="text-3xl font-bold">File Management</h1>
           <p className="text-muted-foreground mt-1">
-            Organize and manage your project files
+            Organize and manage your files efficiently
           </p>
         </div>
-        <div className="flex flex-col items-center gap-4 md:flex-row">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Folder
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle>Create New Folder</DialogTitle>
-              <DialogDescription>
-                Enter a name for your new folder
-              </DialogDescription>
-              <div className="py-4">
-                <Input placeholder="Folder name" />
-              </div>
-            </DialogContent>
-          </Dialog>
-          <FileUpload
-            onFileSelect={handleFileSelect}
-            accept="image/*,video/*,application/pdf"
-            multiple
-          >
+        <div className="flex items-center gap-4">
+          <Button variant="outlined" size="sm">
+            <Download className="mr-2 h-4 w-4" />
+            Download All
+          </Button>
+          <FileUpload onFileSelect={handleFileUpload}>
             <FileUploadTrigger asChild>
-              <Button variant="outlined">
+              <Button>
                 <Upload className="mr-2 h-4 w-4" />
                 Upload Files
               </Button>
@@ -251,18 +391,6 @@ export default function FileManagementDashboard() {
           </FileUpload>
         </div>
       </div>
-
-      {isUploading && (
-        <Alert
-          className="mb-8 [&>div]:nth-2:w-full"
-          icon={<Cloud className="h-4 w-4 nth-2:w-full" />}
-        >
-          <AlertTitle>Uploading Files</AlertTitle>
-          <AlertDescription className="w-full">
-            <Progress value={uploadProgress} className="mt-2" />
-          </AlertDescription>
-        </Alert>
-      )}
 
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -307,25 +435,72 @@ export default function FileManagementDashboard() {
             <Clock className="text-primary h-5 w-5" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
+            <div className="text-2xl font-bold">24</div>
             <div className="text-muted-foreground mt-1 text-xs">
-              15 updates in the last hour
+              Files modified today
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mb-6 flex items-center gap-4">
-        <div className="relative w-[300px]">
-          <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
+      <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center gap-4">
           <Input
             placeholder="Search files..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8"
+            className="w-[300px]"
           />
+          <Select
+            value={sortBy}
+            onValueChange={(value) => setSortBy(value as SortBy)}
+            className="min-w-[140px]"
+            placeholder="Sort by"
+          >
+            <SelectItem value="name">Sort by Name</SelectItem>
+            <SelectItem value="date">Sort by Date</SelectItem>
+            <SelectItem value="size">Sort by Size</SelectItem>
+          </Select>
+          <Button
+            variant="outlined"
+            className="shrink-0"
+            size="icon"
+            onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+          >
+            {sortOrder === "asc" ? (
+              <ArrowUp className="h-4 w-4" />
+            ) : (
+              <ArrowDown className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant={viewMode === "grid" ? "contained" : "outlined"}
+            size="icon"
+            onClick={() => setViewMode("grid")}
+          >
+            <Grid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "contained" : "outlined"}
+            size="icon"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4" />
+          </Button>
         </div>
       </div>
+
+      {isUploading && (
+        <Alert className="mb-8">
+          <Upload className="h-4 w-4" />
+          <AlertTitle>Uploading Files</AlertTitle>
+          <AlertDescription>
+            <Progress value={uploadProgress} className="mt-2" />
+          </AlertDescription>
+        </Alert>
+      )}
 
       <Tabs defaultValue="all">
         <TabList>
@@ -335,360 +510,149 @@ export default function FileManagementDashboard() {
           <TabTrigger value="trash">Trash</TabTrigger>
         </TabList>
         <TabContent value="all">
-          <Accordion
-            type="multiple"
-            className="mt-8"
-            defaultValue={["documents", "images", "videos", "audio"]}
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "space-y-4"
+            }
           >
-            <AccordionItem value="documents">
-              <AccordionTrigger>
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  Documents
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4">
-                  {files.documents.map((file) => (
-                    <div
-                      key={file.id}
-                      className="flex items-center justify-between rounded-lg border p-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        <FileText className="text-primary h-8 w-8" />
-                        <div>
-                          <p className="font-medium">{file.name}</p>
-                          <p className="text-muted-foreground text-sm">
-                            {file.size} • Updated {file.updatedAt}
-                          </p>
-                        </div>
-                      </div>
+            {filteredFiles.map((file) => (
+              <Card
+                key={file.id}
+                className={`relative overflow-hidden transition-all hover:shadow-lg ${
+                  viewMode === "list" ? "flex items-center" : ""
+                }`}
+              >
+                <CardContent
+                  className={`p-4 ${viewMode === "list" ? "flex items-center justify-between" : ""}`}
+                >
+                  <div
+                    className={`flex items-center gap-4 ${viewMode === "list" ? "flex-1" : ""}`}
+                  >
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-lg">
+                      {getFileIcon(file)}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium">{file.name}</p>
                       <div className="flex items-center gap-2">
-                        <Tooltip content="Add to starred">
-                          <Toggle
-                            size="sm"
-                            className="text-foreground group h-8 w-8 p-0 not-hover:data-[state=on]:bg-transparent"
-                            defaultPressed={file.starred}
-                          >
-                            <Star className="h-4 w-4 group-data-[state=on]:fill-yellow-500 group-data-[state=on]:text-yellow-500" />
-                          </Toggle>
-                        </Tooltip>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                              color="neutral"
-                            >
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Share2 className="mr-2 h-4 w-4" />
-                              Share
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <span className="text-muted-foreground text-xs">
+                          {getFileSize(file)}
+                        </span>
+                        <span className="text-muted-foreground text-xs">•</span>
+                        <span className="text-muted-foreground text-xs">
+                          {formatDate(file.updatedAt)}
+                        </span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="images">
-              <AccordionTrigger>
-                <div className="flex items-center gap-2">
-                  <ImageIcon className="h-4 w-4" />
-                  Images
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4">
-                  {files.images.map((folder) => (
-                    <div
-                      key={folder.id}
-                      className="flex items-center justify-between rounded-lg border p-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        <ImageIcon className="text-primary h-8 w-8" />
-                        <div>
-                          <p className="font-medium">{folder.name}</p>
-                          <p className="text-muted-foreground text-sm">
-                            {folder.count} files • {folder.size} • Updated{" "}
-                            {folder.updatedAt}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Tooltip content="Add to starred">
-                          <Toggle
-                            size="sm"
-                            className="text-foreground group h-8 w-8 p-0 not-hover:data-[state=on]:bg-transparent"
-                            defaultPressed={folder.starred}
-                          >
-                            <Star className="h-4 w-4 group-data-[state=on]:fill-yellow-500 group-data-[state=on]:text-yellow-500" />
-                          </Toggle>
-                        </Tooltip>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                              color="neutral"
-                            >
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download All
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Share2 className="mr-2 h-4 w-4" />
-                              Share
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="videos">
-              <AccordionTrigger>
-                <div className="flex items-center gap-2">
-                  <Video className="h-4 w-4" />
-                  Videos
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4">
-                  {files.videos.map((file) => (
-                    <div
-                      key={file.id}
-                      className="flex items-center justify-between rounded-lg border p-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        <Video className="text-primary h-8 w-8" />
-                        <div>
-                          <p className="font-medium">{file.name}</p>
-                          <p className="text-muted-foreground text-sm">
-                            {file.size} •{" "}
-                            {file.duration || `${file.count} videos`} • Updated{" "}
-                            {file.updatedAt}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Tooltip content="Add to starred">
-                          <Toggle
-                            size="sm"
-                            className="text-foreground group h-8 w-8 p-0 not-hover:data-[state=on]:bg-transparent"
-                            defaultPressed={file.starred}
-                          >
-                            <Star className="h-4 w-4 group-data-[state=on]:fill-yellow-500 group-data-[state=on]:text-yellow-500" />
-                          </Toggle>
-                        </Tooltip>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                              color="neutral"
-                            >
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Share2 className="mr-2 h-4 w-4" />
-                              Share
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="audio">
-              <AccordionTrigger>
-                <div className="flex items-center gap-2">
-                  <Music className="h-4 w-4" />
-                  Audio
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4">
-                  {files.audio.map((file) => (
-                    <div
-                      key={file.id}
-                      className="flex items-center justify-between rounded-lg border p-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        <Music className="text-primary h-8 w-8" />
-                        <div>
-                          <p className="font-medium">{file.name}</p>
-                          <p className="text-muted-foreground text-sm">
-                            {file.size} •{" "}
-                            {file.duration || `${file.count} files`} • Updated{" "}
-                            {file.updatedAt}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Tooltip content="Add to starred">
-                          <Toggle
-                            size="sm"
-                            className="text-foreground group h-8 w-8 p-0 not-hover:data-[state=on]:bg-transparent"
-                            defaultPressed={file.starred}
-                          >
-                            <Star className="h-4 w-4 group-data-[state=on]:fill-yellow-500 group-data-[state=on]:text-yellow-500" />
-                          </Toggle>
-                        </Tooltip>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                              color="neutral"
-                            >
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem>
-                              <Download className="mr-2 h-4 w-4" />
-                              Download
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Share2 className="mr-2 h-4 w-4" />
-                              Share
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                  </div>
+                  <div
+                    className={`flex items-center gap-2 ${viewMode === "list" ? "ml-4" : "mt-4"}`}
+                  >
+                    {file.shared && (
+                      <Badge
+                        variant="outlined"
+                        className="flex items-center gap-1"
+                      >
+                        <Share2 className="h-3 w-3" />
+                        Shared
+                      </Badge>
+                    )}
+                    {file.starred && (
+                      <Badge
+                        variant="outlined"
+                        className="flex items-center gap-1"
+                      >
+                        <Star className="h-3 w-3" />
+                        Starred
+                      </Badge>
+                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="text" size="icon" className="h-8 w-8">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Download className="mr-2 h-4 w-4" />
+                          Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Share2 className="mr-2 h-4 w-4" />
+                          Share
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Star className="mr-2 h-4 w-4" />
+                          Star
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabContent>
         <TabContent value="recent">
-          <div className="mt-8">
-            <Card>
-              <CardHeader>Recent Files</CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentFiles.map((file) => (
-                    <div
-                      key={file.id}
-                      className="flex items-center justify-between rounded-lg border p-4"
-                    >
-                      <div className="flex items-center gap-4">
-                        {file.type === "folder" ? (
-                          <ImageIcon className="text-primary h-8 w-8" />
-                        ) : (
-                          <FileText className="text-primary h-8 w-8" />
-                        )}
-                        <div>
-                          <p className="font-medium">{file.name}</p>
-                          <p className="text-muted-foreground text-sm">
-                            {file.type === "folder"
-                              ? `${file.count} files`
-                              : file.size}{" "}
-                            • Updated {file.updatedAt}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="text"
-                          size="icon"
-                          className="h-8 w-8"
-                          color="neutral"
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="text"
-                          size="icon"
-                          className="h-8 w-8"
-                          color="neutral"
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+          <div className="mt-8 space-y-4">
+            {recentFiles.map((file) => (
+              <Card key={file.id}>
+                <CardContent className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-lg">
+                      {getFileIcon(file)}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabContent>
-        <TabContent value="starred">
-          <div className="mt-8">
-            <Card>
-              <CardHeader>Starred Files</CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Star className="text-muted-foreground mb-4 h-12 w-12" />
-                  <h3 className="text-lg font-medium">No starred files</h3>
-                  <p className="text-muted-foreground mt-1">
-                    Star important files to find them quickly
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabContent>
-        <TabContent value="trash">
-          <div className="mt-8">
-            <Card>
-              <CardHeader>Trash</CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <Trash2 className="text-muted-foreground mb-4 h-12 w-12" />
-                  <h3 className="text-lg font-medium">Trash is empty</h3>
-                  <p className="text-muted-foreground mt-1">
-                    Files you delete will appear here
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                    <div>
+                      <p className="font-medium">{file.name}</p>
+                      <p className="text-muted-foreground text-xs">
+                        {getFileSize(file)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {file.shared && (
+                      <Badge
+                        variant="outlined"
+                        className="flex items-center gap-1"
+                      >
+                        <Share2 className="h-3 w-3" />
+                        Shared
+                      </Badge>
+                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="text" size="icon" className="h-8 w-8">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <Download className="mr-2 h-4 w-4" />
+                          Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Share2 className="mr-2 h-4 w-4" />
+                          Share
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Star className="mr-2 h-4 w-4" />
+                          Star
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </TabContent>
       </Tabs>

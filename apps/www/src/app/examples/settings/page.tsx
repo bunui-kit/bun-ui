@@ -2,6 +2,9 @@
 
 import React from "react"
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -18,7 +21,16 @@ import {
   TabTrigger,
   TextArea,
 } from "@bun-ui/react"
-import { Bell, CreditCard, Globe, Lock, Palette, User, Zap } from "lucide-react"
+import {
+  Bell,
+  CheckCircle,
+  CreditCard,
+  Globe,
+  Lock,
+  Palette,
+  User,
+  Zap,
+} from "lucide-react"
 
 const settings = {
   profile: {
@@ -128,21 +140,43 @@ const settings = {
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = React.useState("profile")
+  const [isSaving, setIsSaving] = React.useState(false)
+  const [showSuccess, setShowSuccess] = React.useState(false)
+
+  const handleSave = () => {
+    setIsSaving(true)
+    // Simulate API call
+    setTimeout(() => {
+      setIsSaving(false)
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 3000)
+    }, 1000)
+  }
 
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground mt-1">
           Manage your account settings and preferences
         </p>
       </div>
+
+      {showSuccess && (
+        <Alert className="mb-6" variant="success">
+          <CheckCircle className="h-4 w-4" />
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>
+            Your settings have been saved successfully.
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid gap-6 md:grid-cols-4">
         <div className="md:col-span-1">
           <Card>
             <CardContent className="p-4">
-              <nav className="space-y-2">
+              <nav className="space-y-1">
                 <Button
                   variant={activeTab === "profile" ? "contained" : "text"}
                   className="w-full justify-start"
@@ -220,9 +254,12 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Profile Settings</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Update your personal information and preferences
+                  </p>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
+                <CardContent className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Name</label>
                       <Input defaultValue={settings.profile.name} />
@@ -271,6 +308,14 @@ export default function SettingsPage() {
                     <label className="text-sm font-medium">Bio</label>
                     <TextArea defaultValue={settings.profile.bio} rows={3} />
                   </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -281,6 +326,9 @@ export default function SettingsPage() {
                   <h3 className="text-lg font-semibold">
                     Notification Preferences
                   </h3>
+                  <p className="text-muted-foreground text-sm">
+                    Configure how you want to receive notifications
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -433,6 +481,15 @@ export default function SettingsPage() {
                       </div>
                     )}
                   </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -441,6 +498,9 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Appearance Settings</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Customize how the application looks and feels
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
@@ -506,6 +566,15 @@ export default function SettingsPage() {
                     </div>
                     <Switch defaultChecked={settings.appearance.highContrast} />
                   </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -514,6 +583,9 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Security Settings</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Manage your account security and privacy
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between">
@@ -569,6 +641,15 @@ export default function SettingsPage() {
                       ))}
                     </div>
                   </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -577,6 +658,9 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Billing Settings</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Manage your subscription and payment methods
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -639,6 +723,15 @@ export default function SettingsPage() {
                       </div>
                     </div>
                   </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -647,6 +740,9 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Language & Region</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Customize your language and regional preferences
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
@@ -674,6 +770,15 @@ export default function SettingsPage() {
                       <SelectItem value="24h">24-hour</SelectItem>
                     </Select>
                   </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabContent>
@@ -682,6 +787,9 @@ export default function SettingsPage() {
               <Card>
                 <CardHeader>
                   <h3 className="text-lg font-semibold">Connected Services</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Manage your connected third-party services
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
@@ -737,6 +845,15 @@ export default function SettingsPage() {
                       </div>
                       <Button>Connect</Button>
                     </div>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outlined" onClick={() => {}}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSave} disabled={isSaving}>
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
