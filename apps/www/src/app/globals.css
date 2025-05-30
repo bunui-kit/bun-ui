@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@import "../../node_modules/@bun-ui/react/dist/theme.css" layer(base);
+@import "@bun-ui/react/themes/default.css";
 
 @source "../../node_modules/@bun-ui/react/dist/";
 
@@ -32,9 +32,11 @@ pre code {
   scrollbar-color: hsl(var(--border)) transparent;
 }
 
+@custom-variant dark (&:where([class*="dark"] *, [data-theme*="dark"] *));
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;

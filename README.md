@@ -1,8 +1,3 @@
-> [!CAUTION]
-> This library is heavily under development. Expect bugs, breaking
-> changes, and incomplete features as we work towards a stable release. Use at
-> your own risk and feel free to contribute!
-
 # Bun UI Library
 
 [![npm version](https://img.shields.io/npm/v/@bun-ui/react.svg)](https://www.npmjs.com/package/@bun-ui/react)
@@ -11,7 +6,10 @@
 
 Bun UI is a modern React component library that offers both Tailwind CSS integration and standalone usage. Built with accessibility in mind and designed for flexibility, it provides a collection of reusable, responsive, and fully typed components that adapt to your workflow.
 
-![Bun UI Preview](apps/www/public/preview.png)
+> [!CAUTION]
+> This library is heavily under development. Expect bugs, breaking
+> changes, and incomplete features as we work towards a stable release. Use at
+> your own risk and feel free to contribute!
 
 ## 🚀 Quick Start
 
@@ -28,33 +26,26 @@ yarn add @bun-ui/react
 
 ### With Tailwind CSS (Recommended)
 
-```js
-// tailwind.config.js
-module.exports = {
-  content: [
-    "../node_modules/@bun-ui/react/dist/**/*.{js,ts,jsx,tsx}",
-  ],
-}
-```
+```scss
+/* global.css or main.css */
 
-### Without Tailwind CSS
+@import "tailwindcss";
+@import "tw-animate-css";
 
-```jsx
-// Import all styles
-import "@bun-ui/react/index.css"
+/* Replace with your correct path to the package */
+@import "../../node_modules/@bun-ui/react/dist/theme.css" layer(base); 
 
-// Or import component-specific styles
-import "@bun-ui/react/styles/button.css"
+@source "../../node_modules/@bun-ui/react/dist/";
 ```
 
 ## ✨ Features
 
-- **Flexible Styling**: 
+- **Flexible Styling**:
   - Seamless Tailwind CSS integration
   - Pre-built styles for non-Tailwind projects
   - Component-specific style imports
 
-- **Modern Development**: 
+- **Modern Development**:
   - Full TypeScript support
   - Minimal configuration
   - Clear, consistent API

@@ -1,13 +1,4 @@
 @import "tailwindcss";
-@import "./theme.css" layer(base);
+@import "./themes/default.css" layer(base);
 
 @custom-variant dark (&:where([class*="dark"] *, [data-theme*="dark"] *));
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}

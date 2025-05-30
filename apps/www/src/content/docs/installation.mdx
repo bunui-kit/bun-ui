@@ -8,8 +8,7 @@ links:
 
 ## 1. Installation
 
-To get started with `@bun-ui/react`, install the library using your preferred
-package manager:
+Getting started with `@bun-ui/react` is easy! Simply install the library using your favorite package manager:
 
 ```bash
 # Using pnpm
@@ -21,32 +20,33 @@ npm install @bun-ui/react
 
 ## 2. Setting Up Styles
 
-Bun UI provides two ways to use the components:
+We've made it flexible for you to use Bun UI components in two different ways:
 
 ### Option 1: With Tailwind CSS (Recommended)
 
-If you're using Tailwind CSS, you can integrate Bun UI's components with your existing Tailwind setup:
+#### Tailwind CSS v4
 
-```js
-// tailwind.config.js
-module.exports = {
-  content: [
-    // other paths
-    "../node_modules/@bun-ui/react/dist/**/*.{js,ts,jsx,tsx}",
-  ],
-  // other configurations
-}
+If you're using Tailwind CSS v4, you can easily integrate Bun UI's styles by adding these imports to your global CSS file:
+
+```scss
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Replace with your correct path to the package */
+@import "../../node_modules/@bun-ui/react/dist/theme.css" layer(base); 
+
+@source "../../node_modules/@bun-ui/react/dist/";
 ```
 
-This approach allows you to:
+This approach gives you the best of both worlds:
 
-- Customize components using Tailwind's utility classes
-- Maintain consistent styling with your existing Tailwind setup
-- Take advantage of Tailwind's optimization features
+- Full control over component styling using Tailwind's utility classes
+- Seamless integration with your existing Tailwind setup
+- Access to all of Tailwind's powerful optimization features
 
 ### Option 2: Without Tailwind CSS
 
-If you're not using Tailwind CSS, you can use Bun UI's pre-built styles:
+No Tailwind CSS? No problem! You can still use Bun UI with its pre-built styles:
 
 ```jsx
 // app/layout.tsx or entry point
@@ -57,16 +57,15 @@ function RootLayout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-This approach:
+This approach is perfect if you want to:
 
-- Requires no additional configuration
-- Provides ready-to-use styled components
-- Works with any React project
+- Get started quickly with minimal setup
+- Use beautifully styled components out of the box
+- Work with any React project, regardless of your styling setup
 
 ## 3. Example Usage
 
-Once installed and configured, you can start using the components from the
-library. For example:
+Ready to start building? Here's a quick example to get you going:
 
 ```tsx
 import { Button } from "@bun-ui/react"
