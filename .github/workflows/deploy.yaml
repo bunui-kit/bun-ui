@@ -55,7 +55,7 @@ jobs:
       - name: Add remote host to known_hosts
         run: "ssh-keyscan ${{secrets.HOST}} >> ~/.ssh/known_hosts"
 
-      - name: Copy build to VPS
+      - name: Move build artifact
         run:
           scp build-artifact.tar.gz
           ${{secrets.USERNAME}}@${{secrets.HOST}}:~/temp
