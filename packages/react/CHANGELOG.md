@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.44
+
+### Patch Changes
+
+- 781a537: reorganize css files
+
 ## 0.2.43
 
 ### Patch Changes
