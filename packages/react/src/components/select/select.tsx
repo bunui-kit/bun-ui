@@ -19,6 +19,11 @@ interface SelectProps
    * The position of the menu. Default is "popper".
    **/
   menuPosition?: "item-aligned" | "popper"
+
+  /**
+   * Render the selected value.
+   **/
+  renderValue?: (value?: string) => React.ReactNode
 }
 
 const Select = React.forwardRef<
@@ -33,6 +38,7 @@ const Select = React.forwardRef<
       value,
       menuPosition = "popper",
       label,
+      renderValue,
       ...props
     },
     ref
@@ -47,7 +53,13 @@ const Select = React.forwardRef<
             className
           )}
         >
-          <SelectPrimitives.Value placeholder={placeholder} />
+          {renderValue ? (
+            <SelectPrimitives.Value placeholder={placeholder}>
+              {renderValue(value)}
+            </SelectPrimitives.Value>
+          ) : (
+            <SelectPrimitives.Value placeholder={placeholder} />
+          )}
           <SelectPrimitives.Icon>
             <ChevronDownIcon className="h-4 w-4" />
           </SelectPrimitives.Icon>
