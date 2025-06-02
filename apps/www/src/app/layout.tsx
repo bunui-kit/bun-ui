@@ -9,6 +9,7 @@ import { cx } from "@/lib/classnames"
 import { SiteHeader } from "@/components/site-header"
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bun-ui.com"),
   title: "Bun UI | Accessible and Customizable UI Components",
   description:
     "Build beautiful, accessible, and reusable React components effortlessly.",
