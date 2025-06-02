@@ -746,7 +746,7 @@ export default function TaskManagement() {
         <TabContent value="activity">
           <div className="mt-8">
             <Timeline>
-              {taskActivities.map((activity) => (
+              {taskActivities.map((activity, index) => (
                 <TimelineItem key={activity.id} className="before:flex-0">
                   <TimelineSeparator>
                     <TimelineIndicator>
@@ -766,7 +766,7 @@ export default function TaskManagement() {
                         <User className="h-4 w-4" />
                       )}
                     </TimelineIndicator>
-                    <TimelineConnector />
+                    {index < taskActivities.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent className="bg-card rounded-lg border p-4">
                     <TimelineTitle className="flex items-center gap-3">

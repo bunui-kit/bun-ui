@@ -91,7 +91,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, color, size, variant, ...props }, ref) => (
     <span
       ref={ref}
-      className={cx(badgeVariants({ color, size, variant }), className)}
+      className={cx(badgeVariants({ color, size, variant, className }))}
       {...props}
     />
   )

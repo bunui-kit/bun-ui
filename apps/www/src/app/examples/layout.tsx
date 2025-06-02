@@ -12,14 +12,6 @@ export const metadata: Metadata = {
       "Explore real-world examples of Bun UI components in action, including analytics dashboards, task management, file management, and settings panels.",
     type: "website",
     url: "https://bun-ui.com/examples",
-    images: [
-      {
-        url: "https://bun-ui.com/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Bun UI Examples Preview",
-      },
-    ],
   },
   keywords: [
     "bun ui",
