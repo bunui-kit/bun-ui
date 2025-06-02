@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { ExamplesNav } from "@/components/examples-nav"
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bun-ui.com/examples"),
   title: "Examples | Bun UI",
   description:
     "Explore real-world examples of Bun UI components in action, including analytics dashboards, task management, file management, and settings panels.",
