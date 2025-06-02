@@ -92,13 +92,13 @@ const topUsers = [
     name: "Alice Smith",
     role: "Marketing Director",
     views: 1890,
-    avatar: "/avatar.png",
+    avatar: "/avatar2.png",
   },
   {
     name: "Robert Johnson",
     role: "Developer",
     views: 1234,
-    avatar: "/avatar.png",
+    avatar: "/avatar3.png",
   },
 ]
 
