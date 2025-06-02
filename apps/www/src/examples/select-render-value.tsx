@@ -47,13 +47,11 @@ export function SelectRenderValue() {
     if (!country) return null
 
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex gap-4">
         <span className="text-lg">{country.flag}</span>
         <div className="flex flex-col">
-          <span className="font-medium">{country.name}</span>
-          <span className="text-muted-foreground text-xs">
-            Population: {country.population}
-          </span>
+          <span className="text-start font-medium">{country.name}</span>
+          <span className="text-xs">Population: {country.population}</span>
         </div>
       </div>
     )
@@ -80,7 +78,7 @@ export function SelectRenderValue() {
               <span className="text-lg">{country.flag}</span>
               <div className="flex flex-col">
                 <span>{country.name}</span>
-                <span className="text-muted-foreground text-xs">
+                <span className="text-xs">
                   Population: {country.population}
                 </span>
               </div>
