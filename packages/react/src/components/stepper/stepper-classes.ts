@@ -40,19 +40,19 @@ interface StepLabelClasses {
    * Styles applied when the step is active.
    * Use this to customize the appearance of the active step.
    */
-  active?: string
+  active: string
 
   /**
    * Styles applied when the step is completed.
    * Use this to customize the appearance of completed steps.
    */
-  completed?: string
+  completed: string
 
   /**
    * Styles applied to the icon container.
    * Use this to customize the container that holds the step number or check icon.
    */
-  iconContainer?: string
+  iconContainer: string
 }
 
 /**
