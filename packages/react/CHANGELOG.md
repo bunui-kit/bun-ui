@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.45
+
+### Patch Changes
+
+- 61c618f: Add classes to Select
+
 ## 0.2.44
 
 ### Patch Changes
