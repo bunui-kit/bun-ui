@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority"
 import { cx } from "../../lib"
 
 const iconButtonVariants = cva(
-  "select-none inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer disabled:[&_*]:pointer-events-none",
+  "select-none inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 cursor-pointer disabled:[&_*]:pointer-events-none",
   {
     variants: {
       color: {
@@ -17,9 +17,9 @@ const iconButtonVariants = cva(
         success: "text-success hover:not-disabled:bg-success/10",
       },
       size: {
-        sm: "p-1 size-8 text-xs [&_svg]:size-4",
-        md: "p-2 size-9 [&_svg]:size-5",
-        lg: "p-3 size-10 text-base [&_svg]:size-6",
+        sm: "p-0.5 size-7 text-xs [&_svg]:size-[1.125rem]",
+        md: "p-1 size-9 [&_svg]:size-5",
+        lg: "p-2 size-10 text-base [&_svg]:size-6",
       },
     },
     defaultVariants: {
