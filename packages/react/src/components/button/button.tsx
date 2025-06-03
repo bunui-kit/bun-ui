@@ -1,6 +1,6 @@
 import React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib/utils"
 
@@ -129,7 +129,7 @@ const buttonVariants = cva(
       {
         variant: "text",
         color: "success",
-        className: "text-success-foreground hover:not-disabled:bg-success/10",
+        className: "text-success hover:not-disabled:bg-success/10",
       },
     ],
     defaultVariants: {
@@ -141,9 +141,25 @@ const buttonVariants = cva(
 )
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof buttonVariants> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
   asChild?: boolean
+  color?:
+    | "primary"
+    | "secondary"
+    | "destructive"
+    | "accent"
+    | "neutral"
+    | "success"
+  variant?: "contained" | "outlined" | "text"
+  /**
+   * Size of the button.
+   *
+   * @default "md"
+   *
+   * The "icon" size is deprecated. Use the `IconButton` component
+   * with `size="sm" | "md" | "lg"` for icon-only buttons.
+   */
+  size?: "sm" | "md" | "lg" | "icon"
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
