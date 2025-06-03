@@ -1,5 +1,5 @@
 import NextLink from "next/link"
-import { Button } from "@bun-ui/react"
+import { Button, IconButton } from "@bun-ui/react"
 
 import { siteConfig } from "@/config/site"
 import { HeaderCommand } from "./header-command"
@@ -17,14 +17,16 @@ export const SiteHeader = () => {
         <MobileNav />
         <div className="ml-auto flex flex-1 grow items-center justify-end gap-6">
           <HeaderCommand />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <HeaderLinks />
-            <Button size="icon" variant="text" asChild>
-              <NextLink href={siteConfig.links.github} target="_blank">
-                <GithubIcon className="text-foreground" />
-              </NextLink>
-            </Button>
-            <ThemeSwitch />
+            <div className="flex items-center gap-2">
+              <IconButton asChild size="sm">
+                <NextLink href={siteConfig.links.github} target="_blank">
+                  <GithubIcon className="text-foreground" />
+                </NextLink>
+              </IconButton>
+              <ThemeSwitch />
+            </div>
           </div>
         </div>
       </div>
