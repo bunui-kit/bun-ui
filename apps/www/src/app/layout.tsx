@@ -56,7 +56,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system">
           <div className="bg-background relative flex min-h-svh flex-col">
             <Alert
-              variant="warning"
+              color="warning"
               className="flex items-center justify-center rounded-none"
             >
               <AlertTitle>
