@@ -2,14 +2,16 @@ import React from "react"
 import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib"
+import { IconButton } from "../icon-button"
 import {
   CircleAlertIcon,
   CircleCheckBigIcon,
+  CloseIcon,
   TriangleAlertIcon,
 } from "../icons"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg px-4 py-3 text-sm  flex",
+  "relative w-full rounded-lg px-4 py-[6px] text-sm flex",
   {
     variants: {
       color: {
@@ -104,6 +106,10 @@ const alertVariants = cva(
  */
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
+   * Optional action to display. It renders after the message, at the end of the alert.
+   */
+  action?: React.ReactNode
+  /**
    * Optional custom icon to display in the alert.
    * If not provided, a default icon will be shown based on `color` prop.
    */
@@ -125,6 +131,11 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default "standard"
    */
   variant?: "filled" | "outlined" | "standard"
+
+  /**
+   * Callback fired when the component requests to be closed.
+   */
+  onClose?: (event: React.MouseEvent) => void
 }
 
 /**
@@ -154,17 +165,19 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       variant = "standard",
       icon: iconProps,
       children,
+      action,
+      onClose,
       ...props
     },
     ref
   ) => {
     let icon = iconProps
     if (icon === undefined) {
-      icon = <CircleAlertIcon className="h-4 w-4" />
+      icon = <CircleAlertIcon className="size-5" />
       if (color === "success") {
-        icon = <CircleCheckBigIcon className="h-4 w-4" />
+        icon = <CircleCheckBigIcon className="size-5" />
       } else if (color === "warning") {
-        icon = <TriangleAlertIcon className="h-4 w-4" />
+        icon = <TriangleAlertIcon className="size-5" />
       }
     }
     return (
@@ -173,8 +186,20 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         className={cx(alertVariants({ color, variant, className }))}
         {...props}
       >
-        {icon && <div className="mt-[2px] mr-2 self-start">{icon}</div>}
-        <div>{children}</div>
+        {icon && <div className="mr-2 flex py-2">{icon}</div>}
+        <div className="py-2">{children}</div>
+        {action != null ? (
+          <div className="-mr-2 ml-auto flex items-start pt-1 pb-2">
+            {action}
+          </div>
+        ) : null}
+        {action == null && onClose ? (
+          <div className="-mr-2 ml-auto flex items-start pt-1 pb-2">
+            <IconButton onClick={onClose} size="sm" className="text-current">
+              <CloseIcon />
+            </IconButton>
+          </div>
+        ) : null}
       </div>
     )
   }
