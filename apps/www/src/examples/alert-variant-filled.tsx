@@ -1,0 +1,32 @@
+import { Alert, AlertDescription, AlertTitle } from "@bun-ui/react"
+
+export const AlertVariantFilled = () => {
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <Alert variant="filled">
+        <AlertTitle>Standard</AlertTitle>
+        <AlertDescription>
+          Your action was completed successfully.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="filled" color="success">
+        <AlertTitle>Success</AlertTitle>
+        <AlertDescription>
+          Your action was completed successfully.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="filled" color="warning">
+        <AlertTitle>Warning</AlertTitle>
+        <AlertDescription>
+          Be careful with this action. It&apos;s irreversible.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="filled" color="error">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Something went wrong. Please try again.
+        </AlertDescription>
+      </Alert>
+    </div>
+  )
+}

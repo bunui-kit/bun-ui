@@ -25,17 +25,25 @@ import { Alert, AlertDescription, AlertTitle } from "@bun-ui/react"
 </Alert>
 ```
 
-## Variants
+## Colors
 
 The `Alert` component supports multiple variants to indicate different types of
-messages. Use the `variant` prop to specify the style:
+messages. Use the `color` prop to specify the style:
 
-- **Default**: Neutral message.
-- **Success**: Success message.
-- **Warning**: Warning message.
-- **Error**: Error message.
+<ComponentPreview name="alert-colors" />
 
-<ComponentPreview name="alert-variants" />
+## Variants
+
+The Alert component comes with two alternative style options
+`filled` an `outlined`, which you can set using the `variant` prop.
+
+### Filled
+
+<ComponentPreview name="alert-variant-filled" />
+
+### Outlined
+
+<ComponentPreview name="alert-variant-outlined" />
 
 ## Icons
 
