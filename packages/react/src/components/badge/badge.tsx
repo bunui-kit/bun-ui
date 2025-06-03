@@ -1,5 +1,5 @@
 import React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib"
 
@@ -84,8 +84,11 @@ const badgeVariants = cva(
   }
 )
 interface BadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color">,
-    VariantProps<typeof badgeVariants> {}
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color"> {
+  color?: "primary" | "secondary" | "destructive" | "accent" | "neutral"
+  variant?: "filled" | "outlined"
+  size?: "sm" | "md" | "lg"
+}
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, color, size, variant, ...props }, ref) => (
