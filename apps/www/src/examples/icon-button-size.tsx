@@ -4,6 +4,9 @@ import { StarIcon } from "lucide-react"
 export const IconButtonSize = () => {
   return (
     <div className="flex items-center gap-2">
+      <IconButton size="xs" aria-label="Extra Small">
+        <StarIcon />
+      </IconButton>
       <IconButton size="sm" aria-label="Small">
         <StarIcon />
       </IconButton>

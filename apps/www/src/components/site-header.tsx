@@ -20,7 +20,7 @@ export const SiteHeader = () => {
           <div className="flex items-center gap-4">
             <HeaderLinks />
             <div className="flex items-center gap-2">
-              <IconButton asChild size="sm">
+              <IconButton asChild size="xs">
                 <NextLink href={siteConfig.links.github} target="_blank">
                   <GithubIcon className="text-foreground" />
                 </NextLink>

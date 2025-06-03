@@ -7,7 +7,7 @@ export const ThemeSwitch = () => {
   const { toggleDarkMode } = useTheme()
 
   return (
-    <IconButton onClick={toggleDarkMode} size="sm">
+    <IconButton onClick={toggleDarkMode} size="xs">
       <Moon className="hidden dark:block" />
       <Sun className="hidden not-dark:block" />
     </IconButton>
