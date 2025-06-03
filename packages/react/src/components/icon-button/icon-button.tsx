@@ -45,7 +45,7 @@ export interface IconButtonProps
   /**
    * Size of the IconButton.
    */
-  size?: "sm" | "md" | "lg"
+  size?: "xs" | "sm" | "md" | "lg"
 
   /**
    * If true, the props of the button will be applied to the child element.
