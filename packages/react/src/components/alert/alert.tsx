@@ -8,26 +8,93 @@ import {
   TriangleAlertIcon,
 } from "../icons"
 
-/**
- * Alert variants configuration using class-variance-authority.
- * Defines the visual styles for different alert states and appearances.
- */
 const alertVariants = cva(
-  "relative w-full rounded-lg border border-border px-4 py-3 text-sm  [&>svg]:text-foreground flex",
+  "relative w-full rounded-lg px-4 py-3 text-sm  flex",
   {
     variants: {
+      color: {
+        info: "",
+        success: "",
+        warning: "",
+        error: "",
+      },
       variant: {
-        neutral: "bg-background text-foreground",
-        success:
-          "bg-green-50 text-green-800 [&>svg]:text-green-800 dark:[&>svg]:text-green-400 dark:bg-green-900/50 dark:text-green-400",
-        warning:
-          "bg-yellow-50 text-yellow-800 [&>svg]:text-yellow-800 dark:[&>svg]:text-yellow-400 dark:bg-yellow-900/50 dark:text-yellow-400",
-        error:
-          "border-destructive text-destructive dark:bg-red-900/50 [&>svg]:text-destructive dark:text-red-400",
+        filled: "",
+        outlined: "border",
+        standard: "",
       },
-      defaultVariants: {
-        variant: "neutral",
+    },
+    compoundVariants: [
+      {
+        variant: "standard",
+        color: "info",
+        className: "bg-foreground/10 text-foreground",
       },
+      {
+        variant: "standard",
+        color: "success",
+        className:
+          "bg-success/10 text-success-foreground [&>svg]:text-success-forground ",
+      },
+      {
+        variant: "standard",
+        color: "warning",
+        className:
+          "bg-yellow-50/10 text-yellow-800 [&>svg]:text-yellow-800 dark:[&>svg]:text-yellow-400 dark:bg-yellow-900/50 dark:text-yellow-400",
+      },
+      {
+        variant: "standard",
+        color: "error",
+        className:
+          "bg-destructive/10 text-destructive [&>svg]:text-destructive",
+      },
+      {
+        variant: "filled",
+        color: "info",
+        className: "bg-foreground text-background",
+      },
+      {
+        variant: "filled",
+        color: "success",
+        className: "bg-success text-success-foreground",
+      },
+      {
+        variant: "filled",
+        color: "warning",
+        className:
+          "bg-yellow-200 text-yellow-800 [&>svg]:text-yellow-800 dark:[&>svg]:text-yellow-400 dark:bg-yellow-900 dark:text-yellow-400",
+      },
+      {
+        variant: "filled",
+        color: "error",
+        className: "bg-destructive text-destructive-foreground",
+      },
+
+      {
+        variant: "outlined",
+        color: "info",
+        className: "border-foreground/50 text-foreground",
+      },
+      {
+        variant: "outlined",
+        color: "success",
+        className: "border-success text-success-foreground",
+      },
+      {
+        variant: "outlined",
+        color: "warning",
+        className:
+          "border-yellow-600 text-yellow-800 dark:border-yellow-800 dark:text-yellow-500 dark:border-yellow-500",
+      },
+      {
+        variant: "outlined",
+        color: "error",
+        className: "border-destructive text-destructive",
+      },
+    ],
+    defaultVariants: {
+      color: "info",
+      variant: "standard",
     },
   }
 )
@@ -38,15 +105,26 @@ const alertVariants = cva(
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Optional custom icon to display in the alert.
-   * If not provided, a default icon will be shown based on the variant.
+   * If not provided, a default icon will be shown based on `color` prop.
    */
   icon?: React.ReactNode
 
   /**
    * The visual style variant of the button.
    * @default "neutral"
+   *
+   * When color="warning", a warning icon will be shown.
+   * When color="success", a check icon will be shown.
+   *
+   * Use `icon` prop to override the default icon.
    */
-  variant?: "neutral" | "success" | "warning" | "error"
+  color?: "info" | "success" | "warning" | "error"
+
+  /**
+   * Variant of the alert.
+   * @default "standard"
+   */
+  variant?: "filled" | "outlined" | "standard"
 }
 
 /**
@@ -64,22 +142,35 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
  * // With custom icon
  * <Alert icon={<CustomIcon />}>Custom alert with icon</Alert>
  * ```
+ *
+ * Demos:
+ *   - [Alert](https://bun-ui.com/docs/components/alert)
  */
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, icon: iconProps, children, ...props }, ref) => {
+  (
+    {
+      className,
+      color = "info",
+      variant = "standard",
+      icon: iconProps,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     let icon = iconProps
     if (icon === undefined) {
       icon = <CircleAlertIcon className="h-4 w-4" />
-      if (variant === "success") {
+      if (color === "success") {
         icon = <CircleCheckBigIcon className="h-4 w-4" />
-      } else if (variant === "warning") {
+      } else if (color === "warning") {
         icon = <TriangleAlertIcon className="h-4 w-4" />
       }
     }
     return (
       <div
         ref={ref}
-        className={cx(alertVariants({ variant }), className)}
+        className={cx(alertVariants({ color, variant, className }))}
         {...props}
       >
         {icon && <div className="mt-[2px] mr-2 self-start">{icon}</div>}
