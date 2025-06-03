@@ -10,11 +10,11 @@ import { SiteHeader } from "@/components/site-header"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bun-ui.com"),
-  title: "Bun UI | Accessible and Customizable UI Components",
+  title: "Accessible and Customizable UI Components  | Bun UI",
   description:
     "Build beautiful, accessible, and reusable React components effortlessly.",
   openGraph: {
-    title: "Bun UI | Modern React Component Library",
+    title: "Modern React Component Library | Bun UI",
     description:
       "Build beautiful, accessible, and customizable React components with Bun UI. Powered by Radix UI, styled with Tailwind CSS, and built for modern web applications.",
     siteName: "Bun UI",
