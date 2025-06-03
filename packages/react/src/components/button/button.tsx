@@ -1,6 +1,6 @@
 import React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib/utils"
 
@@ -129,7 +129,7 @@ const buttonVariants = cva(
       {
         variant: "text",
         color: "success",
-        className: "text-success-foreground hover:not-disabled:bg-success/10",
+        className: "text-success hover:not-disabled:bg-success/10",
       },
     ],
     defaultVariants: {
@@ -140,12 +140,62 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Props for the Button component.
+ * @interface ButtonProps
+ * @extends {Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">}
+ */
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
-    VariantProps<typeof buttonVariants> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+  /**
+   * Whether to render the button as a child component using Radix UI's Slot.
+   * @default false
+   */
   asChild?: boolean
+  /**
+   * The color scheme of the button.
+   * @default "primary"
+   */
+  color?:
+    | "primary"
+    | "secondary"
+    | "destructive"
+    | "accent"
+    | "neutral"
+    | "success"
+  /**
+   * The visual style variant of the button.
+   * @default "contained"
+   */
+  variant?: "contained" | "outlined" | "text"
+  /**
+   * Size of the button.
+   * @default "md"
+   *
+   * The "icon" size is deprecated. Use the `IconButton` component
+   * with `size="sm" | "md" | "lg"` for icon-only buttons.
+   */
+  size?: "sm" | "md" | "lg" | "icon"
 }
 
+/**
+ * A versatile button component that supports different variants, colors, and sizes.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Button>Click me</Button>
+ *
+ * // With variant and color
+ * <Button variant="outlined" color="primary">Outlined Button</Button>
+ *
+ * // With size
+ * <Button size="lg">Large Button</Button>
+ * ```
+ *
+ * Demos:
+ *   - [Button](https://bun-ui.com/docs/components/button)
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ asChild = false, variant, size, className, color, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"

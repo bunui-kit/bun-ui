@@ -4,9 +4,17 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cx } from "../../lib"
 import { ChevronDownIcon } from "../icons"
 
+/**
+ * Root component for the Accordion.
+ * Provides the context and structure for the accordion items.
+ */
 const Accordion = AccordionPrimitive.Root
 Accordion.displayName = "Accordion"
 
+/**
+ * Individual accordion item component.
+ * Contains the trigger and content for a single accordion section.
+ */
 const AccordionItem = React.forwardRef<
   React.ComponentRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
@@ -19,6 +27,10 @@ const AccordionItem = React.forwardRef<
 ))
 AccordionItem.displayName = "AccordionItem"
 
+/**
+ * The trigger button that toggles the accordion item's content.
+ * Includes a chevron icon that rotates based on the item's state.
+ */
 const AccordionTrigger = React.forwardRef<
   React.ComponentRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
@@ -40,6 +52,10 @@ const AccordionTrigger = React.forwardRef<
 ))
 AccordionTrigger.displayName = "AccordionTrigger"
 
+/**
+ * The content section of an accordion item.
+ * Contains the expandable content that is shown/hidden when the trigger is clicked.
+ */
 const AccordionContent = React.forwardRef<
   React.ComponentRef<typeof AccordionPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>

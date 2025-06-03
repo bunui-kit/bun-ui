@@ -1,5 +1,4 @@
 import { Button } from "@bun-ui/react"
-import { IceCreamCone } from "lucide-react"
 
 export const ButtonSizes = () => {
   return (
@@ -7,9 +6,6 @@ export const ButtonSizes = () => {
       <Button size="sm">Small</Button>
       <Button>Default</Button>
       <Button size="lg">Large</Button>
-      <Button size="icon">
-        <IceCreamCone />
-      </Button>
     </div>
   )
 }

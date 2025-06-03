@@ -72,7 +72,7 @@ const tasks = [
       avatar: "/avatar.png",
       role: "Senior Designer",
     },
-    dueDate: "2024-03-20",
+    dueDate: "2025-03-20",
     tags: ["Design", "Frontend", "Marketing"],
     progress: 75,
     comments: 5,
@@ -90,7 +90,7 @@ const tasks = [
       avatar: "/avatar.png",
       role: "Backend Developer",
     },
-    dueDate: "2024-03-25",
+    dueDate: "2025-03-25",
     tags: ["Backend", "Security", "API"],
     progress: 0,
     comments: 2,
@@ -108,7 +108,7 @@ const tasks = [
       avatar: "/avatar.png",
       role: "Technical Writer",
     },
-    dueDate: "2024-03-15",
+    dueDate: "2025-03-15",
     tags: ["Documentation", "API"],
     progress: 100,
     comments: 8,
@@ -126,7 +126,7 @@ const tasks = [
       avatar: "/avatar.png",
       role: "QA Engineer",
     },
-    dueDate: "2024-03-22",
+    dueDate: "2025-03-22",
     tags: ["Testing", "Mobile", "QA"],
     progress: 45,
     comments: 12,
@@ -144,7 +144,7 @@ const tasks = [
       avatar: "/avatar.png",
       role: "Database Engineer",
     },
-    dueDate: "2024-03-28",
+    dueDate: "2025-03-28",
     tags: ["Database", "Performance", "Backend"],
     progress: 0,
     comments: 3,
@@ -585,7 +585,7 @@ export default function TaskManagement() {
                           <div className="flex items-center gap-2">
                             <CalendarIcon className="text-muted-foreground h-4 w-4" />
                             <span className="text-sm">
-                              Due {new Date(task.dueDate).toLocaleDateString()}
+                              Due {format(new Date(task.dueDate), "MM/dd/yyyy")}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
@@ -691,9 +691,10 @@ export default function TaskManagement() {
                                   <div className="flex items-center gap-2">
                                     <CalendarIcon className="text-muted-foreground h-4 w-4" />
                                     <span className="text-sm">
-                                      {new Date(
-                                        task.dueDate
-                                      ).toLocaleDateString()}
+                                      {format(
+                                        new Date(task.dueDate),
+                                        "MM/dd/yyyy"
+                                      )}
                                     </span>
                                   </div>
                                 </div>

@@ -163,7 +163,7 @@ export default function SettingsPage() {
       </div>
 
       {showSuccess && (
-        <Alert className="mb-6" variant="success">
+        <Alert className="mb-6" color="success">
           <CheckCircle className="h-4 w-4" />
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>

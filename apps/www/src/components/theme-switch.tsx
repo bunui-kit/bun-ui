@@ -1,16 +1,16 @@
 "use client"
 
-import { Button, useTheme } from "@bun-ui/react"
+import { IconButton, useTheme } from "@bun-ui/react"
 import { Moon, Sun } from "lucide-react"
 
 export const ThemeSwitch = () => {
   const { toggleDarkMode } = useTheme()
 
   return (
-    <Button onClick={toggleDarkMode} size="icon" variant="text" color="neutral">
+    <IconButton onClick={toggleDarkMode} size="xs">
       <Moon className="hidden dark:block" />
       <Sun className="hidden not-dark:block" />
-    </Button>
+    </IconButton>
   )
 }
 
