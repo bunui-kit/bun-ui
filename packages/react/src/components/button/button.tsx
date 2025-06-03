@@ -140,9 +140,22 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Props for the Button component.
+ * @interface ButtonProps
+ * @extends {Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">}
+ */
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+  /**
+   * Whether to render the button as a child component using Radix UI's Slot.
+   * @default false
+   */
   asChild?: boolean
+  /**
+   * The color scheme of the button.
+   * @default "primary"
+   */
   color?:
     | "primary"
     | "secondary"
@@ -150,10 +163,13 @@ export interface ButtonProps
     | "accent"
     | "neutral"
     | "success"
+  /**
+   * The visual style variant of the button.
+   * @default "contained"
+   */
   variant?: "contained" | "outlined" | "text"
   /**
    * Size of the button.
-   *
    * @default "md"
    *
    * The "icon" size is deprecated. Use the `IconButton` component
@@ -162,6 +178,24 @@ export interface ButtonProps
   size?: "sm" | "md" | "lg" | "icon"
 }
 
+/**
+ * A versatile button component that supports different variants, colors, and sizes.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Button>Click me</Button>
+ *
+ * // With variant and color
+ * <Button variant="outlined" color="primary">Outlined Button</Button>
+ *
+ * // With size
+ * <Button size="lg">Large Button</Button>
+ * ```
+ *
+ * Demos:
+ *   - [Button](https://bun-ui.com/docs/components/button)
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ asChild = false, variant, size, className, color, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
