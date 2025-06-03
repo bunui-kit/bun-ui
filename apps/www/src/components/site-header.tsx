@@ -1,5 +1,5 @@
 import NextLink from "next/link"
-import { Button, IconButton } from "@bun-ui/react"
+import { IconButton } from "@bun-ui/react"
 
 import { siteConfig } from "@/config/site"
 import { HeaderCommand } from "./header-command"
