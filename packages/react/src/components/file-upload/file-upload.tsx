@@ -250,6 +250,7 @@ const FileUploadPreviewList = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { files } = useFileUploadContext()
   const [objectUrls, setObjectUrls] = React.useState<string[]>([])
+  const [filesState, setFiles] = React.useState<File[]>(files)
 
   React.useEffect(() => {
     if (files.length === 0 || !files[0].size) {
@@ -259,6 +260,7 @@ const FileUploadPreviewList = React.forwardRef<
     // Create object URLs for each file
     const urls = files.map((file) => URL.createObjectURL(file))
     setObjectUrls(urls)
+    setFiles(files)
 
     // Cleanup function to revoke object URLs
     return () => {
@@ -275,13 +277,13 @@ const FileUploadPreviewList = React.forwardRef<
       {objectUrls.map((file, index) => (
         <li
           className="border-foreground/40 relative flex h-[5rem] w-[5rem] items-center rounded-md border p-2"
-          key={`${files[index].name}-${index}`}
+          key={`${filesState[index].name}-${index}`}
         >
           <img
             className={cx(className)}
             ref={ref}
             src={file}
-            alt={files[index].name}
+            alt={filesState[index].name}
             {...props}
           />
         </li>
