@@ -10,103 +10,81 @@ import {
 import { cx } from "../../lib"
 import { Button, buttonVariants } from "../button"
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons"
+import type { CalendarClasses } from "./calendar-classes"
 
 export type CalendarProps = DayPickerProps & {
-  monthsClassName?: string
-  monthCaptionClassName?: string
-  weekdaysClassName?: string
-  weekdayClassName?: string
-  monthClassName?: string
-  captionClassName?: string
-  captionLabelClassName?: string
-  buttonNextClassName?: string
-  buttonPreviousClassName?: string
-  navClassName?: string
-  monthGridClassName?: string
-  weekClassName?: string
-  dayClassName?: string
-  dayButtonClassName?: string
-  rangeStartClassName?: string
-  rangeEndClassName?: string
-  selectedClassName?: string
-  todayClassName?: string
-  outsideClassName?: string
-  disabledClassName?: string
-  rangeMiddleClassName?: string
-  hiddenClassName?: string
+  /**
+   * Override or extend the styles applied to the component
+   * and its subcomponents.
+   */
+  classes?: CalendarClasses
 }
 
-const Calendar = ({
-  className,
-  buttonNextClassName,
-  buttonPreviousClassName,
-  navClassName,
-  ...props
-}: CalendarProps) => {
+const Calendar = ({ className, classes, ...props }: CalendarProps) => {
   const { onNextClick, onPrevClick } = props
-  const _monthsClassName = cx("relative flex", props.monthsClassName)
+  const _monthsClassName = cx("relative flex", classes?.months)
   const _monthCaptionClassName = cx(
     "relative mx-10 flex h-7 items-center justify-center",
-    props.monthCaptionClassName
+    classes?.monthCaption
   )
-  const _weekdaysClassName = cx("flex flex-row", props.weekdaysClassName)
+  const _weekdaysClassName = cx("flex flex-row", classes?.weekdays)
   const _weekdayClassName = cx(
     "w-8 text-sm font-normal text-muted-foreground",
-    props.weekdayClassName
+    classes?.weekday
   )
-  const _monthClassName = cx("w-full", props.monthClassName)
+  const _monthClassName = cx("w-full", classes?.month)
   const _captionClassName = cx(
     "relative flex items-center justify-center pt-1",
-    props.captionClassName
+    classes?.caption
   )
   const _captionLabelClassName = cx(
     "truncate text-sm font-medium",
-    props.captionLabelClassName
+    classes?.captionLabel
   )
-  const _monthGridClassName = cx("mx-auto mt-4", props.monthGridClassName)
-  const _weekClassName = cx("mt-2 flex w-max items-start", props.weekClassName)
+  const _monthGridClassName = cx("mx-auto mt-4", classes?.monthGrid)
+  const _weekClassName = cx("mt-2 flex w-max items-start", classes?.week)
   const _dayClassName = cx(
     "flex size-8 flex-1 items-center justify-center p-0 text-sm group",
-    props.dayClassName
+    classes?.day
   )
   const _dayButtonClassName = cx(
     buttonVariants({ variant: "text", color: "neutral" }),
     "size-8 rounded-md p-0 font-normal transition-none aria-selected:opacity-100",
     "group-data-[selected=true]:hover:bg-primary/80 group-data-[selected=true]:border-none",
-    props.dayButtonClassName
+    classes?.dayButton
   )
   const buttonRangeClassName = cx("bg-primary/10 ")
   const _rangeStartClassName = cx(
     buttonRangeClassName,
     "day-range-start rounded-s-md",
-    props.rangeStartClassName
+    classes?.rangeStart
   )
   const _rangeEndClassName = cx(
     buttonRangeClassName,
     "day-range-end rounded-e-md",
-    props.rangeEndClassName
+    classes?.rangeEnd
   )
   const _rangeMiddleClassName = cx(
     "[&>button]:bg-transparent bg-primary/10 [&>button]:!text-foreground [&>button]:hover:!bg-primary/20",
-    props.rangeMiddleClassName
+    classes?.rangeMiddle
   )
   const _selectedClassName = cx(
     "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:text-primary-foreground",
-    props.selectedClassName
+    classes?.selected
   )
   const _todayClassName = cx(
     "[&>button]:text-foreground [&>button]:border [&>button]:border-foreground/60 ",
-    props.todayClassName
+    classes?.today
   )
   const _outsideClassName = cx(
     "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-    props.outsideClassName
+    classes?.outside
   )
   const _disabledClassName = cx(
     "text-muted-foreground opacity-50",
-    props.disabledClassName
+    classes?.disabled
   )
-  const _hiddenClassName = cx("invisible flex-1", props.hiddenClassName)
+  const _hiddenClassName = cx("invisible flex-1", classes?.hidden)
 
   return (
     <DayPicker
@@ -144,9 +122,9 @@ const Calendar = ({
           <Nav
             onNextClick={onNextClick}
             onPreviousClick={onPrevClick}
-            navClassName={navClassName}
-            buttonPreviousClassName={buttonPreviousClassName}
-            buttonNextClassName={buttonNextClassName}
+            navClassName={classes?.nav}
+            buttonPreviousClassName={classes?.buttonPrevious}
+            buttonNextClassName={classes?.buttonNext}
           />
         ),
       }}
