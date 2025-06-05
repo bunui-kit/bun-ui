@@ -1,10 +1,12 @@
 interface CalendarClasses {
+  /**
+   * Styles applied to the calendar root element.
+   */
   months?: string
   monthCaption?: string
   weekdays?: string
   weekday?: string
   month?: string
-  caption?: string
   captionLabel?: string
   buttonNext?: string
   buttonPrevious?: string
