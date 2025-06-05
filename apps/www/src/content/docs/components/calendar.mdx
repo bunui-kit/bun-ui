@@ -32,7 +32,7 @@ Use the `mode` prop to enable range selection.
 
 ### Controlled
 
-<Alert variant="warning" className="mt-2">
+<Alert color="warning" className="mt-2">
   <AlertTitle>Each mode require different type of onSelect and selected props</AlertTitle>
 </Alert>
 
@@ -47,3 +47,9 @@ Use the `mode` prop to enable range selection.
 `mode="multiple"`
 
 <ComponentPreview name="calendar-controlled-multiple" />
+
+### Date Range Navigation
+
+Use `startMonth` and `endMonth` props to restrict the calendar's navigation range. Dates outside this range will have disabled navigation buttons.
+
+<ComponentPreview name="calendar-start-end-month" />
