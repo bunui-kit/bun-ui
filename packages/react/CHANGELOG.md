@@ -1,5 +1,16 @@
 # @bun-ui/react
 
+## 0.2.46
+
+### Patch Changes
+
+- [#157](https://github.com/bunui-kit/bun-ui/pull/157)
+  [`b13ec57`](https://github.com/bunui-kit/bun-ui/commit/b13ec57b9af6f5703ca3b8ae4c8e42515243f96f)
+  Thanks [@khanguyen74](https://github.com/khanguyen74)! - add IconButton
+  component
+
+  add month and year view to Calendar
+
 ## 0.2.45
 
 ### Patch Changes
