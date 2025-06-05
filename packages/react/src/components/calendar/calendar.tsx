@@ -144,10 +144,24 @@ const Calendar = ({
   )
   const _hiddenClassName = cx("invisible flex-1", classes?.hidden)
 
+  // Determine the default month to display based on the selected date(s).
+  // This makes sure the calendar display the month of the selected date(s) if available.
+  // If no date is selected, it defaults to the current month.
+  let _defaultMonth = new Date()
+  if (props.mode === "single" && props.selected) {
+    _defaultMonth = props.selected
+  } else if (props.mode === "multiple" && props.selected?.length) {
+    _defaultMonth = props.selected[0]
+  } else if (props.mode === "range" && props.selected?.from) {
+    // If a range is selected, default to the start of the range.
+    _defaultMonth = props.selected.from
+  }
+
   return (
     <DayPicker
       mode="single"
       className={cx("w-[260px] p-3", className)}
+      defaultMonth={_defaultMonth}
       startMonth={startMonth}
       endMonth={endMonth}
       classNames={{
