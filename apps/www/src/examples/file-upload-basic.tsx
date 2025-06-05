@@ -3,7 +3,7 @@ import { UploadIcon } from "lucide-react"
 
 export const FileUploadBasic = () => {
   return (
-    <FileUpload>
+    <FileUpload className="w-[400px]">
       <FileUploadTrigger>
         <UploadIcon />
         <p className="text-sm">Upload</p>
