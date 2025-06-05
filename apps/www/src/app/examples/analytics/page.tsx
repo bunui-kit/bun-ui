@@ -157,14 +157,14 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col justify-between lg:flex-row">
         <div>
           <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
           <p className="text-muted-foreground mt-1">
             Track your application metrics and user behavior
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Select value={dateRange} onValueChange={setDateRange}>
             <SelectItem value="24h">Last 24 Hours</SelectItem>
             <SelectItem value="7d">Last 7 Days</SelectItem>
@@ -230,7 +230,6 @@ export default function AnalyticsDashboard() {
                 </span>
               </div>
             </CardContent>
-            <div className="from-primary/20 to-primary/5 absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r" />
           </Card>
         ))}
       </div>
