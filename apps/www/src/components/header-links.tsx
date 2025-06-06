@@ -5,10 +5,14 @@ import { usePathname } from "next/navigation"
 
 import { cx } from "@/lib/classnames"
 
-export const HeaderLinks = () => {
+interface HeaderLinksProps {
+  className?: string
+}
+
+export const HeaderLinks = ({ className }: HeaderLinksProps) => {
   const currentPath = usePathname()
   return (
-    <nav className="text-foreground/60 hidden gap-x-6 text-sm sm:flex">
+    <nav className={cx("text-foreground/60 flex gap-x-6 text-sm", className)}>
       <NextLink
         href="/docs"
         className={cx(currentPath.startsWith("/docs") && "text-foreground")}
