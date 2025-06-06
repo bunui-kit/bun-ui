@@ -13,20 +13,26 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   Label,
+  Link,
   Progress,
   Select,
   SelectItem,
+  Skeleton,
   Switch,
   TabContent,
   TabList,
   Tabs,
   TabTrigger,
   Tooltip,
+  useToast,
 } from "@bun-ui/react"
 import {
   Activity,
@@ -37,9 +43,13 @@ import {
   CheckCircle,
   Clock,
   Download,
+  FileText,
+  Mail,
+  MessageSquare,
   MoreHorizontal,
   Plus,
   Settings,
+  Share2,
   TrendingUp,
   Users,
 } from "lucide-react"
@@ -72,6 +82,37 @@ const metrics = [
     change: "-45s",
     trend: "down",
     icon: Clock,
+  },
+]
+
+const engagementMetrics = [
+  {
+    title: "Social Shares",
+    value: "2,345",
+    change: "+18%",
+    trend: "up",
+    icon: Share2,
+  },
+  {
+    title: "Comments",
+    value: "1,234",
+    change: "+12%",
+    trend: "up",
+    icon: MessageSquare,
+  },
+  {
+    title: "Email Subscribers",
+    value: "5,678",
+    change: "+5%",
+    trend: "up",
+    icon: Mail,
+  },
+  {
+    title: "Document Views",
+    value: "3,456",
+    change: "-2%",
+    trend: "down",
+    icon: FileText,
   },
 ]
 
@@ -126,7 +167,8 @@ const recentEvents = [
 export default function AnalyticsDashboard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [dateRange, setDateRange] = useState("7d")
-  const [isLoading, setIsLoading] = useState(true)
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
+  const { createToast } = useToast()
   const [realTimeData, setRealTimeData] = useState({
     activeUsers: 0,
     pageViews: 0,
@@ -141,19 +183,18 @@ export default function AnalyticsDashboard() {
         pageViews: Math.floor(Math.random() * 1000) + 500,
         bounceRate: Math.random() * 20 + 30,
       })
-    }, 5000)
+    }, 3500)
 
     return () => clearInterval(interval)
   }, [])
 
-  // Simulate initial loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const handleExport = () => {
+    setIsExportModalOpen(false)
+    createToast({
+      title: "Export Started",
+      description: "Your data is being prepared for download.",
+    })
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -171,7 +212,11 @@ export default function AnalyticsDashboard() {
             <SelectItem value="30d">Last 30 Days</SelectItem>
             <SelectItem value="90d">Last 90 Days</SelectItem>
           </Select>
-          <Button variant="outlined" size="sm">
+          <Button
+            variant="outlined"
+            size="sm"
+            onClick={() => setIsExportModalOpen(true)}
+          >
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
@@ -188,20 +233,54 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <Alert className="mb-8">
-        <Bell className="h-4 w-4" />
+      <Alert
+        className="mb-8"
+        icon={<Bell className="my-1 h-5 w-5" />}
+        color="success"
+      >
         <AlertTitle>New Feature Available</AlertTitle>
         <AlertDescription>
           Try our new advanced analytics features to get deeper insights into
-          your data.{" "}
-          <Button variant="text" className="h-auto p-0">
-            Learn more
-          </Button>
+          your data. <Link href="#">Learn more</Link>
         </AlertDescription>
       </Alert>
 
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric) => (
+          <Card key={metric.title} className="relative overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <span className="text-sm font-medium">{metric.title}</span>
+              <metric.icon className="text-primary h-5 w-5" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{metric.value}</div>
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant="filled"
+                  className={`flex items-center gap-1 ${
+                    metric.trend === "up"
+                      ? "bg-success text-success-foreground border-success"
+                      : "text-destructive-foreground bg-destructive border-destructive"
+                  }`}
+                >
+                  {metric.trend === "up" ? (
+                    <ArrowUp className="h-3 w-3" />
+                  ) : (
+                    <ArrowDown className="h-3 w-3" />
+                  )}
+                  {metric.change}
+                </Badge>
+                <span className="text-muted-foreground text-xs">
+                  vs last period
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {engagementMetrics.map((metric) => (
           <Card key={metric.title} className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <span className="text-sm font-medium">{metric.title}</span>
@@ -249,44 +328,45 @@ export default function AnalyticsDashboard() {
                   <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
                     <Users className="h-4 w-4" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Active Users</p>
-                    <p className="text-muted-foreground text-xs">Right now</p>
+                  <p className="text-sm font-medium">Active Users</p>
+                </div>
+                {realTimeData.activeUsers === 0 ? (
+                  <Skeleton width="70px" height="30px" variant="rectangular" />
+                ) : (
+                  <div className="text-lg font-semibold">
+                    {realTimeData.activeUsers}
                   </div>
-                </div>
-                <div className="text-lg font-semibold">
-                  {realTimeData.activeUsers}
-                </div>
+                )}
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
                     <Activity className="h-4 w-4" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Page Views</p>
-                    <p className="text-muted-foreground text-xs">
-                      Last 5 minutes
-                    </p>
+                  <p className="text-sm font-medium">Page Views</p>
+                </div>
+                {realTimeData.pageViews === 0 ? (
+                  <Skeleton width="70px" height="30px" variant="rectangular" />
+                ) : (
+                  <div className="text-lg font-semibold">
+                    {realTimeData.pageViews}
                   </div>
-                </div>
-                <div className="text-lg font-semibold">
-                  {realTimeData.pageViews}
-                </div>
+                )}
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
                     <TrendingUp className="h-4 w-4" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium">Bounce Rate</p>
-                    <p className="text-muted-foreground text-xs">Current</p>
+                  <p className="text-sm font-medium">Bounce Rate</p>
+                </div>
+                {realTimeData.bounceRate === 0 ? (
+                  <Skeleton width="70px" height="30px" variant="rectangular" />
+                ) : (
+                  <div className="text-lg font-semibold">
+                    {realTimeData.bounceRate.toFixed(1)}%
                   </div>
-                </div>
-                <div className="text-lg font-semibold">
-                  {realTimeData.bounceRate.toFixed(1)}%
-                </div>
+                )}
               </div>
             </div>
           </CardContent>
@@ -451,6 +531,76 @@ export default function AnalyticsDashboard() {
           </Card>
         </TabContent>
       </Tabs>
+
+      <Card className="mt-8">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <h3 className="text-lg font-semibold">Recent Notifications</h3>
+          <Button variant="text" size="icon" className="h-8 w-8">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Alert icon={<Bell className="my-1 h-5 w-5" />}>
+              <AlertTitle>New Feature Available</AlertTitle>
+              <AlertDescription>
+                Try our new advanced analytics features to get deeper insights
+                into your data.
+              </AlertDescription>
+            </Alert>
+            <Alert color="success">
+              <AlertTitle>Export Completed</AlertTitle>
+              <AlertDescription>
+                Your data has been successfully exported to CSV format.
+              </AlertDescription>
+            </Alert>
+            <Alert color="warning">
+              <AlertTitle>Storage Warning</AlertTitle>
+              <AlertDescription>
+                You&apos;re approaching your storage limit. Consider upgrading
+                your plan.
+              </AlertDescription>
+            </Alert>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={isExportModalOpen} onOpenChange={setIsExportModalOpen}>
+        <DialogContent>
+          <DialogTitle>Export Data</DialogTitle>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Date Range</Label>
+              <Select value={dateRange} onValueChange={setDateRange}>
+                <SelectItem value="24h">Last 24 Hours</SelectItem>
+                <SelectItem value="7d">Last 7 Days</SelectItem>
+                <SelectItem value="30d">Last 30 Days</SelectItem>
+                <SelectItem value="90d">Last 90 Days</SelectItem>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Format</Label>
+              <Select defaultValue="csv">
+                <SelectItem value="csv">CSV</SelectItem>
+                <SelectItem value="json">JSON</SelectItem>
+                <SelectItem value="excel">Excel</SelectItem>
+              </Select>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outlined"
+                onClick={() => setIsExportModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleExport}>
+                <Download className="mr-2 h-4 w-4" />
+                Export
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent>

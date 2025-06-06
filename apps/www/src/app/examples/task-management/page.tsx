@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
   Avatar,
   AvatarFallback,
@@ -77,6 +77,7 @@ const tasks = [
     progress: 75,
     comments: 5,
     attachments: 3,
+    completed: true,
   },
   {
     id: 2,
@@ -237,6 +238,7 @@ const taskActivities = [
 
 export default function TaskManagement() {
   const [isNewTaskOpen, setIsNewTaskOpen] = useState(false)
+  const [tasksState, setTasksState] = useState(tasks)
   const [selectedDate, setSelectedDate] = useState<Date>()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedPriority, setSelectedPriority] = useState("all")
@@ -247,7 +249,6 @@ export default function TaskManagement() {
   const [sortBy, setSortBy] = useState("dueDate")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
   const [dateRange, setDateRange] = useState<DateRange>()
-  const [boardTasks, setBoardTasks] = useState(tasks)
 
   const handleDateChange = (date?: Date) => {
     setSelectedDate(date)
@@ -255,31 +256,55 @@ export default function TaskManagement() {
     setCalendarOpen(false)
   }
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
-    const matchesPriority =
-      selectedPriority === "all" || task.priority === selectedPriority
-    const matchesStatus =
-      selectedStatus === "all" || task.status === selectedStatus
-    const matchesAssignee =
-      selectedAssignee === "all" || task.assignee.name === selectedAssignee
-    const matchesDateRange =
-      !dateRange?.from ||
-      !dateRange?.to ||
-      isWithinInterval(new Date(task.dueDate), {
-        start: startOfDay(dateRange.from),
-        end: endOfDay(dateRange.to),
-      })
-    return (
-      matchesSearch &&
-      matchesPriority &&
-      matchesStatus &&
-      matchesAssignee &&
-      matchesDateRange
+  const filteredTasks = useMemo(
+    () =>
+      tasksState.filter((task) => {
+        const matchesSearch = task.title
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())
+        const matchesPriority =
+          selectedPriority === "all" || task.priority === selectedPriority
+        const matchesStatus =
+          selectedStatus === "all" || task.status === selectedStatus
+        const matchesAssignee =
+          selectedAssignee === "all" || task.assignee.name === selectedAssignee
+        const matchesDateRange =
+          !dateRange?.from ||
+          !dateRange?.to ||
+          isWithinInterval(new Date(task.dueDate), {
+            start: startOfDay(dateRange.from),
+            end: endOfDay(dateRange.to),
+          })
+        return (
+          matchesSearch &&
+          matchesPriority &&
+          matchesStatus &&
+          matchesAssignee &&
+          matchesDateRange
+        )
+      }),
+    [
+      tasksState,
+      dateRange,
+      searchQuery,
+      selectedPriority,
+      selectedStatus,
+      selectedAssignee,
+    ]
+  )
+
+  const handleCheckboxChange = (taskId: number) => {
+    setTasksState((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status: task.status === "completed" ? "todo" : "completed",
+            }
+          : task
+      )
     )
-  })
+  }
 
   const sortOptions = [
     { value: "dueDate", label: "Due Date" },
@@ -403,21 +428,21 @@ export default function TaskManagement() {
         </Card>
       </div>
 
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-4">
+      <div className="mb-6 flex flex-col gap-4">
+        <div className="grid grid-cols-2 items-center gap-4 lg:flex">
           <div className="relative flex-1">
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               placeholder="Search tasks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-[12rem] pl-9"
+              className="w-full pl-9 lg:w-[150px]"
             />
           </div>
           <Select
             value={selectedPriority}
             onValueChange={setSelectedPriority}
-            className="w-[150px]"
+            className="w-full"
           >
             <SelectItem value="all">All Priorities</SelectItem>
             {priorities.map((priority) => (
@@ -429,7 +454,7 @@ export default function TaskManagement() {
           <Select
             value={selectedStatus}
             onValueChange={setSelectedStatus}
-            className="w-[150px]"
+            className="w-full"
           >
             <SelectItem value="all">All Status</SelectItem>
             {statuses.map((status) => (
@@ -484,7 +509,7 @@ export default function TaskManagement() {
           </Popover>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <Select
               value={sortBy}
               onValueChange={setSortBy}
@@ -500,6 +525,7 @@ export default function TaskManagement() {
               variant="outlined"
               size="icon"
               className="shrink-0"
+              color="neutral"
               onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
             >
               {sortOrder === "asc" ? <ArrowUp /> : <ArrowDown />}
@@ -531,6 +557,7 @@ export default function TaskManagement() {
                       <Checkbox
                         checked={task.status === "completed"}
                         className="mt-1"
+                        onCheckedChange={() => handleCheckboxChange(task.id)}
                       />
                       <div className="flex-1">
                         <div className="flex items-start justify-between">
@@ -653,13 +680,13 @@ export default function TaskManagement() {
                     <h3 className="font-semibold">{status.label}</h3>
                     <Badge variant="outlined">
                       {
-                        boardTasks.filter((t) => t.status === status.value)
+                        filteredTasks.filter((t) => t.status === status.value)
                           .length
                       }
                     </Badge>
                   </div>
                   <div className="min-h-[200px] space-y-4 rounded-lg border border-dashed p-4">
-                    {boardTasks
+                    {filteredTasks
                       .filter((task) => task.status === status.value)
                       .map((task) => (
                         <Card
