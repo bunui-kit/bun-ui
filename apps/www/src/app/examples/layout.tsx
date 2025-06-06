@@ -32,8 +32,8 @@ export default function ExamplesLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden w-64 border-r lg:block">
+    <div className="flex min-h-[calc(100vh-60px-45.8px)]">
+      <div className="sticky top-[var(--header-height)] left-0 hidden h-[calc(100vh-var(--header-height))] w-[300px] shrink-0 border-r lg:block">
         <ExamplesNav />
       </div>
       <div className="flex-1">
