@@ -82,7 +82,6 @@ import {
   Timeline,
   TimelineConnector,
   TimelineContent,
-  TimelineDescription,
   TimelineIndicator,
   TimelineItem,
   TimelineSeparator,
@@ -554,7 +553,10 @@ export default function ComponentsPage() {
             <FileUploadList />
           </FileUpload>
         </ComponentCard>
-        <ComponentCard title="Timeline" className="col-span-3">
+        <ComponentCard
+          title="Timeline"
+          className="col-span-1 md:col-span-2 lg:col-span-3"
+        >
           <Timeline>
             <TimelineItem className="before:flex-0">
               <TimelineSeparator>

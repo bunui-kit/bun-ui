@@ -18,7 +18,7 @@ export const SiteHeader = () => {
         <div className="ml-auto flex flex-1 grow items-center justify-end gap-6">
           <HeaderCommand />
           <div className="flex items-center gap-4">
-            <HeaderLinks />
+            <HeaderLinks className="hidden sm:flex" />
             <div className="flex items-center gap-2">
               <IconButton asChild size="xs">
                 <NextLink href={siteConfig.links.github} target="_blank">
