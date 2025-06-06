@@ -6,6 +6,7 @@ import { headers } from "next/headers"
 import { Alert, AlertTitle, ThemeProvider, Toaster } from "@bun-ui/react"
 
 import { cx } from "@/lib/classnames"
+import { HeaderLinks } from "@/components/header-links"
 import { SiteHeader } from "@/components/site-header"
 
 export const metadata: Metadata = {
@@ -66,6 +67,9 @@ export default async function RootLayout({
               </AlertTitle>
             </Alert>
             <SiteHeader />
+            <div className="flex px-6 py-4 lg:hidden">
+              <HeaderLinks />
+            </div>
             {children}
           </div>
           <Toaster />
