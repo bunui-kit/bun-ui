@@ -1,5 +1,13 @@
 # @bun-ui/react
 
+## 0.2.47
+
+### Patch Changes
+
+- [`ba54862`](https://github.com/bunui-kit/bun-ui/commit/ba5486250d06fecb159e780ae1f597e88c1e0c50)
+  [#162](https://github.com/bunui-kit/bun-ui/pull/162) Thanks
+  [@khanguyen74](https://github.com/khanguyen74)!: add classes prop to Alert
+
 ## 0.2.46
 
 ### Patch Changes
