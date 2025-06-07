@@ -19,4 +19,4 @@ const getReleaseLine = async (changeset) => {
   return returnVal
 }
 
-module.exports = { getReleaseLine }
+export { getReleaseLine }
