@@ -32,7 +32,6 @@ const config = {
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],
-  proseWrap: "always",
 }
 
 export default config
