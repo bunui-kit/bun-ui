@@ -19,4 +19,18 @@ const getReleaseLine = async (changeset) => {
   return returnVal
 }
 
-export { getReleaseLine }
+const getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
+  if (dependenciesUpdated.length === 0) return ""
+
+  const changesetLinks = changesets.map(
+    (changeset) => `- Updated dependencies [${changeset.commit}]:`
+  )
+
+  const updatedDepenenciesList = dependenciesUpdated.map(
+    (dependency) => `  - ${dependency.name}@${dependency.version}`
+  )
+
+  return [...changesetLinks, ...updatedDepenenciesList].join("\n")
+}
+
+module.exports = { getReleaseLine, getDependencyReleaseLine }
