@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "./changeLogEntry.js",
+  "changelog": ["@changesets/changelog-github", { "repo": "bunui-kit/bun-ui" }],
   "commit": false,
   "fixed": [],
   "linked": [],
