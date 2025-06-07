@@ -9,6 +9,7 @@ import {
   CloseIcon,
   TriangleAlertIcon,
 } from "../icons"
+import type { AlertClasses } from "./alert-classes"
 
 const alertVariants = cva(
   "relative w-full rounded-lg px-4 py-[6px] text-sm flex",
@@ -136,6 +137,12 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
    * Callback fired when the component requests to be closed.
    */
   onClose?: (event: React.MouseEvent) => void
+
+  /**
+   * Override or extend the styles applied to Alert component
+   * and its subcomponents.
+   */
+  classes?: AlertClasses
 }
 
 /**
@@ -167,6 +174,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       children,
       action,
       onClose,
+      classes,
       ...props
     },
     ref
@@ -183,20 +191,40 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     return (
       <div
         ref={ref}
-        className={cx(alertVariants({ color, variant, className }))}
+        className={cx(
+          alertVariants({ color, variant }),
+          classes?.root,
+          className
+        )}
         {...props}
       >
-        {icon && <div className="mr-2 flex py-2">{icon}</div>}
-        <div className="py-2">{children}</div>
+        {icon && (
+          <div className={cx("mr-2 flex py-2", classes?.icon)}>{icon}</div>
+        )}
+        <div className={cx("py-2", classes?.content)}>{children}</div>
         {action != null ? (
-          <div className="-mr-2 ml-auto flex items-start pt-1 pb-2">
+          <div
+            className={cx(
+              "-mr-2 ml-auto flex items-start pt-1 pb-2",
+              classes?.actionContainer
+            )}
+          >
             {action}
           </div>
         ) : null}
         {action == null && onClose ? (
-          <div className="-mr-2 ml-auto flex items-start pt-1 pb-2">
-            <IconButton onClick={onClose} size="sm" className="text-current">
-              <CloseIcon />
+          <div
+            className={cx(
+              "-mr-2 ml-auto flex items-start pt-1 pb-2",
+              classes?.actionContainer
+            )}
+          >
+            <IconButton
+              onClick={onClose}
+              size="sm"
+              className={cx("text-current", classes?.closeIconButton)}
+            >
+              <CloseIcon className={classes?.closeIcon} />
             </IconButton>
           </div>
         ) : null}
