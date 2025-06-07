@@ -18,5 +18,6 @@ export default defineConfig([
     "**/*.test.ts",
     "**/.velite/**",
     "**/tsup.config.ts",
+    "**/CHANGELOG.md",
   ]),
 ])
