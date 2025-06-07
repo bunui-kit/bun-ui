@@ -33,4 +33,4 @@ const getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
   return [...changesetLinks, ...updatedDepenenciesList].join("\n")
 }
 
-module.exports = { getReleaseLine, getDependencyReleaseLine }
+export { getReleaseLine, getDependencyReleaseLine }
