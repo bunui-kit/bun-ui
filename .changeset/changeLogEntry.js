@@ -1,5 +1,6 @@
-require("dotenv").config()
-const { getInfo } = require("@changesets/get-github-info")
+import { getInfo } from "@changesets/get-github-info"
+
+import "dotenv/config"
 
 const getReleaseLine = async (changeset) => {
   const [firstLine, ...futureLines] = changeset.summary
@@ -18,4 +19,4 @@ const getReleaseLine = async (changeset) => {
   return returnVal
 }
 
-module.exports = { getReleaseLine }
+export { getReleaseLine }
