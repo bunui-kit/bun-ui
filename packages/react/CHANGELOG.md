@@ -1,5 +1,15 @@
 # @bun-ui/react
 
+## 0.2.47
+
+### Patch Changes
+
+- [#176](https://github.com/bunui-kit/bun-ui/pull/176) [`d6ae56d`](https://github.com/bunui-kit/bun-ui/commit/d6ae56d8871e3cf61a0e82bd3145bf66400cc95e) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add size prop to Avatar
+
+- [#178](https://github.com/bunui-kit/bun-ui/pull/178) [`40f2713`](https://github.com/bunui-kit/bun-ui/commit/40f27136f757d9b1973de6ddec2ee3e0a956f372) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add classes prop to CommandMenu and fix some styles
+
+- [#162](https://github.com/bunui-kit/bun-ui/pull/162) [`ba54862`](https://github.com/bunui-kit/bun-ui/commit/ba5486250d06fecb159e780ae1f597e88c1e0c50) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add classes prop to Alert
+
 ## 0.2.46
 
 ### Patch Changes
