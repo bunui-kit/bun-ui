@@ -1,0 +1,70 @@
+---
+title: Command Menu
+description: A command menu component that provides a command palette interface for quick actions and navigation.
+links:
+  source: components/command-menu
+  docs: /docs/components/command-menu
+---
+
+<ComponentPreview name="command-menu-basic" />
+
+## Usage
+
+Import the `CommandMenu` components from `@bun-ui/react` and use them in your project:
+
+```tsx
+import {
+  CommandMenu,
+  CommandMenuDialog,
+  CommandMenuInput,
+  CommandMenuList,
+  CommandMenuEmpty,
+  CommandMenuGroup,
+  CommandMenuItem,
+} from "@bun-ui/react"
+```
+
+```tsx
+<CommandMenuDialog>
+  <CommandMenuInput placeholder="Type a command or search..." />
+  <CommandMenuList>
+    <CommandMenuEmpty>No results found.</CommandMenuEmpty>
+    <CommandMenuGroup heading="Suggestions">
+      <CommandMenuItem>Calendar</CommandMenuItem>
+      <CommandMenuItem>Search</CommandMenuItem>
+      <CommandMenuItem>Settings</CommandMenuItem>
+    </CommandMenuGroup>
+  </CommandMenuList>
+</CommandMenuDialog>
+```
+
+## Examples
+
+### With Actions
+
+Add `onSelect` prop to `<CommandMenuItem>` component to trigger actions.
+
+<ComponentPreview name="command-menu-actions" />
+
+### With Links
+
+<ComponentPreview name="command-menu-links" />
+
+### With Icons
+
+Add icons to your command menu items for better visual hierarchy.
+
+<ComponentPreview name="command-menu-icons" />
+
+### Use with Dialog
+
+Use the Command Menu with a Dialog component for more flexible layouts and styling.
+This example shows how to create a custom button trigger that opens a command menu in a dialog.
+
+<ComponentPreview name="command-menu-dialog" />
+
+### With Nested Groups
+
+Organize your command menu items into nested groups for better organization.
+
+<ComponentPreview name="command-menu-nested" />
