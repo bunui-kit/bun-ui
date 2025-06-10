@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import NextLink from "next/link"
 import { useRouter } from "next/navigation"
 import {
   Button,
@@ -13,8 +14,9 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
 } from "@bun-ui/react"
-import { File, Puzzle, Search } from "lucide-react"
+import { File, Puzzle, Search, X } from "lucide-react"
 
 import { SideBarNavItem, sideBarNavs } from "@/config/docs"
 import { docs } from "../.velite"
@@ -46,7 +48,10 @@ const highlightMatch = (text: string, searchValue: string) => {
   const regex = new RegExp(`(${searchValue})`, "gi")
   return text.split(regex).map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} className="bg-primary/20">
+      <mark
+        key={i}
+        className="bg-primary/50 group-data-[selected=true]:bg-secondary"
+      >
         {part}
       </mark>
     ) : (
@@ -85,23 +90,17 @@ export const HeaderCommand = () => {
     setOpen(true)
   }
 
-  const handleSelectUrl = (url: string, isExternal = false) => {
-    setOpen(false)
-    if (isExternal) {
-      const { protocol, hostname, port } = window.location
-      const docUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}${url}`
-      window.open(docUrl, "_blank")
-    } else {
-      router.push(url)
-    }
-  }
-
   const handleCommandMenuKeyDown = (e: React.KeyboardEvent) => {
-    if (e.metaKey) {
-      if (e.key === "Enter") {
-        e.preventDefault()
-        handleSelectUrl(selectedValue, true)
+    if (e.key === "Enter") {
+      e.preventDefault()
+      if (e.metaKey || e.ctrlKey) {
+        const { protocol, hostname, port } = window.location
+        const docUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}${selectedValue}`
+        window.open(docUrl, "_blank")
+      } else {
+        router.push(selectedValue)
       }
+      setOpen(false)
     }
   }
 
@@ -210,20 +209,28 @@ export const HeaderCommand = () => {
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTitle className="sr-only">Search</DialogTitle>
-        <DialogContent className="p-0 lg:max-w-3xl">
+        <DialogContent showCloseButton={false} className="p-0 lg:max-w-3xl">
           <CommandMenu
-            className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
             shouldFilter={false}
             onKeyDown={handleCommandMenuKeyDown}
             value={selectedValue}
             onValueChange={setSelectedValue}
           >
-            <CommandMenuInput
-              placeholder="Search..."
-              value={inputValue}
-              onValueChange={setInputValue}
-              className="w-lg"
-            />
+            <div className="relative">
+              <CommandMenuInput
+                placeholder="Search..."
+                value={inputValue}
+                onValueChange={setInputValue}
+                className="h-12 w-lg pr-4"
+              />
+              <IconButton
+                onClick={() => setInputValue("")}
+                size="xs"
+                className="absolute top-3 right-2"
+              >
+                <X />
+              </IconButton>
+            </div>
             <CommandMenuList className="max-h-[30rem] lg:max-h-[40rem]">
               <CommandMenuEmpty>No results</CommandMenuEmpty>
               {navItems.map((nav) => (
@@ -236,19 +243,24 @@ export const HeaderCommand = () => {
                       <CommandMenuItem
                         key={item.title}
                         value={item.url}
-                        onSelect={() => handleSelectUrl(item.url as string)}
+                        onSelect={() => setOpen(false)}
+                        className="group py-3"
+                        asChild
                       >
-                        <div className="flex flex-col gap-1">
+                        <NextLink
+                          href={item.url as string}
+                          className="flex flex-col items-start gap-1"
+                        >
                           <div className="flex items-center gap-2">
                             {renderIcon(item.url as string)}
                             <span>{item.title}</span>
                           </div>
                           {doc?.matchSnippet && (
-                            <p className="text-muted-foreground text-xs">
+                            <p className="text-muted-foreground group-data-[selected=true]:text-primary-foreground text-xs">
                               {highlightMatch(doc.matchSnippet, inputValue)}
                             </p>
                           )}
-                        </div>
+                        </NextLink>
                       </CommandMenuItem>
                     )
                   })}
