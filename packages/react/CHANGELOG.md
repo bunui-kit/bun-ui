@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.48
+
+### Patch Changes
+
+- [#181](https://github.com/bunui-kit/bun-ui/pull/181) [`c30cafe`](https://github.com/bunui-kit/bun-ui/commit/c30cafecc5a5fb73c9d67f3eedbb4307d4a182b1) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add Typography component
+
 ## 0.2.47
 
 ### Patch Changes
