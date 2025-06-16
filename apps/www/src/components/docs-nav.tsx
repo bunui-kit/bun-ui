@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -9,13 +10,37 @@ import { cx } from "@/lib/classnames"
 interface DocsNavProps {
   config: DocsConfig
 }
+
 export const DocsNav = ({ config }: DocsNavProps) => {
   const pathname = usePathname()
   const items = config.sideBarNavs
+  const navRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Auto-scroll to the active item when pathname changes
+    const activeLink = navRef.current?.querySelector(`a[href="${pathname}"]`)
+    if (activeLink && navRef.current) {
+      const containerRect = navRef.current.getBoundingClientRect()
+      const linkRect = activeLink.getBoundingClientRect()
+      const scrollTop =
+        linkRect.top -
+        containerRect.top -
+        containerRect.height / 2 +
+        navRef.current.scrollTop
+
+      navRef.current.scrollTo({
+        top: scrollTop,
+        behavior: "instant",
+      })
+    }
+  }, [pathname])
 
   return (
     <aside className="sticky top-[var(--header-height)] hidden h-[calc(100vh-var(--header-height))] w-[300px] shrink-0 border-r lg:block">
-      <div className="flex h-full flex-col overflow-y-auto px-2 py-4 pb-20">
+      <div
+        ref={navRef}
+        className="flex h-full flex-col overflow-y-auto scroll-smooth px-2 py-4 pb-20"
+      >
         {items.map((item, index) => (
           <div key={index} className="flex flex-col gap-1">
             <h4 className="rounded-md px-2 py-1 text-sm font-medium">
