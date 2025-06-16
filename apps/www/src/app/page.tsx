@@ -16,6 +16,7 @@ import {
   TabTrigger,
   ToggleGroup,
   ToggleGroupItem,
+  Typography,
 } from "@bun-ui/react"
 import {
   AlignCenter,
@@ -38,13 +39,16 @@ const HomePage = () => {
         <div className="from-primary/5 to-background relative overflow-hidden bg-gradient-to-b">
           <div className="container mx-auto px-4 py-24 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
+              <Typography
+                as="h1"
+                className="brand-font text-5xl font-bold tracking-tight sm:text-6xl"
+              >
                 Bun UI
-              </h1>
-              <p className="text-muted-foreground mx-auto mt-6 max-w-2xl text-xl">
+              </Typography>
+              <Typography className="text-muted-foreground mx-auto mt-6 max-w-2xl text-xl">
                 Build beautiful, accessible, and reusable React components
                 effortlessly. Designed for modern web applications.
-              </p>
+              </Typography>
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Button asChild size="lg" className="text-base">
                   <NextLink href="/docs/installation">Get Started</NextLink>
@@ -62,31 +66,37 @@ const HomePage = () => {
                 <div className="bg-primary/10 rounded-full p-4">
                   <Zap className="text-primary h-8 w-8" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">Lightning Fast</h3>
-                <p className="text-muted-foreground mt-4">
+                <Typography variant="h3" className="mt-6">
+                  Lightning Fast
+                </Typography>
+                <Typography className="text-muted-foreground mt-4">
                   Built with performance in mind, ensuring smooth interactions
                   and quick load times.
-                </p>
+                </Typography>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="bg-primary/10 rounded-full p-4">
                   <Package className="text-primary h-8 w-8" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">Easy to Use</h3>
-                <p className="text-muted-foreground mt-4">
+                <Typography variant="h3" className="mt-6">
+                  Easy to Use
+                </Typography>
+                <Typography className="text-muted-foreground mt-4">
                   Simple API design with comprehensive documentation and
                   examples.
-                </p>
+                </Typography>
               </div>
               <div className="flex flex-col items-center text-center">
                 <div className="bg-primary/10 rounded-full p-4">
                   <Code className="text-primary h-8 w-8" />
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">Customizable</h3>
-                <p className="text-muted-foreground mt-4">
+                <Typography variant="h3" className="mt-6">
+                  Customizable
+                </Typography>
+                <Typography className="text-muted-foreground mt-4">
                   Fully customizable components that adapt to your design
                   system.
-                </p>
+                </Typography>
               </div>
             </div>
           </div>
@@ -95,13 +105,11 @@ const HomePage = () => {
         <section className="bg-muted/50 py-24">
           <div className="container mx-auto px-4">
             <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Component Library
-              </h2>
-              <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
+              <Typography variant="h2">Component Library</Typography>
+              <Typography className="text-muted-foreground mx-auto mt-4 max-w-2xl">
                 A collection of carefully crafted components to help you build
                 amazing user interfaces.
-              </p>
+              </Typography>
             </div>
             <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
               <ComponentCard>
@@ -113,7 +121,9 @@ const HomePage = () => {
                     className="w-[200px]"
                   />
                 </div>
-                <p className="text-muted-foreground mt-8">Slider</p>
+                <Typography className="text-muted-foreground mt-8">
+                  Slider
+                </Typography>
               </ComponentCard>
 
               <ComponentCard>
@@ -124,14 +134,20 @@ const HomePage = () => {
                       <TabTrigger value="settings">Settings</TabTrigger>
                     </TabList>
                     <TabContent value="overview">
-                      <p className="text-sm">Overview content goes here</p>
+                      <Typography className="text-sm">
+                        Overview content goes here
+                      </Typography>
                     </TabContent>
                     <TabContent value="settings">
-                      <p className="text-sm">Settings content goes here</p>
+                      <Typography className="text-sm">
+                        Settings content goes here
+                      </Typography>
                     </TabContent>
                   </Tabs>
                 </div>
-                <p className="text-muted-foreground mt-8">Tabs</p>
+                <Typography className="text-muted-foreground mt-8">
+                  Tabs
+                </Typography>
               </ComponentCard>
 
               <ComponentCard>
@@ -152,7 +168,9 @@ const HomePage = () => {
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
-                <p className="text-muted-foreground mt-8">Alert Dialog</p>
+                <Typography className="text-muted-foreground mt-8">
+                  Alert Dialog
+                </Typography>
               </ComponentCard>
 
               <ComponentCard>
@@ -169,7 +187,9 @@ const HomePage = () => {
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
-                <p className="text-muted-foreground mt-8">Toggle Group</p>
+                <Typography className="text-muted-foreground mt-8">
+                  Toggle Group
+                </Typography>
               </ComponentCard>
             </div>
             <div className="mt-12 text-center">
@@ -182,12 +202,10 @@ const HomePage = () => {
 
         <section className="py-24">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ready to Build Amazing UIs?
-            </h2>
-            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
+            <Typography variant="h2">Ready to Build Amazing UIs?</Typography>
+            <Typography className="text-muted-foreground mx-auto mt-4 max-w-2xl">
               Start building beautiful applications with Bun UI today.
-            </p>
+            </Typography>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button asChild size="lg">
                 <NextLink href="/docs">View Documentation</NextLink>

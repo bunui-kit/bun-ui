@@ -6,6 +6,7 @@ import { headers } from "next/headers"
 import { Alert, AlertTitle, ThemeProvider, Toaster } from "@bun-ui/react"
 
 import { cx } from "@/lib/classnames"
+import { geistSans, generalSans, roboto } from "@/lib/fonts"
 import { HeaderLinks } from "@/components/header-links"
 import { SiteHeader } from "@/components/site-header"
 
@@ -51,9 +52,15 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cx("scroll-smooth", osClass)}
+      className={cx(
+        "scroll-smooth",
+        osClass,
+        roboto.className,
+        geistSans.className,
+        generalSans.className
+      )}
     >
-      <body className="min-h-screen">
+      <body className="min-h-screen font-sans">
         <ThemeProvider attribute="class" defaultTheme="system">
           <div className="bg-background relative flex min-h-svh flex-col">
             <Alert

@@ -1,6 +1,6 @@
 import NextLink from "next/link"
 import { blogs } from "@/.velite"
-import { Link } from "@bun-ui/react"
+import { Link, Typography } from "@bun-ui/react"
 import { format, parseISO } from "date-fns"
 import { ChevronLeft } from "lucide-react"
 
@@ -33,7 +33,9 @@ export default async function BlogArticlePage({ params }: BlogPageProps) {
           Go to blog
         </NextLink>
       </Link>
-      <h1 className="text-3xl font-bold">{blog.title}</h1>
+      <Typography variant="h1" className="text-4xl">
+        {blog.title}
+      </Typography>
       <div className="text-foreground/60 mt-5 font-mono text-xs">
         {format(parseISO(blog.date), "PP")}
       </div>
