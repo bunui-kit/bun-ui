@@ -56,3 +56,23 @@ pre code {
 :root {
   --header-height: 60px;
 }
+
+@theme {
+  --font-sans: "Roboto", sans-serif;
+  --font-geist: "Geist", sans-serif;
+  --font-general-sans: "General Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-geist);
+}
+
+.brand-font {
+  font-family: var(--font-general-sans);
+  font-weight: 600;
+}
