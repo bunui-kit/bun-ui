@@ -241,7 +241,11 @@ const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <h5 ref={ref} className={cx("peer font-medium", className)} {...props} />
+  <p
+    ref={ref}
+    className={cx("peer text-base font-medium", className)}
+    {...props}
+  />
 ))
 
 /**
