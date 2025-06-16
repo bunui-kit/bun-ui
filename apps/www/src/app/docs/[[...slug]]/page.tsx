@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import NextLink from "next/link"
 import { docs } from "@/.velite"
-import { Button } from "@bun-ui/react"
+import { Button, Typography } from "@bun-ui/react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { flattenToc } from "@/lib/flatten-toc"
@@ -41,8 +41,20 @@ export default async function DocPage({ params }: DocPageProps) {
   const doc = docs[docIndex]
   if (!doc) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <h1 className="text-3xl font-bold">404 - Not Found</h1>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
+        <Typography variant="h1" className="text-4xl font-bold">
+          Page Not Found
+        </Typography>
+        <Typography
+          fontSize="lg"
+          className="text-muted-foreground mt-4 max-w-md"
+        >
+          The page you're looking for doesn't exist or has been moved. Please
+          check the URL or return to the documentation home.
+        </Typography>
+        <Button asChild className="mt-6" size="lg">
+          <NextLink href="/docs">Return to Documentation</NextLink>
+        </Button>
       </div>
     )
   }
@@ -53,7 +65,9 @@ export default async function DocPage({ params }: DocPageProps) {
   return (
     <div className="relative mx-auto w-full max-w-2xl grid-cols-6 justify-between px-6 pb-20 xl:grid xl:max-w-7xl">
       <div className="col-span-4 mx-auto flex w-full flex-col py-6">
-        <h1 className="text-3xl font-bold">{doc.title}</h1>
+        <Typography variant="h1" className="text-4xl">
+          {doc.title}
+        </Typography>
         {doc.links?.source && (
           <Button variant="text" color="neutral" asChild className="my-4 w-fit">
             <NextLink href={doc.links.source} target="_blank">
