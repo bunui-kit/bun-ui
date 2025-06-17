@@ -35,6 +35,7 @@ import {
   CommandMenuItem,
   CommandMenuList,
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -734,6 +735,61 @@ export default function ComponentsPage() {
               Next
             </Button>
           </div>
+        </ComponentCard>
+
+        <ComponentCard
+          title="Cookie Preferences"
+          description="Non-modal dialog for cookie preferences"
+        >
+          <Dialog modal={false}>
+            <DialogTrigger asChild>
+              <Button variant="outlined" color="neutral">
+                Manage Cookie Preferences
+              </Button>
+            </DialogTrigger>
+            <DialogContent
+              closeOnClickOutside={false}
+              className="top-unset top-auto right-0 bottom-0 left-0 h-fit max-w-full translate-x-0 translate-y-0 sm:max-w-full"
+            >
+              <div className="container mx-auto flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="space-y-1">
+                  <DialogTitle className="text-base">
+                    Cookie Preferences
+                  </DialogTitle>
+                  <p className="text-muted-foreground text-sm">
+                    We use cookies to enhance your browsing experience, serve
+                    personalized content, and analyze our traffic.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-4 sm:flex-nowrap">
+                  <div className="flex items-center gap-2">
+                    <Switch defaultChecked disabled />
+                    <Label className="text-sm">Essential</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch />
+                    <Label className="text-sm">Analytics</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch />
+                    <Label className="text-sm">Marketing</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch />
+                    <Label className="text-sm">Preferences</Label>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outlined" color="neutral" size="sm">
+                    Reject All
+                  </Button>
+                  <DialogClose asChild>
+                    <Button size="sm">Accept All</Button>
+                  </DialogClose>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </ComponentCard>
       </div>
     </div>
