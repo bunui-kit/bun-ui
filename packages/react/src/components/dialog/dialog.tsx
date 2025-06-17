@@ -75,7 +75,6 @@ const DialogContent = React.forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         onPointerDownOutside={(e) => {
-          console.log("onPointerDownOutside", e.target)
           if (!closeOnClickOutside) {
             e.preventDefault()
           }
