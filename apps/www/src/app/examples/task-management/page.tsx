@@ -345,14 +345,14 @@ export default function TaskManagement() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col items-center justify-between lg:flex-row">
         <div>
           <h1 className="text-3xl font-bold">Task Management</h1>
           <p className="text-muted-foreground mt-1">
             Organize and track your team&apos;s tasks
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="mt-4 flex items-center gap-4 lg:mt-0">
           <Button variant="outlined" onClick={() => setIsNewTaskOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             New Task
@@ -366,8 +366,8 @@ export default function TaskManagement() {
         </div>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
-        <Card>
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
+        <Card className="min-w-0">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <span className="text-sm font-medium">Total Tasks</span>
             <CheckCircle className="text-primary h-5 w-5" />
@@ -379,7 +379,7 @@ export default function TaskManagement() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="min-w-0">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <span className="text-sm font-medium">In Progress</span>
             <Clock className="text-primary h-5 w-5" />
@@ -393,7 +393,7 @@ export default function TaskManagement() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="min-w-0">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <span className="text-sm font-medium">Completed</span>
             <CheckCircle className="text-primary h-5 w-5" />
@@ -407,7 +407,7 @@ export default function TaskManagement() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="min-w-0">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <span className="text-sm font-medium">Overdue</span>
             <AlertCircle className="text-destructive h-5 w-5" />

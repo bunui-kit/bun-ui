@@ -40,8 +40,8 @@ const HomePage = () => {
           <div className="container mx-auto px-4 py-24 sm:px-6 lg:px-8">
             <div className="text-center">
               <Typography
-                as="h1"
-                className="brand-font text-5xl font-bold tracking-tight sm:text-6xl"
+                variant="h1"
+                className="brand-font font-bold tracking-tight"
               >
                 Bun UI
               </Typography>
