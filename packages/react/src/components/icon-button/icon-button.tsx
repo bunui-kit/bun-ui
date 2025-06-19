@@ -17,8 +17,8 @@ const iconButtonVariants = cva(
         success: "text-success hover:not-disabled:bg-success/10",
       },
       size: {
-        xs: "p-1.5 size-6.5 text-xs [&_svg]:size-[1rem]",
-        sm: "p-1.5 size-7 text-xs [&_svg]:size-[1.125rem]",
+        xs: "p-1.5 size-6.5 text-xs [&_svg]:size-4",
+        sm: "p-1.5 size-7 text-xs [&_svg]:size-4.5",
         md: "p-2 size-8 [&_svg]:size-5",
         lg: "p-2 size-9 text-base [&_svg]:size-5.5",
       },
