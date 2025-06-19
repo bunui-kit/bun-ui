@@ -1,5 +1,15 @@
 # @bun-ui/react
 
+## 0.2.48
+
+### Patch Changes
+
+- [#187](https://github.com/bunui-kit/bun-ui/pull/187) [`c0b8976`](https://github.com/bunui-kit/bun-ui/commit/c0b89762cbb3889084c9153d1103052033a4f2a3) Thanks [@khanguyen74](https://github.com/khanguyen74)! - change Alert title element to p and fix warning and success styles
+
+- [#188](https://github.com/bunui-kit/bun-ui/pull/188) [`7b97cb2`](https://github.com/bunui-kit/bun-ui/commit/7b97cb28001ea921ce41b5c0c749eefcdffafeed) Thanks [@khanguyen74](https://github.com/khanguyen74)! - Dialog: add props to disable close on click outside
+
+- [#181](https://github.com/bunui-kit/bun-ui/pull/181) [`c30cafe`](https://github.com/bunui-kit/bun-ui/commit/c30cafecc5a5fb73c9d67f3eedbb4307d4a182b1) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add Typography component
+
 ## 0.2.47
 
 ### Patch Changes
