@@ -1,10 +1,6 @@
-import NextLink from "next/link"
-import { IconButton } from "@bun-ui/react"
-
-import { siteConfig } from "@/config/site"
+import { GithubLink } from "./github-link"
 import { HeaderCommand } from "./header-command"
 import { HeaderLinks } from "./header-links"
-import { GithubIcon } from "./icons"
 import { MainNav } from "./main-nav"
 import { MobileNav } from "./mobile-nav"
 import ThemeSwitch from "./theme-switch"
@@ -20,11 +16,7 @@ export const SiteHeader = () => {
           <div className="flex items-center gap-4">
             <HeaderLinks className="hidden sm:flex" />
             <div className="flex items-center gap-2">
-              <IconButton asChild size="xs">
-                <NextLink href={siteConfig.links.github} target="_blank">
-                  <GithubIcon className="text-foreground" />
-                </NextLink>
-              </IconButton>
+              <GithubLink />
               <ThemeSwitch />
             </div>
           </div>

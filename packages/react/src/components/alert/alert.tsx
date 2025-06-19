@@ -36,14 +36,13 @@ const alertVariants = cva(
       {
         variant: "standard",
         color: "success",
-        className:
-          "bg-success/10 text-success-foreground [&>svg]:text-success-forground ",
+        className: "bg-success/10 text-success [&>svg]:text-success ",
       },
       {
         variant: "standard",
         color: "warning",
         className:
-          "bg-yellow-50/10 text-yellow-800 [&>svg]:text-yellow-800 dark:[&>svg]:text-yellow-400 dark:bg-yellow-900/50 dark:text-yellow-400",
+          "bg-yellow-200/20 text-yellow-800 [&>svg]:text-yellow-800 dark:[&>svg]:text-yellow-400 dark:bg-yellow-900/50 dark:text-yellow-400",
       },
       {
         variant: "standard",
@@ -81,7 +80,7 @@ const alertVariants = cva(
       {
         variant: "outlined",
         color: "success",
-        className: "border-success text-success-foreground",
+        className: "border-success text-success",
       },
       {
         variant: "outlined",

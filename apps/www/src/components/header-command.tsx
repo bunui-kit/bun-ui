@@ -199,6 +199,7 @@ export const HeaderCommand = () => {
         onClick={handleOpen}
         className="bg-muted/50 text-muted-foreground group hover:[&_*]:text-foreground relative h-8 w-fit justify-start rounded-lg px-1 text-sm font-normal shadow-none hover:not-disabled:bg-inherit dark:hover:not-disabled:bg-inherit [&_*]:transition-colors [&_*]:duration-150"
         variant="outlined"
+        color="neutral"
       >
         <Search className="h-4 w-4 group-hover:text-black sm:flex dark:group-hover:text-white" />
         <span className="mr-4 hidden sm:inline-flex">Search...</span>
