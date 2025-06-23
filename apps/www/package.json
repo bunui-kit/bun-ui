@@ -11,7 +11,7 @@
     "lint": "next lint",
     "format:write": "prettier --write \"**/*.{ts,tsx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx}\" --cache",
-    "typecheck": "pnpm --filter=react build && velite && tsc --noEmit"
+    "typecheck": "pnpm --filter=react build && velite && pnpm typedoc:generate && tsc --noEmit"
   },
   "dependencies": {
     "@bun-ui/react": "workspace:*",
