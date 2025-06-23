@@ -85,13 +85,28 @@ const badgeVariants = cva(
 )
 interface BadgeProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color"> {
+  /**
+   * Color variant of the badge.
+   * @default "primary"
+   */
   color?: "primary" | "secondary" | "destructive" | "accent" | "neutral"
+  /**
+   * Variant of the badge.
+   * @default "filled"
+   */
   variant?: "filled" | "outlined"
+  /**
+   * Size of the badge.
+   * @default "md"
+   */
   size?: "sm" | "md" | "lg"
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, color, size, variant, ...props }, ref) => (
+  (
+    { className, color = "primary", size = "md", variant = "filled", ...props },
+    ref
+  ) => (
     <span
       ref={ref}
       className={cx(badgeVariants({ color, size, variant, className }))}

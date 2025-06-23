@@ -42,7 +42,7 @@ const DialogTitle = React.forwardRef<
   />
 ))
 
-interface DialogContentProps
+export interface DialogContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   /**
    * Whether to show the default close button.

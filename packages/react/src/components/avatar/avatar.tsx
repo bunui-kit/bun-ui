@@ -21,7 +21,7 @@ const avatarVariants = cva(
   }
 )
 
-interface AvatarProps
+export interface AvatarProps
   extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
   /**
    * Size of the avatar.
