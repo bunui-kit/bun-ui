@@ -45,3 +45,6 @@ next-env.d.ts
 .turbo
 
 .velite
+
+# TypeDoc generated files
+apps/www/src/typedoc/typedoc.react.json

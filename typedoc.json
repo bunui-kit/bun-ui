@@ -1,0 +1,9 @@
+{
+  "entryPoints": ["packages/react/src/index.ts"],
+  "tsconfig": "packages/react/tsconfig.json",
+  "plugin": [],
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "json": "apps/www/src/typedoc/typedoc.react.json"
+}
