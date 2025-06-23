@@ -62,11 +62,7 @@ export function APITable({ componentName }: APITableProps) {
                   )}
                 </td>
                 <td className="border-border border px-4 py-2 text-sm">
-                  {prop.description || (
-                    <span className="text-muted-foreground">
-                      No description
-                    </span>
-                  )}
+                  {prop.description ?? ""}
                 </td>
               </tr>
             ))}
