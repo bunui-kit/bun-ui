@@ -148,7 +148,7 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
   /**
-   * Whether to render the button as a child component using Radix UI's Slot.
+   * Whether to render the button as a child component.
    * @default false
    */
   asChild?: boolean

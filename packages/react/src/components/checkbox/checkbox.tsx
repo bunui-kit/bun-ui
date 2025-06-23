@@ -6,9 +6,18 @@ import { cx } from "../../lib/utils"
 import { CheckIcon } from "../icons"
 import { Label } from "../label"
 
-interface CheckboxProps
+/**
+ * Props for the Checkbox component.
+ */
+export interface CheckboxProps
   extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  /**
+   * Label for the checkbox.
+   */
   label?: React.ReactNode
+  /**
+   * Color variant of the checkbox.
+   */
   color?: "primary" | "secondary" | "neutral"
 }
 
@@ -67,4 +76,4 @@ const Checkbox = React.forwardRef<
 
 Checkbox.displayName = "Checkbox"
 
-export default Checkbox
+export { Checkbox }

@@ -9,7 +9,11 @@ const Breadcrumb = React.forwardRef<
   React.ComponentPropsWithoutRef<"nav">
 >((props, ref) => <nav ref={ref} aria-label="breadcrumbs" {...props} />)
 
-interface BreadcrumbListProps extends React.ComponentPropsWithoutRef<"ol"> {
+export interface BreadcrumbListProps
+  extends React.ComponentPropsWithoutRef<"ol"> {
+  /**
+   * Override the default separator icon.
+   */
   separator?: React.ReactNode | null
 }
 const BreadcrumbList = React.forwardRef<HTMLOListElement, BreadcrumbListProps>(
@@ -66,7 +70,10 @@ const BreadcrumbItem = React.forwardRef<
   />
 ))
 
-interface BreadcrumbLinkProps extends LinkProps {
+/**
+ * Props for BreadcrumbLink component.
+ */
+export interface BreadcrumbLinkProps extends LinkProps {
   /**
    * if `currentLink=true`, this is rendered as a regular text
    */
