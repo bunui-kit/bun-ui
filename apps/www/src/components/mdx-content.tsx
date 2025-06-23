@@ -4,11 +4,13 @@ import { ExternalLink } from "lucide-react"
 
 import { cx } from "@/lib/classnames"
 import { getHostName } from "@/lib/string"
+import { APITable } from "./api-table"
 import { ComponentPreview } from "./component-preview"
 import { CopyButton } from "./copy-button"
 
 const sharedComponents = {
   ComponentPreview,
+  APITable,
   Alert,
   AlertTitle,
   AlertDescription,

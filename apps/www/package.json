@@ -2,10 +2,11 @@
   "name": "@bun-ui/www",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "pnpm typedoc:generate && next dev",
     "dev:content": "velite --watch",
     "build:content": "velite --clean",
-    "build": "pnpm --filter=react build && pnpm build:content && next build",
+    "build": "pnpm --filter=react build && pnpm typedoc:generate && pnpm build:content && next build",
+    "typedoc:generate": "typedoc --options ../../typedoc.json",
     "start": "next start",
     "lint": "next lint",
     "format:write": "prettier --write \"**/*.{ts,tsx}\" --cache",
