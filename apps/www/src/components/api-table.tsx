@@ -1,6 +1,6 @@
 import { Badge } from "@bun-ui/react"
 
-import { getComponentAPI, type ComponentAPI } from "@/lib/typedoc"
+import { getComponentAPI } from "@/lib/typedoc"
 
 interface APITableProps {
   componentName: string

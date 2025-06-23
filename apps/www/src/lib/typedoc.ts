@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any  */
 
 // Try to import TypeDoc data, fallback to empty object if file doesn't exist
-let typedocData: any = { children: [] }
-try {
-  typedocData = require("../typedoc/typedoc.react.json")
-} catch (error) {
-  console.warn(
-    "TypeDoc JSON not found. API tables will be empty. Run 'pnpm typedoc:generate' to generate it."
-  )
-}
+import typedocData from "../typedoc/typedoc.react.json"
+
+// let typedocData: any = { children: [] }
+// try {
+//   typedocData = require("../typedoc/typedoc.react.json")
+// } catch (error) {
+//   console.warn(
+//     "TypeDoc JSON not found. API tables will be empty. Run 'pnpm typedoc:generate' to generate it."
+//   )
+// }
 
 export interface PropInfo {
   name: string
