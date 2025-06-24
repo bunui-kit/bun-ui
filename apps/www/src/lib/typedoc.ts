@@ -3,15 +3,6 @@
 // Try to import TypeDoc data, fallback to empty object if file doesn't exist
 import typedocData from "../typedoc/typedoc.react.json"
 
-// let typedocData: any = { children: [] }
-// try {
-//   typedocData = require("../typedoc/typedoc.react.json")
-// } catch (error) {
-//   console.warn(
-//     "TypeDoc JSON not found. API tables will be empty. Run 'pnpm typedoc:generate' to generate it."
-//   )
-// }
-
 export interface PropInfo {
   name: string
   type: string
@@ -73,7 +64,7 @@ function formatType(type: any): string {
 function extractJSDocDescription(comment: any): string | undefined {
   if (!comment?.summary) return undefined
 
-  return comment.summary
+  let description = comment.summary
     .map((part: any) => {
       if (part.kind === "text") return part.text
       if (part.kind === "code") return `\`${part.text}\``
@@ -81,6 +72,12 @@ function extractJSDocDescription(comment: any): string | undefined {
     })
     .join("")
     .trim()
+
+  // Convert inline code with double backticks to proper markdown code blocks
+  // This handles cases like "Use ``IconButton`` component with ``size="sm" | "md" | "lg"``"
+  description = description.replace(/``([^`]+)``/g, "`$1`")
+
+  return description
 }
 
 function extractDefaultValue(comment: any): string | undefined {
@@ -175,8 +172,8 @@ function extractPropsFromReflection(declaration: any): PropInfo[] {
   return props
 }
 
-function extractPropsFromTypeDoc(componentName: string): PropInfo[] {
-  const propsInterfaceName = `${componentName}Props`
+function extractPropsFromTypeDoc(propInterface: string): PropInfo[] {
+  const propsInterfaceName = `${propInterface}`
 
   // Find the props interface in the TypeDoc data
   const propsInterface = typedocData.children?.find(
@@ -189,7 +186,7 @@ function extractPropsFromTypeDoc(componentName: string): PropInfo[] {
 
   const props: PropInfo[] = []
 
-  // Handle intersection types (like CalendarProps)
+  // Handle intersection types
   if (
     propsInterface.type?.type === "intersection" &&
     propsInterface.type.types
@@ -270,57 +267,4 @@ export function getComponentAPI(componentName: string): ComponentAPI | null {
     name: componentName,
     props,
   }
-}
-
-export function getAllComponentAPIs(): ComponentAPI[] {
-  const apis: ComponentAPI[] = []
-
-  // Common component names to check
-  const componentNames = [
-    "Accordion",
-    "Alert",
-    "AlertDialog",
-    "Avatar",
-    "Badge",
-    "Breadcrumb",
-    "Button",
-    "Calendar",
-    "Card",
-    "Checkbox",
-    "CommandMenu",
-    "DatePicker",
-    "Dialog",
-    "Drawer",
-    "DropdownMenu",
-    "FileUpload",
-    "IconButton",
-    "Input",
-    "Link",
-    "Pagination",
-    "Popover",
-    "Progress",
-    "RadioGroup",
-    "Select",
-    "Skeleton",
-    "Slider",
-    "Spinner",
-    "Stepper",
-    "Switch",
-    "Tabs",
-    "Timeline",
-    "Toast",
-    "Toggle",
-    "ToggleGroup",
-    "Tooltip",
-    "Typography",
-  ]
-
-  for (const name of componentNames) {
-    const api = getComponentAPI(name)
-    if (api) {
-      apis.push(api)
-    }
-  }
-
-  return apis
 }
