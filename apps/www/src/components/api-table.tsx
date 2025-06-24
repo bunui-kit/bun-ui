@@ -3,11 +3,40 @@ import { Badge } from "@bun-ui/react"
 import { getComponentAPI } from "@/lib/typedoc"
 
 interface APITableProps {
-  componentName: string
+  interfaceName: string
 }
 
-export function APITable({ componentName }: APITableProps) {
-  const api = getComponentAPI(componentName)
+// Simple component to render descriptions with inline code formatting
+function DescriptionRenderer({ description }: { description: string }) {
+  if (!description) return null
+
+  // Split the description by code blocks (text wrapped in backticks)
+  const parts = description.split(/(`[^`]+`)/g)
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (part.startsWith("`") && part.endsWith("`")) {
+          // This is a code block, render it with code styling
+          const code = part.slice(1, -1) // Remove the backticks
+          return (
+            <code
+              key={index}
+              className="bg-muted rounded px-1 py-0.5 font-mono text-sm"
+            >
+              {code}
+            </code>
+          )
+        }
+        // This is regular text
+        return <span key={index}>{part}</span>
+      })}
+    </>
+  )
+}
+
+export function APITable({ interfaceName }: APITableProps) {
+  const api = getComponentAPI(interfaceName)
 
   if (!api || api.props.length === 0) {
     return null
@@ -15,7 +44,6 @@ export function APITable({ componentName }: APITableProps) {
 
   return (
     <div className="mt-8">
-      <h3 className="mb-4 text-lg font-semibold">API Reference</h3>
       <div className="overflow-x-auto">
         <table className="border-border w-full border-collapse border">
           <thead>
@@ -62,7 +90,7 @@ export function APITable({ componentName }: APITableProps) {
                   )}
                 </td>
                 <td className="border-border border px-4 py-2 text-sm">
-                  {prop.description ?? ""}
+                  <DescriptionRenderer description={prop.description ?? ""} />
                 </td>
               </tr>
             ))}
