@@ -17,6 +17,7 @@ export interface CheckboxProps
   label?: React.ReactNode
   /**
    * Color variant of the checkbox.
+   * @default "primary"
    */
   color?: "primary" | "secondary" | "neutral"
 }
@@ -43,7 +44,7 @@ const checkboxVariants = cva(
 const Checkbox = React.forwardRef<
   Omit<React.ComponentRef<typeof CheckboxPrimitive.Root>, "color">,
   CheckboxProps
->(({ className, label, id, disabled, color, ...props }, ref) => {
+>(({ className, label, id, disabled, color = "primary", ...props }, ref) => {
   const _id = id || useId()
   const Wrapper = label ? "div" : React.Fragment
   const wrapperClassName = label ? "flex items-center space-x-2" : ""

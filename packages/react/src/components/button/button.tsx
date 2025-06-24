@@ -170,10 +170,12 @@ export interface ButtonProps
   variant?: "contained" | "outlined" | "text"
   /**
    * Size of the button.
+   *
+   * The `"icon"` size is deprecated. Use `IconButton` component
+   * with `size="sm" | "md" | "lg"` for icon-only buttons.
+   *
    * @default "md"
    *
-   * The "icon" size is deprecated. Use the `IconButton` component
-   * with `size="sm" | "md" | "lg"` for icon-only buttons.
    */
   size?: "sm" | "md" | "lg" | "icon"
 }

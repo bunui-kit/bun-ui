@@ -76,9 +76,16 @@ const BreadcrumbItem = React.forwardRef<
 export interface BreadcrumbLinkProps extends LinkProps {
   /**
    * if `currentLink=true`, this is rendered as a regular text
+   * @default false
    */
   currentLink?: boolean
+  /**
+   * The content of the link.
+   */
   children?: React.ReactNode
+  /**
+   * The target link
+   **/
   href?: string
 }
 
