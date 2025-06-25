@@ -1,4 +1,4 @@
-import { Badge } from "@bun-ui/react"
+import { Badge, Typography } from "@bun-ui/react"
 
 import { getComponentAPI } from "@/lib/typedoc"
 
@@ -69,9 +69,7 @@ export function APITable({ interfaceName }: APITableProps) {
                   <div className="flex items-center gap-2">
                     {prop.name}
                     {prop.required && (
-                      <Badge variant="outlined" size="sm" color="destructive">
-                        Required
-                      </Badge>
+                      <Typography fontWeight="bold">*</Typography>
                     )}
                   </div>
                 </td>
