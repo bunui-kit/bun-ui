@@ -7,6 +7,11 @@ export default defineConfig([
   eslintPluginPrettierRecommended,
   eslint.configs.recommended,
   tseslint.configs.recommended,
+  {
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "warn",
+    },
+  },
   globalIgnores([
     "node_modules",
     "**/dist/**",
