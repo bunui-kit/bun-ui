@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
   FileUpload,
   FileUploadTrigger,
+  IconButton,
   Input,
   Label,
   Progress,
@@ -802,10 +803,8 @@ export default function FileManagementDashboard() {
             <SelectItem value="date">Sort by Date</SelectItem>
             <SelectItem value="size">Sort by Size</SelectItem>
           </Select>
-          <Button
-            variant="outlined"
+          <IconButton
             className="shrink-0"
-            size="icon"
             onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
           >
             {sortOrder === "asc" ? (
@@ -813,23 +812,15 @@ export default function FileManagementDashboard() {
             ) : (
               <ArrowDown className="h-4 w-4" />
             )}
-          </Button>
+          </IconButton>
         </div>
         <div className="flex items-center gap-2">
-          <Button
-            variant={viewMode === "grid" ? "contained" : "outlined"}
-            size="icon"
-            onClick={() => setViewMode("grid")}
-          >
+          <IconButton onClick={() => setViewMode("grid")}>
             <Grid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "contained" : "outlined"}
-            size="icon"
-            onClick={() => setViewMode("list")}
-          >
+          </IconButton>
+          <IconButton onClick={() => setViewMode("list")}>
             <List className="h-4 w-4" />
-          </Button>
+          </IconButton>
         </div>
       </div>
 
@@ -931,13 +922,9 @@ export default function FileManagementDashboard() {
                         </div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
+                            <IconButton>
+                              <MoreVertical />
+                            </IconButton>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent>
                             <DropdownMenuItem
