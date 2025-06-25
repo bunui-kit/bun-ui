@@ -115,8 +115,22 @@ type TypographyElement =
   | "li"
   | "blockquote"
 
+/**
+ * Props for the Typography component.
+ * Provides a flexible way to render text with consistent styling and semantic HTML elements.
+ */
 interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML element to render.
+   * Overrides the default element determined by the variant.
+   */
   as?: TypographyElement
+
+  /**
+   * The typography variant to apply.
+   * Determines the visual styling and default HTML element.
+   * @default "p"
+   */
   variant?:
     | "h1"
     | "h2"
@@ -129,7 +143,19 @@ interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
     | "list"
     | "lead"
     | "muted"
+
+  /**
+   * The font size to apply.
+   * Controls the text size independently of the variant.
+   * @default "md"
+   */
   fontSize?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl"
+
+  /**
+   * The font weight to apply.
+   * Controls the text weight independently of the variant.
+   * @default "normal"
+   */
   fontWeight?:
     | "thin"
     | "extralight"
@@ -139,6 +165,13 @@ interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
     | "semibold"
     | "bold"
     | "extrabold"
+
+  /**
+   * If true, truncates text with ellipsis when it overflows.
+   * Useful for single-line text that should be cut off with "...".
+   *
+   * @default false
+   */
   truncate?: boolean
 }
 const Typography = React.forwardRef<HTMLElement, TypographyProps>(
@@ -148,7 +181,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       variant = "p",
       fontSize = "md",
       fontWeight = "normal",
-      truncate,
+      truncate = false,
       as,
       ...props
     }: TypographyProps,
@@ -189,4 +222,4 @@ function getDefaultElement(variant: string): TypographyElement {
 
 Typography.displayName = "Typography"
 
-export { Typography }
+export { Typography, type TypographyProps }

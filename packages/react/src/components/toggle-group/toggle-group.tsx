@@ -12,6 +12,7 @@ type ToggleGroupProps =
   | (Omit<ToggleGroupPrimitive.ToggleGroupMultipleProps, "type"> & {
       type: "multiple"
     })
+
 const ToggleGroup = React.forwardRef<
   React.ComponentRef<typeof ToggleGroupPrimitive.Root>,
   ToggleGroupProps & VariantProps<typeof toggleVariants>

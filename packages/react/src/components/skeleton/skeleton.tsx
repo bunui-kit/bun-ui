@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib"
 
@@ -17,13 +17,44 @@ const skeletonVariants = cva(
   }
 )
 
-interface SkeletonProps extends VariantProps<typeof skeletonVariants> {
+/**
+ * Props for the Skeleton component.
+ * Used to create loading placeholders with animated pulse effects.
+ */
+interface SkeletonProps {
+  /**
+   * The width of the skeleton element.
+   * Can be a CSS value (string) or number (interpreted as pixels).
+   */
   width?: string | number
+
+  /**
+   * The height of the skeleton element.
+   * Can be a CSS value (string) or number (interpreted as pixels).
+   */
   height?: string | number
+
+  /**
+   * Additional CSS classes to apply to the skeleton element.
+   * Use this to customize the styling beyond the built-in variants.
+   */
   className?: string
+
+  /**
+   * The visual variant of the skeleton.
+   * Controls the shape and border radius of the skeleton element.
+   *
+   * @default "rectangular"
+   */
+  variant?: "circular" | "rectangular"
 }
 
-const Skeleton = ({ width, height, className, variant }: SkeletonProps) => {
+const Skeleton = ({
+  width,
+  height,
+  className,
+  variant = "rectangular",
+}: SkeletonProps) => {
   return (
     <div
       className={cx(skeletonVariants({ className, variant }))}
@@ -32,4 +63,4 @@ const Skeleton = ({ width, height, className, variant }: SkeletonProps) => {
   )
 }
 
-export { Skeleton }
+export { Skeleton, type SkeletonProps }

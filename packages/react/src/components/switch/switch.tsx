@@ -72,4 +72,4 @@ const Switch = React.forwardRef<
   }
 )
 
-export { Switch }
+export { Switch, type SwitchProps }

@@ -116,4 +116,5 @@ export {
   TimelineConnector,
   TimelineTitle,
   TimelineDescription,
+  type TimelineProps,
 }

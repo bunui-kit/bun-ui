@@ -201,4 +201,4 @@ function useToast({ maxToasts = DEFAULT_TOAST_LIMIT }: UseToastOptions = {}) {
   }
 }
 
-export { useToast }
+export { useToast, type UseToastOptions }

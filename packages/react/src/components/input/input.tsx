@@ -19,6 +19,12 @@ export interface InputProps extends React.ComponentPropsWithoutRef<"input"> {
    * Use this to customize the styling of the label independently from the input.
    */
   labelClassName?: string
+
+  /**
+   * If `true`, the component is disabled.
+   * @default false
+   */
+  disabled?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

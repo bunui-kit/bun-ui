@@ -85,7 +85,7 @@ interface StepProps extends React.HTMLAttributes<HTMLDivElement> {
 
   /**
    * The position of the step.
-   * It is defaulted to the index of the step in the Stepper.
+   *
    * @default 0
    */
   index?: number
@@ -211,4 +211,13 @@ const StepConnector = React.forwardRef<HTMLDivElement, StepConnectorProps>(
   }
 )
 
-export { Stepper, Step, StepLabel, StepConnector }
+export {
+  Stepper,
+  Step,
+  StepLabel,
+  StepConnector,
+  type StepperProps,
+  type StepProps,
+  type StepLabelProps,
+  type StepConnectorProps,
+}

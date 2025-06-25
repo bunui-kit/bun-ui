@@ -282,7 +282,6 @@ interface PaginationProps
 
   /**
    * The default page number when the component is uncontrolled.
-   * Used when `page` prop is not provided.
    *
    * @default 1
    */
