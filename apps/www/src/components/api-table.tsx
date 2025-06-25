@@ -1,4 +1,5 @@
-import { Badge, Typography } from "@bun-ui/react"
+import { Link, Typography } from "@bun-ui/react"
+import ReactMarkdown from "react-markdown"
 
 import { getComponentAPI } from "@/lib/typedoc"
 
@@ -10,28 +11,35 @@ interface APITableProps {
 function DescriptionRenderer({ description }: { description: string }) {
   if (!description) return null
 
-  // Split the description by code blocks (text wrapped in backticks)
-  const parts = description.split(/(`[^`]+`)/g)
-
   return (
-    <>
-      {parts.map((part, index) => {
-        if (part.startsWith("`") && part.endsWith("`")) {
-          // This is a code block, render it with code styling
-          const code = part.slice(1, -1) // Remove the backticks
+    <ReactMarkdown
+      components={{
+        p({ ...props }) {
+          return (
+            <Typography fontSize="sm" className="not-first:mt-1" {...props} />
+          )
+        },
+        code({ children, ...props }) {
           return (
             <code
-              key={index}
               className="bg-muted rounded px-1 py-0.5 font-mono text-sm"
+              {...props}
             >
-              {code}
+              {children}
             </code>
           )
-        }
-        // This is regular text
-        return <span key={index}>{part}</span>
-      })}
-    </>
+        },
+        a({ children, href, color, ...props }) {
+          return (
+            <Link href={href} color="primary" target="_blank" {...props}>
+              {children}
+            </Link>
+          )
+        },
+      }}
+    >
+      {description}
+    </ReactMarkdown>
   )
 }
 

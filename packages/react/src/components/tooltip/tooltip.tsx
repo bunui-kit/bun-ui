@@ -59,29 +59,32 @@ interface TooltipProps
   clickOnly?: boolean
   /**
    * Whether to show the tooltip on focus.
+   *
    * @default true
    **/
   focusable?: boolean
 
   /**
    * The offset of the tooltip from the reference element.
-   * @default 5
    *
-   * API: https://floating-ui.com/docs/flip
+   *
+   * [Flip API](https://floating-ui.com/docs/flip)
+   *
+   * @default 5
    */
   offset?: OffsetOptions
 
   /**
    * The shift options for the tooltip to keep it within the viewport.
    *
-   * API: https://floating-ui.com/docs/shift
+   * [Shift API](https://floating-ui.com/docs/shift)
    **/
   shift?: ShiftOptions
 
   /**
    * Flip options for the tooltip to keep it within the viewport.
    *
-   * API: https://floating-ui.com/docs/flip
+   * [Flip API](https://floating-ui.com/docs/flip)
    */
 
   flip?: FlipOptions

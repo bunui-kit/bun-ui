@@ -56,11 +56,9 @@ jobs:
         run: "ssh-keyscan ${{secrets.HOST}} >> ~/.ssh/known_hosts"
 
       - name: Move build artifact
-        run:
-          scp build-artifact.tar.gz
+        run: scp build-artifact.tar.gz
           ${{secrets.USERNAME}}@${{secrets.HOST}}:~/temp
 
       - name: Restart server
-        run:
-          ssh ${{secrets.USERNAME}}@${{secrets.HOST}}
+        run: ssh ${{secrets.USERNAME}}@${{secrets.HOST}}
           "./deploy/deploy-bun-ui.sh"
