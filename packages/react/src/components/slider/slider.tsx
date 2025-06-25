@@ -35,7 +35,17 @@ interface SliderProps
       "defaultValue" | "color" | "value"
     >,
     VariantProps<typeof sliderVariants> {
+  /**
+   * The default value of the slider when the component is uncontrolled.
+   */
   defaultValue?: number[] | number
+
+  /**
+   * If true, the slider will be rendered as a range slider with two thumbs.
+   * If false, it will be a single thumb slider.
+   *
+   * @default false
+   */
   isRange?: boolean
   /**
    * Color of the slider
@@ -75,10 +85,10 @@ const Slider = React.forwardRef<
   (
     {
       className,
-      color,
-      size,
+      color = "primary",
+      size = "md",
       defaultValue: defaultValueProp,
-      isRange,
+      isRange = false,
       minSliderThumb,
       maxSliderThumb,
       value: valueProp,
@@ -140,4 +150,4 @@ const Slider = React.forwardRef<
   }
 )
 
-export { Slider }
+export { Slider, type SliderProps }

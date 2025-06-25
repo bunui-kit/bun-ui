@@ -17,6 +17,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   Input,
   Label,
   Popover,
@@ -466,7 +467,7 @@ export default function TaskManagement() {
           <Select
             value={selectedAssignee}
             onValueChange={setSelectedAssignee}
-            className="w-[280px]"
+            className="w-[200px] shrink-0"
           >
             <SelectItem value="all">All Assignees</SelectItem>
             {teamMembers.map((member) => (
@@ -521,15 +522,13 @@ export default function TaskManagement() {
                 </SelectItem>
               ))}
             </Select>
-            <Button
-              variant="outlined"
-              size="icon"
+            <IconButton
               className="shrink-0"
               color="neutral"
               onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
             >
               {sortOrder === "asc" ? <ArrowUp /> : <ArrowDown />}
-            </Button>
+            </IconButton>
           </div>
           <div className="flex items-center gap-2">
             <CalendarIcon className="text-muted-foreground h-4 w-4" />
@@ -580,13 +579,9 @@ export default function TaskManagement() {
                             >
                               {task.priority}
                             </Badge>
-                            <Button
-                              variant="text"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
+                            <IconButton>
+                              <MoreHorizontal />
+                            </IconButton>
                           </div>
                         </div>
                         <div className="mt-4 flex flex-wrap items-center gap-4">
@@ -890,14 +885,12 @@ export default function TaskManagement() {
                       readOnly
                       label="Due Date"
                     />
-                    <Button
+                    <IconButton
                       className="absolute top-7 right-1 h-7 w-7"
-                      variant="text"
                       aria-label="Select Due date"
-                      size="icon"
                     >
                       <CalendarDaysIcon className="text-muted-foreground h-4 w-4" />
-                    </Button>
+                    </IconButton>
                   </div>
                 </PopoverTrigger>
                 <PopoverContent>

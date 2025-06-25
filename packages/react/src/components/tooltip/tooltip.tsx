@@ -24,6 +24,13 @@ import { cx } from "../../lib"
 
 interface TooltipProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "content"> {
+  /**
+   * Tooltip reference element.
+   */
+  children: React.ReactNode
+  /**
+   * Classname applied to the tooltip element.
+   */
   className?: string
   /**
    * The content of the tooltip.
@@ -161,4 +168,4 @@ const Tooltip = ({
   )
 }
 
-export { Tooltip }
+export { Tooltip, type TooltipProps }

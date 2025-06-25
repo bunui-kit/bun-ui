@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Button, ButtonProps } from "@bun-ui/react"
+import { ButtonProps, IconButton } from "@bun-ui/react"
 import { CheckIcon, ClipboardIcon } from "lucide-react"
 
 interface CopyButtonProps extends ButtonProps {
@@ -13,12 +13,7 @@ export async function copyToClipboardWithMeta(value: string) {
   navigator.clipboard.writeText(value)
 }
 
-export function CopyButton({
-  value,
-  className,
-  variant = "text",
-  ...props
-}: CopyButtonProps) {
+export function CopyButton({ value, className, ...props }: CopyButtonProps) {
   const [hasCopied, setHasCopied] = React.useState(false)
 
   React.useEffect(() => {
@@ -28,9 +23,8 @@ export function CopyButton({
   }, [hasCopied])
 
   return (
-    <Button
-      variant={variant}
-      size="icon"
+    <IconButton
+      size="sm"
       color="neutral"
       className={className}
       onClick={() => {
@@ -41,6 +35,6 @@ export function CopyButton({
     >
       <span className="sr-only">Copy</span>
       {hasCopied ? <CheckIcon /> : <ClipboardIcon />}
-    </Button>
+    </IconButton>
   )
 }

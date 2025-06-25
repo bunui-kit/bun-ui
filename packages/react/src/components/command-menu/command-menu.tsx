@@ -49,7 +49,8 @@ const CommandMenu = React.forwardRef<
  * Props for the CommandMenuDialog component.
  * Extends the Dialog component props and adds command menu specific properties.
  */
-interface CommandMenuDialogProps extends React.ComponentProps<typeof Dialog> {
+export interface CommandMenuDialogProps
+  extends React.ComponentProps<typeof Dialog> {
   /**
    * The title of the dialog.
    * This will be displayed at the top of the command menu.

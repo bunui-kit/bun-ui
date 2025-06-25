@@ -26,7 +26,7 @@ const DropdownMenuItem = React.forwardRef<
   />
 ))
 
-interface DropdownMenuContentProps
+export interface DropdownMenuContentProps
   extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> {
   /**
    * If true the menu will not be rendered in a portal.
@@ -78,7 +78,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   </DropdownMenuPrimitive.SubTrigger>
 ))
 
-interface DropdownMenuSubContentProps
+export interface DropdownMenuSubContentProps
   extends React.ComponentPropsWithoutRef<
     typeof DropdownMenuPrimitive.SubContent
   > {

@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority"
 
 import { useControlled } from "../../hooks/use-controlled"
 import { cx, range } from "../../lib"
-import { Button, type ButtonProps } from "../button"
+import { Button } from "../button"
 import {
   ChevronFirstIcon,
   ChevronLastIcon,
@@ -21,16 +21,76 @@ type PageType =
   | "start-ellipsis"
   | "end-ellipsis"
   | "page"
-  | number
 
-interface PaginationItemProps extends Omit<ButtonProps, "type"> {
-  type: PageType
-  page: number
+/**
+ * Props for individual pagination item components.
+ * Extends Button props with pagination-specific properties.
+ */
+interface PaginationItemProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
+  /**
+   * The type of pagination item.
+   * Determines the visual representation and behavior of the item.
+   *
+   * @default "page"
+   */
+  type?:
+    | "first"
+    | "last"
+    | "previous"
+    | "next"
+    | "start-ellipsis"
+    | "end-ellipsis"
+    | "page"
+
+  /**
+   * The page number this item represents.
+   * For navigation items (first, last, previous, next), this is the target page number.
+   */
+  page?: number
+
+  /**
+   * If true, this item represents the currently selected page.
+   * Affects the visual styling to indicate the active state.
+   *
+   * @default false
+   */
   selected?: boolean
+
+  /**
+   * If true, the item is disabled and cannot be interacted with.
+   * Typically used for navigation items when at the first/last page.
+   *
+   * @default false
+   */
   disabled?: boolean
+
+  /**
+   * The color theme of the pagination item.
+   * Controls the color scheme used for styling. It will override
+   * the color set in Pagination.
+   *
+   * @default "neutral"
+   */
   color?: "primary" | "secondary" | "neutral"
+
+  /**
+   * The visual variant of the pagination item.
+   * Controls the appearance style (outlined or text). It will override
+   * the variant set in Pagination.
+   *
+   * @default "text"
+   */
   variant?: "outlined" | "text"
-  size: "sm" | "md" | "lg"
+
+  /**
+   * The size of the pagination item.
+   * Controls the dimensions of the item. It will override
+   * the size set in Pagination.
+   *
+   * @default "md"
+   */
+  size?: "sm" | "md" | "lg"
 }
 
 const paginationItemVariants = cva("p-0", {
@@ -117,7 +177,16 @@ const PaginationItem = React.forwardRef<
   PaginationItemProps
 >(
   (
-    { className, type, page, size, variant, color, selected, ...props },
+    {
+      className,
+      type = "page",
+      page,
+      size = "md",
+      variant = "text",
+      color = "neutral",
+      selected = false,
+      ...props
+    },
     ref
   ) => {
     let content: React.ReactNode = page
@@ -154,8 +223,10 @@ interface PaginationProps
   extends Omit<React.ComponentPropsWithoutRef<"nav">, "onChange"> {
   /**
    * The total number of pages.
+   *
+   * @default 1
    */
-  count: number
+  count?: number
 
   /**
    * Number of always visible pages before and after the current page.
@@ -169,26 +240,93 @@ interface PaginationProps
    */
   boundaryCount?: number
 
+  /**
+   * If true, shows the "first page" button.
+   * Allows users to jump directly to the first page.
+   *
+   * @default false
+   */
   showFirstButton?: boolean
+
+  /**
+   * If true, shows the "last page" button.
+   * Allows users to jump directly to the last page.
+   *
+   * @default false
+   */
   showLastButton?: boolean
 
+  /**
+   * The visual variant of the pagination buttons.
+   * Controls the appearance style of the pagination items.
+   *
+   * @default "outlined"
+   */
   variant?: "text" | "outlined"
 
+  /**
+   * If true, hides the "previous page" button.
+   * Useful when you want to control navigation programmatically.
+   *
+   * @default false
+   */
   hidePrevButton?: boolean
+
+  /**
+   * If true, hides the "next page" button.
+   * Useful when you want to control navigation programmatically.
+   *
+   * @default false
+   */
   hideNextButton?: boolean
 
+  /**
+   * The default page number when the component is uncontrolled.
+   *
+   * @default 1
+   */
   defaultPage?: number
 
+  /**
+   * The current page number (controlled).
+   * Use this for controlled pagination state.
+   */
   page?: number
 
+  /**
+   * If true, disables all pagination buttons.
+   * Useful when pagination should be temporarily disabled.
+   *
+   * @default disabled
+   */
   disabled?: boolean
 
+  /**
+   * The size of the pagination buttons.
+   * Controls the overall size of the pagination component.
+   *
+   * @default "md"
+   */
   size?: "sm" | "md" | "lg"
 
+  /**
+   * The color theme of the pagination buttons.
+   * Controls the color scheme used for the pagination items.
+   *
+   * @default "neutral"
+   */
   color?: "primary" | "secondary" | "neutral"
 
+  /**
+   * Callback fired when the page changes.
+   * Called with the new page number when user clicks a pagination item.
+   */
   onChange?: (page: number) => void
 
+  /**
+   * Custom render function for pagination items.
+   * Allows complete customization of how each pagination item is rendered.
+   */
   renderItem?: (item: PaginationItemProps) => React.ReactNode
 }
 
@@ -203,7 +341,7 @@ const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
       hideNextButton = false,
       hidePrevButton = false,
       defaultPage = 1,
-      count,
+      count = 1,
       page: pageProp,
       disabled,
       onChange,
@@ -252,7 +390,7 @@ const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
 
       // Build page items array
 
-      const pageItems: PageType[] = [
+      const pageItems = [
         ...(showFirstButton ? ["first" as const] : []),
         ...(hidePrevButton ? [] : ["previous" as const]),
         ...startPages,

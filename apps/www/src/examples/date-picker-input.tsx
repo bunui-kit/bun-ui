@@ -3,6 +3,7 @@
 import { useState } from "react"
 import {
   Button,
+  IconButton,
   Input,
   Popover,
   PopoverContent,
@@ -48,14 +49,13 @@ export const DatePickerInput = () => {
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button
-              className="absolute top-7 right-1 h-7 w-7"
-              variant="text"
-              size="icon"
+            <IconButton
+              className="absolute top-7 right-1"
+              size="sm"
               onClick={() => setOpen(true)}
             >
               <CalendarDays className="text-muted-foreground h-4 w-4" />
-            </Button>
+            </IconButton>
           </PopoverTrigger>
           <PopoverContent>
             <Calendar

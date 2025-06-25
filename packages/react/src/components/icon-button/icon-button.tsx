@@ -34,6 +34,8 @@ export interface IconButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
   /**
    * Color of the IconButton.
+   *
+   * @default "neutral"
    */
   color?:
     | "primary"
@@ -44,11 +46,15 @@ export interface IconButtonProps
     | "success"
   /**
    * Size of the IconButton.
+   *
+   * @default "md"
    */
   size?: "xs" | "sm" | "md" | "lg"
 
   /**
    * If true, the props of the button will be applied to the child element.
+   *
+   * @default false
    */
   asChild?: boolean
 }

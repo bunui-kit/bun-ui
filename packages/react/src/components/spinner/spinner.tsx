@@ -1,5 +1,5 @@
 import React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 
 import { cx } from "../../lib"
 import { LoaderCircleIcon } from "../icons"
@@ -23,21 +23,34 @@ const spinnerVariants = cva("inline-flex animate-spin", {
   },
   defaultVariants: {
     size: "md",
-    color: "neutral",
+    color: "primary",
   },
 })
 
-type SpinnerProps = Omit<React.HTMLAttributes<HTMLSpanElement>, "color"> &
-  VariantProps<typeof spinnerVariants> & {
-    /**
-     * Color of the spinner.
-     * @default "info"
-     */
-    color?: VariantProps<typeof spinnerVariants>["color"]
-  }
+interface SpinnerProps
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color"> {
+  /**
+   * Color of the spinner.
+   * @default "primary"
+   */
+  color?:
+    | "neutral"
+    | "primary"
+    | "secondary"
+    | "destructive"
+    | "accent"
+    | "current"
+
+  /**
+   * Size of the spinner.
+   *
+   * @default "md"
+   */
+  size?: "xs" | "sm" | "md" | "lg"
+}
 
 const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
-  ({ size, className, color, ...props }, ref) => (
+  ({ size = "md", className, color = "primary", ...props }, ref) => (
     <span
       ref={ref}
       role="progressbar"
@@ -50,4 +63,4 @@ const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
   )
 )
 
-export { Spinner, spinnerVariants }
+export { Spinner, type SpinnerProps }

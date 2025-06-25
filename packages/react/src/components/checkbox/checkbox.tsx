@@ -6,9 +6,19 @@ import { cx } from "../../lib/utils"
 import { CheckIcon } from "../icons"
 import { Label } from "../label"
 
-interface CheckboxProps
+/**
+ * Props for the Checkbox component.
+ */
+export interface CheckboxProps
   extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  /**
+   * Label for the checkbox.
+   */
   label?: React.ReactNode
+  /**
+   * Color variant of the checkbox.
+   * @default "primary"
+   */
   color?: "primary" | "secondary" | "neutral"
 }
 
@@ -34,7 +44,7 @@ const checkboxVariants = cva(
 const Checkbox = React.forwardRef<
   Omit<React.ComponentRef<typeof CheckboxPrimitive.Root>, "color">,
   CheckboxProps
->(({ className, label, id, disabled, color, ...props }, ref) => {
+>(({ className, label, id, disabled, color = "primary", ...props }, ref) => {
   const _id = id || useId()
   const Wrapper = label ? "div" : React.Fragment
   const wrapperClassName = label ? "flex items-center space-x-2" : ""
@@ -67,4 +77,4 @@ const Checkbox = React.forwardRef<
 
 Checkbox.displayName = "Checkbox"
 
-export default Checkbox
+export { Checkbox }

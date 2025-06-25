@@ -14,6 +14,7 @@ import { Button, buttonVariants } from "../button"
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons"
 import type { CalendarClasses } from "./calendar-classes"
 
+/**  Props for the Calendar component*/
 export type CalendarProps = DayPickerProps & {
   /**
    * Override or extend the styles applied to the component

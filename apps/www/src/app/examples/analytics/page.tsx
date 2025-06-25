@@ -20,6 +20,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
+  IconButton,
   Label,
   Link,
   Progress,
@@ -317,9 +318,9 @@ export default function AnalyticsDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <h3 className="text-lg font-semibold">Real-time Activity</h3>
-            <Button variant="text" size="icon" className="h-8 w-8">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+            <IconButton>
+              <MoreHorizontal />
+            </IconButton>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -375,9 +376,9 @@ export default function AnalyticsDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <h3 className="text-lg font-semibold">Top Performing Pages</h3>
-            <Button variant="text" size="icon" className="h-8 w-8">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
+            <IconButton>
+              <MoreHorizontal />
+            </IconButton>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -416,9 +417,9 @@ export default function AnalyticsDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <h3 className="text-lg font-semibold">Page Views</h3>
-                <Button variant="text" size="icon" className="h-8 w-8">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
+                <IconButton>
+                  <MoreHorizontal />
+                </IconButton>
               </CardHeader>
               <CardContent>
                 {topPages.map((page) => (
@@ -438,9 +439,9 @@ export default function AnalyticsDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <h3 className="text-lg font-semibold">User Distribution</h3>
-                <Button variant="text" size="icon" className="h-8 w-8">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
+                <IconButton>
+                  <MoreHorizontal />
+                </IconButton>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -535,9 +536,9 @@ export default function AnalyticsDashboard() {
       <Card className="mt-8">
         <CardHeader className="flex flex-row items-center justify-between">
           <h3 className="text-lg font-semibold">Recent Notifications</h3>
-          <Button variant="text" size="icon" className="h-8 w-8">
+          <IconButton className="h-8 w-8">
             <MoreHorizontal className="h-4 w-4" />
-          </Button>
+          </IconButton>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

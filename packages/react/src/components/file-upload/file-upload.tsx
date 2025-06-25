@@ -1,25 +1,25 @@
 "use client"
 
 import React from "react"
-import { Slot } from "@radix-ui/react-slot"
 
 import { useControlled } from "../../hooks/use-controlled"
 import { cx } from "../../lib"
-import { Button } from "../button"
+import { Button, type ButtonProps } from "../button"
+import { IconButton } from "../icon-button"
 import { CloseIcon } from "../icons"
 import { FileUploadContext, useFileUploadContext } from "./file-upload-context"
 
 /**
  * Props for the FileItem component that displays individual file information
  */
-interface FileItemProps {
+interface FileUploadItemProps {
   /** The file object to display */
   file: File
   /** Optional callback function when the file is removed */
   onRemove?: () => void
 }
 
-const FileItem = ({ file, onRemove }: FileItemProps) => (
+const FileUploadItem = ({ file, onRemove }: FileUploadItemProps) => (
   <div className="flex items-center justify-between gap-2 rounded-md border p-2">
     <div className="flex flex-col gap-1">
       <p className="text-sm font-medium">{file.name}</p>
@@ -28,21 +28,20 @@ const FileItem = ({ file, onRemove }: FileItemProps) => (
       </p>
     </div>
     {onRemove && (
-      <Button
-        variant="text"
+      <IconButton
         color="neutral"
-        size="icon"
+        size="sm"
         onClick={onRemove}
         className="h-8 w-8 shrink-0"
         aria-label="Remove file"
       >
         <CloseIcon />
-      </Button>
+      </IconButton>
     )}
   </div>
 )
 
-FileItem.displayName = "FileItem"
+FileUploadItem.displayName = "FileItem"
 
 const FileUploadDropZone = React.forwardRef<
   HTMLDivElement,
@@ -102,28 +101,31 @@ FileUploadDropZone.displayName = "FileUploadDropZone"
 /**
  * Props for the FileUploadTrigger component that triggers file selection
  */
-interface FileUploadTriggerProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
-  /** Whether to render the trigger as a child component */
-  asChild?: boolean
+export interface FileUploadTriggerProps extends ButtonProps {
+  /**
+   * Size of the file  upload trigger button
+   *
+   * @default "md"
+   */
+  size?: "sm" | "md" | "lg"
 }
 
 const FileUploadTrigger = React.forwardRef<
   HTMLButtonElement,
   FileUploadTriggerProps
->(({ className, children, asChild = false, ...props }, ref) => {
+>(({ className, children, size = "md", ...props }, ref) => {
   const { fileInputRef } = useFileUploadContext()
-  const Comp = asChild ? Slot : Button
 
   return (
-    <Comp
+    <Button
       ref={ref}
       className={cx("w-fit", className)}
+      size={size}
       onClick={() => fileInputRef?.current?.click()}
       {...props}
     >
       {children}
-    </Comp>
+    </Button>
   )
 })
 
@@ -132,7 +134,7 @@ FileUploadTrigger.displayName = "FileUploadTrigger"
 /**
  * Props for the FileUpload component
  */
-interface FileUploadProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface FileUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Callback function when files are selected
    **/
@@ -311,7 +313,7 @@ const FileUploadList = React.forwardRef<
   return (
     <ul className={cx("flex flex-col gap-2", className)} ref={ref} {...props}>
       {files.map((file, index) => (
-        <FileItem
+        <FileUploadItem
           key={`${file.name}-${index}`}
           file={file}
           onRemove={() => handleRemove(index)}
@@ -325,7 +327,6 @@ export {
   FileUpload,
   FileUploadDropZone,
   FileUploadTrigger,
-  type FileUploadProps,
   FileUploadPreviewList,
   FileUploadList,
 }
