@@ -15,8 +15,11 @@ import { FileUploadContext, useFileUploadContext } from "./file-upload-context"
 interface FileUploadItemProps {
   /** The file object to display */
   file: File
-  /** Optional callback function when the file is removed */
-  onRemove?: () => void
+  /**
+   * Optional callback function when the file is removed
+   * @param event - The click event that triggered the removal
+   */
+  onRemove?: (event?: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const FileUploadItem = ({ file, onRemove }: FileUploadItemProps) => (
@@ -137,9 +140,14 @@ FileUploadTrigger.displayName = "FileUploadTrigger"
 export interface FileUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Callback function when files are selected
-   **/
+   * @param files - Array of selected files
+   */
   onFileSelect?: (files: File[]) => void
-  /** Callback function when a file is removed */
+  /**
+   * Callback function when a file is removed
+   *
+   * @param file - The file that was removed
+   */
   onFileRemove?: (file: File) => void
   /**
    * Maximum number of files allowed to be uploaded.
@@ -294,6 +302,8 @@ const FileUploadPreviewList = React.forwardRef<
   )
 })
 
+FileUploadPreviewList.displayName = "FileUploadPreviewList"
+
 const FileUploadList = React.forwardRef<
   HTMLUListElement,
   React.HTMLAttributes<HTMLUListElement>
@@ -323,6 +333,8 @@ const FileUploadList = React.forwardRef<
   )
 })
 
+FileUploadList.displayName = "FileUploadList"
+
 export {
   FileUpload,
   FileUploadDropZone,
@@ -330,3 +342,4 @@ export {
   FileUploadPreviewList,
   FileUploadList,
 }
+

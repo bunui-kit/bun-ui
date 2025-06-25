@@ -45,6 +45,26 @@ function formatType(type: any): string {
     case "query":
       return "query"
     case "reflection":
+      // Handle function signatures
+      if (type.declaration?.signatures) {
+        const signature = type.declaration.signatures[0] // Take the first signature
+        if (signature) {
+          const params =
+            signature.parameters
+              ?.map((param: any) => {
+                const paramType = formatType(param.type)
+                return (
+                  param.name +
+                  (param.flags?.isOptional ? "?" : "") +
+                  ": " +
+                  paramType
+                )
+              })
+              .join(", ") || ""
+          const returnType = formatType(signature.type)
+          return `(${params}) => ${returnType}`
+        }
+      }
       return "object"
     case "rest":
       return `...${formatType(type.elementType)}`
