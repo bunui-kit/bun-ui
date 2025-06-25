@@ -3,8 +3,21 @@ import React, { useId } from "react"
 import { cx } from "../../lib/utils"
 import { Label } from "../label"
 
+/**
+ * Props for the Input component.
+ * Extends the native HTML input element props with additional customization options.
+ */
 export interface InputProps extends React.ComponentPropsWithoutRef<"input"> {
+  /**
+   * The label text or element to display above the input.
+   * If provided, the input will be wrapped in a container with the label.
+   */
   label?: React.ReactNode
+
+  /**
+   * Additional CSS classes to apply to the label element.
+   * Use this to customize the styling of the label independently from the input.
+   */
   labelClassName?: string
 }
 
@@ -36,4 +49,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = "Input"
 
-export default Input
+export { Input }

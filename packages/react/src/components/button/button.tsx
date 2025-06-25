@@ -25,7 +25,6 @@ const buttonVariants = cva(
         sm: "px-3 py-1",
         md: "px-4 py-2",
         lg: "px-6 py-2 text-base",
-        icon: "h-10 w-10",
       },
     },
     compoundVariants: [
@@ -171,13 +170,12 @@ export interface ButtonProps
   /**
    * Size of the button.
    *
-   * The `"icon"` size is deprecated. Use `IconButton` component
-   * with `size="sm" | "md" | "lg"` for icon-only buttons.
+   * The `"icon"` size is deprecated.
    *
    * @default "md"
    *
    */
-  size?: "sm" | "md" | "lg" | "icon"
+  size?: "sm" | "md" | "lg"
 }
 
 /**
