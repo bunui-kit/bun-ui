@@ -1,5 +1,11 @@
 # @bun-ui/react
 
+## 0.2.49
+
+### Patch Changes
+
+- [#193](https://github.com/bunui-kit/bun-ui/pull/193) [`52f0fd3`](https://github.com/bunui-kit/bun-ui/commit/52f0fd36f28086fce277f58fb14fecc2e38a1a98) Thanks [@khanguyen74](https://github.com/khanguyen74)! - add tsdocs for all components
+
 ## 0.2.48
 
 ### Patch Changes
