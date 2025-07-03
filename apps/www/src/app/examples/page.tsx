@@ -1,8 +1,16 @@
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@bun-ui/react"
-import { Activity, FileText, LineChart, Settings } from "lucide-react"
+import { Activity, Bot, FileText, LineChart, Settings } from "lucide-react"
 
 const examples = [
+  {
+    title: "AI Chat Application",
+    description:
+      "A ChatGPT-style AI chat interface with file upload, model selection, and conversation management.",
+    icon: Bot,
+    href: "/examples/ai-chat",
+    category: "AI & Chat",
+  },
   {
     title: "Analytics Dashboard",
     description:

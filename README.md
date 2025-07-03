@@ -32,9 +32,9 @@ yarn add @bun-ui/react
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Replace with your correct path to the package */
-@import "../../node_modules/@bun-ui/react/dist/theme.css" layer(base); 
+@import "@bun-ui/react/themes/default.css" layer(theme); 
 
+/* Replace with your correct path to the package */
 @source "../../node_modules/@bun-ui/react/dist/";
 ```
 
